@@ -7,7 +7,7 @@
     <properties resource="config/database.properties" />
     
     <typeAliases>
-        <package name="org.github.xeyez.domain"/>
+        <package name="io.github.xeyez.domain"/>
 	</typeAliases>
 	
 </configuration>

@@ -2,7 +2,7 @@
 <%-- <%@ page session="false" %> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@include file="include/header.jsp" %>
+<%@include file="../include/header.jsp" %>
 
     <!-- Main content -->
 	<section class="content">
@@ -13,14 +13,25 @@
 	    		<!-- general form elements -->
 	  			<div class="box">
 		            <div class="box-header with-border">
-		            	<h3 class="box-title">HOME PAGE</h3>
+		            	<h3 class="box-title">Title</h3>
 		            </div>
+
+<!-- Content -->
+					<div class="box-body">
+					
+					
+					</div>
+
+					<div class="box-footer">
+		            	Footer
+		            </div>
+		            
 		        </div>
 	        </div>
         
       	</div>
    	</section>
+   	
+	</div>
     
-    </div>
-    
-<%@include file="include/footer.jsp" %>
+<%@include file="../include/footer.jsp" %>

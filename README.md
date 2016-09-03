@@ -53,5 +53,6 @@ In-depth study for Spring framework
  - [ ] 무한 Scrolling (Mode 선택 제공)
  
 - 기타
+ - 공지 게시글
  - 전체 Template 교체
  - Mobile일 경우 게시글 Form 재구성 (XE 처럼)

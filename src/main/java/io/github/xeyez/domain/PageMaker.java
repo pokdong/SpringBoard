@@ -1,5 +1,8 @@
 package io.github.xeyez.domain;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 public class PageMaker {
 	private Criteria cri;
 	
@@ -83,6 +86,15 @@ public class PageMaker {
 
 	public void setPageCount(int pageCount) {
 		this.pageCount = pageCount;
+	}
+	
+	public String makeQuery(int page) {
+		UriComponents comp = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("postCount", cri.getPostCount())
+				.build();
+		
+		return comp.toUriString();
 	}
 
 	@Override

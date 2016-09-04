@@ -41,6 +41,7 @@ public class BoardController {
 	public void listPage(Criteria cri, Model model) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> show listPage");
 		
+		logger.info(">>>>>>>>>> cri : " + cri.toString());
 		model.addAttribute("list", service.listCriteria(cri));
 		
 		int totalPostCount = service.totalPostCount();

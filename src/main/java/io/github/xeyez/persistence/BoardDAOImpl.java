@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import io.github.xeyez.domain.BoardVO;
+import io.github.xeyez.domain.Criteria;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -39,8 +40,20 @@ public class BoardDAOImpl implements BoardDAO {
 		session.delete(namespace + ".delete", bno);
 	}
 
+	
+	
 	@Override
 	public List<BoardVO> listAll() throws Exception {
 		return session.selectList(namespace + ".listAll");
+	}
+	
+	@Override
+	public List<BoardVO> listCrieria(Criteria cri) throws Exception {
+		return session.selectList(namespace + ".listCriteria", cri);
+	}
+
+	@Override
+	public int totalPostCount() throws Exception {
+		return session.selectOne(namespace + ".totalPostCount");
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import io.github.xeyez.domain.BoardVO;
+import io.github.xeyez.domain.Criteria;
 import io.github.xeyez.persistence.BoardDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,7 +45,6 @@ public class DAOTest {
 		dao.create(vo);
 	}
 
-	@Test
 	public void testRead() throws Exception {
 		logger.info(">>>>>>>>>>>>>>>" + dao.read(1).toString());
 	}
@@ -56,5 +56,21 @@ public class DAOTest {
 		for(BoardVO vo2 : list) {
 			logger.info(">>>>>>>>>>>" + vo2.toString());
 		}
+	}
+
+	
+	
+	public void testListCri() throws Exception {
+		
+		Criteria cri = new Criteria(1, 20);
+		
+		for(BoardVO vo : dao.listCrieria(cri)) {
+			logger.info(">>>>>>>>>>>" + vo.toString());
+		}
+	}
+	
+	@Test
+	public void totalPostCount() throws Exception {
+		logger.info(">>>>>>>>>>>>>>" + dao.totalPostCount());
 	}
 }

@@ -34,12 +34,36 @@
 		]]>
 	</delete>
 	
+	
+	
 	<select id="listAll" resultType="BoardVO" >
 		<![CDATA[
 			SELECT *
 			FROM TBL_BOARD
 			WHERE BNO > 0
-			ORDER BY BNO DESC, REGDATE DESC;
+			ORDER BY BNO DESC, REGDATE DESC
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	<select id="listCriteria" resultType="BoardVO" >
+		<![CDATA[
+			SELECT *
+			FROM TBL_BOARD
+			WHERE BNO > 0
+			ORDER BY BNO DESC, REGDATE DESC
+			LIMIT #{postStart}, #{postCount};
+		]]>
+	</select>
+	
+	<select id="totalPostCount" resultType="int" >
+		<![CDATA[
+			SELECT COUNT(BNO)
+			FROM TBL_BOARD
+			WHERE BNO > 0
 		]]>
 	</select>
 </mapper>

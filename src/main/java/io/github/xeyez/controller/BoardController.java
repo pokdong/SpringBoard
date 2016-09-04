@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.github.xeyez.domain.BoardVO;
+import io.github.xeyez.domain.Criteria;
+import io.github.xeyez.domain.PageMaker;
 import io.github.xeyez.service.BoardService;
 
 @Controller
@@ -21,6 +23,35 @@ public class BoardController {
 	
 	@Inject
 	private BoardService service;
+	
+	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
+	public void listAll(Model model) throws Exception {
+		logger.info(">>>>>>>>>>>>>>> show list all");
+		
+		model.addAttribute("list", service.listAll());
+	}
+	
+	@RequestMapping(value = "/listCri", method = RequestMethod.GET)
+	public void listCriteria(Criteria cri, Model model) throws Exception {
+		logger.info(">>>>>>>>>>>>>>> show listCriteria");
+		model.addAttribute("list", service.listCriteria(cri));
+	}
+	
+	@RequestMapping(value = "/listPage", method = RequestMethod.GET)
+	public void listPage(Criteria cri, Model model) throws Exception {
+		logger.info(">>>>>>>>>>>>>>> show listPage");
+		
+		model.addAttribute("list", service.listCriteria(cri));
+		
+		int totalPostCount = service.totalPostCount();
+		PageMaker pageMaker = new PageMaker(cri, totalPostCount);
+		model.addAttribute("pageMaker", pageMaker);
+		
+		logger.info("pageMaker : " + pageMaker.toString());
+	}
+	
+	
+	
 	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public void writeGET(BoardVO board, Model model) throws Exception {
@@ -38,13 +69,6 @@ public class BoardController {
 		rttr.addFlashAttribute("result", "SUCCESS");
 		
 		return "redirect:/board/listAll";
-	}
-	
-	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
-	public void listAll(Model model) throws Exception {
-		logger.info(">>>>>>>>>>>>>>> show list all");
-		
-		model.addAttribute("list", service.listAll());
 	}
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)

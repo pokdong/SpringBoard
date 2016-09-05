@@ -14,7 +14,7 @@
 	    		<!-- general form elements -->
 	  			<div class="box">
 		            <div class="box-header with-border">
-		            	<h3 class="box-title">LIST PAGE</h3>
+		            	<h3 class="box-title">LIST</h3>
 		            </div>
 		            
 

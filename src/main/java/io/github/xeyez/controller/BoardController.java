@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.Criteria;
 import io.github.xeyez.domain.PageMaker;
+import io.github.xeyez.domain.SearchCriteria;
 import io.github.xeyez.service.BoardService;
 
 @Controller
@@ -46,11 +47,32 @@ public class BoardController {
 		model.addAttribute("list", service.listCriteria(cri));
 		
 		int totalPostCount = service.totalPostCount();
-		PageMaker pageMaker = new PageMaker(cri, totalPostCount);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.calcPaging(cri, totalPostCount);
 		model.addAttribute("pageMaker", pageMaker);
 		
 		logger.info("pageMaker : " + pageMaker.toString());
 	}
+
+	// parameter에 pageMaker의 존재 이유 : pageCount를 사용하기 위함. 
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public void list(@ModelAttribute("cri") SearchCriteria cri, PageMaker pageMaker, Model model) throws Exception {
+		logger.info(">>>>>>>>>>>>>>> show listPage");
+		
+		logger.info(">>>>>>>>>> cri : " + cri.toString());
+		model.addAttribute("list", service.listCriteria(cri));
+
+		logger.info("~~~~~~PageCount : " + pageMaker.getPageCount());
+		
+		int totalPostCount = service.totalPostCount();
+		pageMaker.calcPaging(cri, totalPostCount);
+		
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		logger.info("pageMaker : " + pageMaker.toString());
+	}
+	
 	
 	
 	
@@ -70,7 +92,7 @@ public class BoardController {
 		
 		rttr.addFlashAttribute("result", "SUCCESS");
 		
-		return "redirect:/board/listAll";
+		return "redirect:/board/list";
 	}
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
@@ -98,7 +120,7 @@ public class BoardController {
 		
 		rttr.addFlashAttribute("result", "SUCCESS");
 		
-		return "redirect:/board/listPage";
+		return "redirect:/board/list";
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
@@ -120,6 +142,6 @@ public class BoardController {
 		
 		rttr.addFlashAttribute("result", "SUCCESS");
 		
-		return "redirect:/board/listPage";
+		return "redirect:/board/list";
 	}
 }

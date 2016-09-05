@@ -13,34 +13,11 @@ public class PageMaker {
 	private boolean next;
 	
 	private int pageCount = 10;
-
-	public PageMaker() {
-	}
 	
-	public PageMaker(Criteria cri, int totalPostCount) {
+	public void calcPaging(Criteria cri, int totalPostCount) {
 		this.cri = cri;
-		setTotalPostCount(totalPostCount);
-	}
-	
-	public Criteria getCri() {
-		return cri;
-	}
-
-	public void setCri(Criteria cri) {
-		this.cri = cri;
-	}
-
-	public int getTotalPostCount() {
-		return totalPostCount;
-	}
-
-	public void setTotalPostCount(int totalPostCount) {
 		this.totalPostCount = totalPostCount;
 		
-		calcPaging();
-	}
-
-	private void calcPaging() {
 		// 하단 Paging 전체 개수 (= 마지막 Paging 번호)
 		int totalPageCount = (int) Math.ceil(totalPostCount / (double) cri.getPostCount());
 		
@@ -63,7 +40,57 @@ public class PageMaker {
 		prev = startPage != 1;
 		next = (currentPageSet < totalPageSet) && endPage > 0;
 	}
+	
+	public void setPageCount(int pageCount) {
+		if(pageCount < 10)
+			pageCount = 10;
+		else if(pageCount > 30)
+			pageCount = 30;
+		
+		this.pageCount = pageCount;
+	}
+	
+	public String makeQuery(int page) {
+		UriComponents comp = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("postCount", cri.getPostCount())
+				.build();
+		
+		return comp.toUriString();
+	}
+	
+	public String makeSearchQuery(int page) {
+		SearchCriteria sCri = (SearchCriteria) cri;
+		
+		UriComponents comp = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("postCount", cri.getPostCount())
+				.queryParam("searchType", sCri.getSearchType())
+				.queryParam("keyword", sCri.getKeyword())
+				.build();
+		
+		return comp.toUriString();
+	}
+	
+	/*public String makeSearchQuery(int page, String searchType, String keyword) {
+		UriComponents comp = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("postCount", cri.getPostCount())
+				.queryParam("searchType", searchType)
+				.queryParam("keyword", keyword)
+				.build();
+		
+		return comp.toUriString();
+	}*/
 
+	public Criteria getCri() {
+		return cri;
+	}
+	
+	public int getTotalPostCount() {
+		return totalPostCount;
+	}
+	
 	public int getStartPage() {
 		return startPage;
 	}
@@ -82,19 +109,6 @@ public class PageMaker {
 
 	public int getPageCount() {
 		return pageCount;
-	}
-
-	public void setPageCount(int pageCount) {
-		this.pageCount = pageCount;
-	}
-	
-	public String makeQuery(int page) {
-		UriComponents comp = UriComponentsBuilder.newInstance()
-				.queryParam("page", page)
-				.queryParam("postCount", cri.getPostCount())
-				.build();
-		
-		return comp.toUriString();
 	}
 
 	@Override

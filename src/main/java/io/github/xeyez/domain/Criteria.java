@@ -1,5 +1,8 @@
 package io.github.xeyez.domain;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 public class Criteria {
 	private int page;
 	private int postCount;
@@ -32,6 +35,15 @@ public class Criteria {
 	
 	public int getPostStart() {
 		return (this.page - 1) * postCount;
+	}
+	
+	public String makeQuery() {
+		UriComponents comp = UriComponentsBuilder.newInstance()
+				.queryParam("page", this.page)
+				.queryParam("postCount", this.postCount)
+				.build();
+		
+		return comp.toUriString();
 	}
 
 	@Override

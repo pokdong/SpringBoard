@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,41 +74,52 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
-	public void read(@RequestParam("bno") int bno, Model model) throws Exception {
+	public void read(@RequestParam("bno") int bno, @ModelAttribute("cri") Criteria cri, Model model) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> read");
 		
 		BoardVO vo = service.read(bno);
 		if(vo == null)
 			throw new NullPointerException("존재하지 않는 게시물입니다.");
 		
+		logger.info(cri.toString());
+		
 		model.addAttribute(vo);
 	}
 	
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
-	public String remove(@RequestParam("bno") int bno, RedirectAttributes rttr) throws Exception {
+	public String remove(@RequestParam("bno") int bno, Criteria cri, RedirectAttributes rttr) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> remove");
 		
 		service.remove(bno);
 		
+		logger.info(cri.toString());
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("postCount", cri.getPostCount());
+		
 		rttr.addFlashAttribute("result", "SUCCESS");
 		
-		return "redirect:/board/listAll";
+		return "redirect:/board/listPage";
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
-	public void modifyGET(@RequestParam("bno") int bno, Model model) throws Exception {
+	public void modifyGET(@RequestParam("bno") int bno, @ModelAttribute("cri") Criteria cri, Model model) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> modifyGET");
 		
 		model.addAttribute(service.read(bno));
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public String modifyPOST(@RequestParam("bno") int bno, BoardVO boardVO, RedirectAttributes rttr) throws Exception {
+	public String modifyPOST(BoardVO boardVO, Criteria cri, RedirectAttributes rttr) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> modifyPOST");
 		
 		service.modify(boardVO);
+		
+		logger.info(cri.toString());
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("postCount", cri.getPostCount());
+		
 		rttr.addFlashAttribute("result", "SUCCESS");
 		
-		return "redirect:/board/listAll";
+		return "redirect:/board/listPage";
 	}
 }

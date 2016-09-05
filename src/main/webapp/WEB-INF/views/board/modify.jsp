@@ -4,10 +4,6 @@
 
 <%@include file="../include/header.jsp" %>
 
-<form role="form" method="post">
-	<input type='hidden' name='bno' value="${boardVO.bno}">
-</form>
-
 
     <!-- Main content -->
 	<section class="content">
@@ -24,6 +20,13 @@
 <!-- Content -->
 
 <form role="form" method="post">
+
+<%-- 
+	<input type='hidden' name='page' value="${cri.page}">
+	<input type='hidden' name='postCount' value="${cri.postCount}">
+ --%>	
+	
+
 	<div class="box-body"> <!-- box-body : 전체 margin -->
 		<div class="form-group"> <!-- form-group : 하단 여백 -->
 			<label>Title</label>
@@ -69,7 +72,7 @@
 	});
 	
 	$(".btn-warning").on("click", function() {
-		self.location = "/board/listAll";
+		self.location = "/board/listPage${cri.makeQuery()}";
 	});
 </script>
     

@@ -6,8 +6,9 @@
 
 <form role="form" method="post">
 	<input type='hidden' name='bno' value="${boardVO.bno}">
+	<input type='hidden' name='page' value="${cri.page}">
+	<input type='hidden' name='postCount' value="${cri.postCount}">
 </form>
-
 
     <!-- Main content -->
 	<section class="content">
@@ -72,11 +73,15 @@
 	
 	$(".btn-danger").on("click", function() {
 		formObj.attr("action", "/board/remove");
+		formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
 		formObj.submit();
 	});
 	
 	$(".btn-primary").on("click", function() {
-		self.location = "/board/listAll";
+		// self.location = "/board/listPage";
+		formObj.attr("action", "/board/listPage");
+		formObj.attr("method", "get");
+		formObj.submit();
 	});
 </script>
     

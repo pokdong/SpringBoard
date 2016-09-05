@@ -6,7 +6,7 @@ In-depth study for Spring framework
 - [X] 일괄 Exception 처리
 
 ### 0.1.1
-- [ ] Paging 처리
+- [X] Paging 처리
 
 ### 0.1.2
 - [ ] 게시글 검색

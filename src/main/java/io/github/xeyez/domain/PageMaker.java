@@ -61,6 +61,15 @@ public class PageMaker {
 		return comp.toUriString();
 	}
 	
+	public String makeQueryForWrite() {
+		UriComponents comp = UriComponentsBuilder.newInstance()
+				.queryParam("postCount", cri.getPostCount())
+				.queryParam("pageCount", pageCount)
+				.build();
+		
+		return comp.toUriString();
+	}
+	
 	public String makeSearchQuery(int page) {
 		SearchCriteria sCri = (SearchCriteria) cri;
 		

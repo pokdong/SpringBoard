@@ -3,7 +3,6 @@ package io.github.xeyez.persistence;
 import java.util.List;
 
 import io.github.xeyez.domain.BoardVO;
-import io.github.xeyez.domain.Criteria;
 import io.github.xeyez.domain.SearchCriteria;
 
 public interface BoardDAO {
@@ -15,14 +14,6 @@ public interface BoardDAO {
 
 	void delete(int bno) throws Exception;
 
-	/**
-	 * Test
-	 * @return
-	 * @throws Exception
-	 */
-	List<BoardVO> listAll() throws Exception;
-	
-	List<BoardVO> listCrieria(Criteria cri) throws Exception;
 	
 	int totalPostCount() throws Exception;
 	

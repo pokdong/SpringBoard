@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import io.github.xeyez.domain.BoardVO;
-import io.github.xeyez.domain.Criteria;
 import io.github.xeyez.domain.SearchCriteria;
 import io.github.xeyez.persistence.BoardDAO;
 
@@ -35,16 +34,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void remove(int bno) throws Exception {
 		dao.delete(bno);
-	}
-
-	@Override
-	public List<BoardVO> listAll() throws Exception {
-		return dao.listAll();
-	}
-
-	@Override
-	public List<BoardVO> listCriteria(Criteria cri) throws Exception {
-		return dao.listCrieria(cri);
 	}
 
 	@Override

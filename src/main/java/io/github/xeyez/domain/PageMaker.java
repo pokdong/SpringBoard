@@ -50,10 +50,12 @@ public class PageMaker {
 		this.pageCount = pageCount;
 	}
 	
+	// 검색시 사용
 	public String makeQuery(int page) {
 		UriComponents comp = UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
 				.queryParam("postCount", cri.getPostCount())
+				.queryParam("pageCount", pageCount)
 				.build();
 		
 		return comp.toUriString();
@@ -62,26 +64,68 @@ public class PageMaker {
 	public String makeSearchQuery(int page) {
 		SearchCriteria sCri = (SearchCriteria) cri;
 		
-		UriComponents comp = UriComponentsBuilder.newInstance()
+		UriComponentsBuilder compBuilder = UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
-				.queryParam("postCount", cri.getPostCount())
-				.queryParam("searchType", sCri.getSearchType())
-				.queryParam("keyword", sCri.getKeyword())
-				.build();
+				.queryParam("postCount", sCri.getPostCount())
+				.queryParam("pageCount", pageCount);
 		
-		return comp.toUriString();
+		String searchType = sCri.getSearchType();
+		String keyword = sCri.getKeyword();
+		
+		if(searchType != null && keyword != null) {
+			if(!searchType.isEmpty() && !keyword.isEmpty()) {
+				compBuilder.queryParam("searchType", sCri.getSearchType())
+				.queryParam("keyword", sCri.getKeyword());
+			}
+		}
+		
+		return compBuilder.build().toUriString();
 	}
 	
-	/*public String makeSearchQuery(int page, String searchType, String keyword) {
-		UriComponents comp = UriComponentsBuilder.newInstance()
-				.queryParam("page", page)
-				.queryParam("postCount", cri.getPostCount())
-				.queryParam("searchType", searchType)
-				.queryParam("keyword", keyword)
-				.build();
+	//수정에서 취소누를 때 사용
+	public String makeSearchQuery() {
+		SearchCriteria sCri = (SearchCriteria) cri;
 		
-		return comp.toUriString();
-	}*/
+		UriComponentsBuilder compBuilder = UriComponentsBuilder.newInstance()
+				.queryParam("page", sCri.getPage())
+				.queryParam("postCount", sCri.getPostCount())
+				.queryParam("pageCount", pageCount);
+		
+		String searchType = sCri.getSearchType();
+		String keyword = sCri.getKeyword();
+		
+		if(searchType != null && keyword != null) {
+			if(!searchType.isEmpty() && !keyword.isEmpty()) {
+				compBuilder.queryParam("searchType", sCri.getSearchType())
+				.queryParam("keyword", sCri.getKeyword());
+			}
+		}
+		
+		return compBuilder.build().toUriString();
+	}
+	
+	// 게시글 클릭시 이용
+	public String makeSearchQuery(int bno, int page) {
+		SearchCriteria sCri = (SearchCriteria) cri;
+		
+		UriComponentsBuilder compBuilder = UriComponentsBuilder.newInstance()
+				.queryParam("bno", bno)
+				.queryParam("page", page)
+				.queryParam("postCount", sCri.getPostCount())
+				.queryParam("pageCount", pageCount);
+		
+		String searchType = sCri.getSearchType();
+		String keyword = sCri.getKeyword();
+		
+		if(searchType != null && keyword != null) {
+			if(!searchType.isEmpty() && !keyword.isEmpty()) {
+				compBuilder.queryParam("searchType", sCri.getSearchType())
+				.queryParam("keyword", sCri.getKeyword());
+			}
+		}
+		
+		return compBuilder.build().toUriString();
+	}
 
 	public Criteria getCri() {
 		return cri;

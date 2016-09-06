@@ -4,7 +4,6 @@
 
 <%@include file="../include/header.jsp" %>
 
-
     <!-- Main content -->
 	<section class="content">
     	<div class="row">
@@ -19,12 +18,15 @@
 		            
 <!-- Content -->
 
-<form role="form" method="post">
+<form role="form" action="modify"  method="post">
 
-<%-- 
 	<input type='hidden' name='page' value="${cri.page}">
 	<input type='hidden' name='postCount' value="${cri.postCount}">
- --%>	
+	
+	<input type='hidden' name='pageCount' value="${pageMaker.pageCount}">
+	<input type='hidden' name='searchType' value="${cri.searchType}">
+	<input type='hidden' name='keyword' value="${cri.keyword}">
+ 
 	<!-- totalPostCount 필요 -->
 
 	<div class="box-body"> <!-- box-body : 전체 margin -->
@@ -67,12 +69,29 @@
 	
 	console.log(formObj);
 	
+	// 확인
 	$(".btn-primary").on("click", function() {
 		formObj.submit();
 	});
 	
+	// 취소
 	$(".btn-warning").on("click", function() {
-		self.location = "/board/list${cri.makeQuery()}";
+		
+		var query = "/board/list?"
+			+ "page=${cri.page}"
+			+ "&postCount=${cri.postCount}"
+			+ "&pageCount=${pageMaker.pageCount}";
+			
+		var searchType = "${cri.searchType}"
+		var keyword = "${cri.keyword}".replace(/(^\s*)|(\s*$)/gi, "");
+		
+		// searchType의 글자 처리 필요
+		if((searchType.length != 0 && searchType != 'n') && keyword.length != null) {
+			query += ("&searchType=" + searchType
+					+ "&keyword=" + keyword);
+		}
+			
+		self.location = query;
 	});
 </script>
     

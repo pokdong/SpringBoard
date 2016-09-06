@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.Criteria;
+import io.github.xeyez.domain.SearchCriteria;
 import io.github.xeyez.persistence.BoardDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,15 +63,47 @@ public class DAOTest {
 	
 	public void testListCri() throws Exception {
 		
-		Criteria cri = new Criteria(1, 20);
+		Criteria cri = new Criteria();
+		cri.setPage(1);
+		cri.setPostCount(20);
 		
 		for(BoardVO vo : dao.listCrieria(cri)) {
 			logger.info(">>>>>>>>>>>" + vo.toString());
 		}
 	}
 	
-	@Test
 	public void totalPostCount() throws Exception {
 		logger.info(">>>>>>>>>>>>>>" + dao.totalPostCount());
+	}
+	
+	@Test
+	public void testListSearch() {
+		SearchCriteria cri = new SearchCriteria();
+		cri.setPage(1);
+		cri.setPostCount(20);
+		cri.setSearchType("t");
+		cri.setKeyword("admin");
+		
+		try {
+			List<BoardVO> list = dao.listSearch(cri);
+			
+			for(BoardVO vo : list) {
+				logger.info(">>>>>>>>>>>" + vo.toString());
+			}
+		} catch (Exception e) {
+			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			e.printStackTrace();
+		}
+		
+		
+		
+		try {
+			int count = dao.searchCount(cri);
+			logger.info("count??? " + count);
+		} catch (Exception e) {
+			System.out.println("=========================================================");
+			e.printStackTrace();
+		}
+		
 	}
 }

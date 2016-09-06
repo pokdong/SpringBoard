@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.Criteria;
+import io.github.xeyez.domain.SearchCriteria;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -55,5 +56,17 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int totalPostCount() throws Exception {
 		return session.selectOne(namespace + ".totalPostCount");
+	}
+
+	
+	
+	@Override
+	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {
+		return session.selectList(namespace + ".listSearch", cri);
+	}
+
+	@Override
+	public int searchCount(SearchCriteria cri) throws Exception {
+		return session.selectOne(namespace + ".searchCount", cri);
 	}
 }

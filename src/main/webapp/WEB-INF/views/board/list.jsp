@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page session="false"%>
 
 <%@include file="../include/header.jsp" %>
 
@@ -37,7 +36,7 @@
 <c:forEach items="${list}" var="boardVO">
 	<tr>
 		<td>${boardVO.bno}</td>
-		<td><a href="/board/read${pageMaker.makeSearchQuery(pageMaker.cri.page)}&bno=${boardVO.bno}">${boardVO.title}</a></td>
+		<td><a href="/board/read${pageMaker.makeSearchQuery(boardVO.bno, pageMaker.cri.page)}">${boardVO.title}</a></td>
 		<td>${boardVO.writer}</td>
 		<td><fmt:formatDate value="${boardVO.regdate}" pattern="yyyy-MM-dd HH:mm" /></td>
 		<td><span class="badge bg-red">${boardVO.viewcnt }</span></td>
@@ -113,13 +112,6 @@
 	$(document).ready(function() {
 		
 		$('#searchBtn').on("click",	function(ev) {
-			/* self.location = "list"
-			+ '${pageMaker.makeQuery(1)}'
-			
-			+ "&searchType="
-			+ $("select option:selected").val()
-			+ "&keyword=" + $('#keywordInput').val(); */
-			
 			var searchType = $("select option:selected").val()
 			var keyword = $('#keywordInput').val().replace(/(^\s*)|(\s*$)/gi, "");
 			

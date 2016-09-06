@@ -11,11 +11,6 @@ public class Criteria {
 		page = 1;
 		postCount = 10;
 	}
-	
-	public Criteria(int page, int postCount) {
-		this.page = page;
-		this.postCount = postCount;
-	}
 
 	public int getPage() {
 		return page;

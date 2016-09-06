@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.Criteria;
+import io.github.xeyez.domain.SearchCriteria;
 import io.github.xeyez.persistence.BoardDAO;
 
 @Service
@@ -49,5 +50,15 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int totalPostCount() throws Exception {
 		return dao.totalPostCount();
+	}
+
+	@Override
+	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {
+		return dao.listSearch(cri);
+	}
+
+	@Override
+	public int searchCount(SearchCriteria cri) throws Exception {
+		return dao.searchCount(cri);
 	}
 }

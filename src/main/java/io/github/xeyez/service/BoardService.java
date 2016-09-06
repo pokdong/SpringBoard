@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.Criteria;
+import io.github.xeyez.domain.SearchCriteria;
 
 public interface BoardService {
 	void write(BoardVO vo) throws Exception;
@@ -19,4 +20,8 @@ public interface BoardService {
 	List<BoardVO> listCriteria(Criteria cri) throws Exception;
 	
 	int totalPostCount() throws Exception;
+	
+	List<BoardVO> listSearch(SearchCriteria cri) throws Exception;
+	
+	int searchCount(SearchCriteria cri) throws Exception;
 }

@@ -4,13 +4,13 @@ In-depth study for Spring framework
 ## 0.1
 - [X] 기본 CRUD
 - [X] 일괄 Exception 처리
-- [X] Paging 및 검색 수행 후 CRUD 작업시 Parameter 정보 유지
 
 ### 0.1.1
 - [X] Paging 처리
 
 ### 0.1.2
 - [X] 게시글 검색
+- [X] Paging 및 검색 수행 후 CRUD 작업시 Parameter 정보 유지
 
 ## 0.2
 - [ ] 댓글 처리 (AJAX 이용)

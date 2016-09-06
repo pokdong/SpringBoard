@@ -9,7 +9,7 @@ In-depth study for Spring framework
 - [X] Paging 처리
 
 ### 0.1.2
-- [ ] 게시글 검색
+- [X] 게시글 검색
 
 ## 0.2
 - [ ] 댓글 처리 (AJAX 이용)

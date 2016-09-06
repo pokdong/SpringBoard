@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import io.github.xeyez.domain.BoardVO;
-import io.github.xeyez.domain.Criteria;
 import io.github.xeyez.domain.SearchCriteria;
 
 @Repository
@@ -42,23 +41,10 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	
-	
-	@Override
-	public List<BoardVO> listAll() throws Exception {
-		return session.selectList(namespace + ".listAll");
-	}
-	
-	@Override
-	public List<BoardVO> listCrieria(Criteria cri) throws Exception {
-		return session.selectList(namespace + ".listCriteria", cri);
-	}
-
 	@Override
 	public int totalPostCount() throws Exception {
 		return session.selectOne(namespace + ".totalPostCount");
 	}
-
-	
 	
 	@Override
 	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {

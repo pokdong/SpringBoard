@@ -29,17 +29,17 @@
 <!-- Content -->
 					<div class="box-body"> <!-- box-body : 전체 margin -->
 <div class="form-group"> <!-- form-group : 하단 여백 -->
-	<label>Title</label>
+	<label>제목</label>
 	<input type="text" name="title" class="form-control" value="${boardVO.title}" readonly="readonly" onfocus="this.blur()"> <!-- form-control : 테두리 및 개행 -->
 </div>
 
 <div class="form-group">
-	<label>Content</label>
+	<label>내용</label>
 	<textarea name="content" class="form-control" rows="3" cols="1" readonly="readonly" onfocus="this.blur()">${boardVO.content}</textarea>
 </div>
 
 <div class="form-group">
-	<label>Writer</label>
+	<label>닉네임</label>
 	<input type="text" name="writer" class="form-control" value="${boardVO.writer}" readonly="readonly" onfocus="this.blur()">
 </div>
 
@@ -89,7 +89,7 @@
 		
 		//var test = formObj.find("input[name='bno']").val();
 		
-		formObj.attr("action", "/board/listPage");
+		formObj.attr("action", "/board/list");
 		formObj.attr("method", "get");
 		formObj.submit();
 	});

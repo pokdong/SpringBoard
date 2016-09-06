@@ -4,8 +4,6 @@
 
 <%@include file="../include/header.jsp" %>
 
-<!-- totalPostCount 필요 -->
-
     <!-- Main content -->
 	<section class="content">
     	<div class="row">
@@ -20,7 +18,10 @@
 	
 					<div class="box-body"> <!-- box-body : 전체 margin -->
 <!-- Content -->
-<form role="form" method="post">
+<form role="form" action="write" method="post">
+
+	<input type='hidden' name='postCount' value="${cri.postCount}">
+	<input type='hidden' name='pageCount' value="${pageMaker.pageCount}">
 	
 	<div class="form-group"> <!-- form-group : 하단 여백 -->
 		<label>제목</label>

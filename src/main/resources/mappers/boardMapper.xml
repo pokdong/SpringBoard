@@ -34,31 +34,6 @@
 		]]>
 	</delete>
 	
-	
-	
-	<select id="listAll" resultType="BoardVO" >
-		<![CDATA[
-			SELECT *
-			FROM TBL_BOARD
-			WHERE BNO > 0
-			ORDER BY BNO DESC, REGDATE DESC
-		]]>
-	</select>
-	
-	
-	
-	
-	
-	<select id="listCriteria" resultType="BoardVO" >
-		<![CDATA[
-			SELECT *
-			FROM TBL_BOARD
-			WHERE BNO > 0
-			ORDER BY BNO DESC, REGDATE DESC
-			LIMIT #{postStart}, #{postCount};
-		]]>
-	</select>
-	
 	<select id="totalPostCount" resultType="int" >
 		<![CDATA[
 			SELECT COUNT(BNO)
@@ -66,9 +41,6 @@
 			WHERE BNO > 0
 		]]>
 	</select>
-	
-	
-	
 	
 	<sql id="search">
 		<if test="searchType != null">
@@ -96,7 +68,7 @@
 					WRITER LIKE CONCAT('%', #{keyword}, '%'))
 			</if>
 			
-			<if test="searchType == 'tc'.toString()">
+			<if test="searchType == 'tcw'.toString()">
 				AND (TITLE LIKE CONCAT('%', #{keyword}, '%') 
 					OR 
 					CONTENT LIKE CONCAT('%', #{keyword}, '%')

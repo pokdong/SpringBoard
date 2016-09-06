@@ -20,6 +20,7 @@
 
 <form role="form" action="modify"  method="post">
 
+	<input type='hidden' name='bno' value="${boardVO.bno}">
 	<input type='hidden' name='page' value="${cri.page}">
 	<input type='hidden' name='postCount' value="${cri.postCount}">
 	

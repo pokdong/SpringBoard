@@ -139,7 +139,9 @@
 		});
 
 		$('#newBtn').on("click", function(ev) {
-			self.location = "write";
+			var query = '${pageMaker.makeQueryForWrite()}'
+			
+			self.location = "write" + query;
 		});
 	})
 	

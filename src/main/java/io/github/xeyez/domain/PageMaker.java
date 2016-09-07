@@ -6,15 +6,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class PageMaker {
 	private Criteria cri;
 	
-	private int totalPostCount;
+	private long totalPostCount;
 	private int startPage;
-	private int endPage;
+	private long endPage;
 	private boolean prev;
 	private boolean next;
 	
 	private int pageCount = 10;
 	
-	public void calcPaging(Criteria cri, int totalPostCount) {
+	public void calcPaging(Criteria cri, long totalPostCount) {
 		this.cri = cri;
 		this.totalPostCount = totalPostCount;
 		
@@ -140,7 +140,7 @@ public class PageMaker {
 		return cri;
 	}
 	
-	public int getTotalPostCount() {
+	public long getTotalPostCount() {
 		return totalPostCount;
 	}
 	
@@ -148,7 +148,7 @@ public class PageMaker {
 		return startPage;
 	}
 
-	public int getEndPage() {
+	public long getEndPage() {
 		return endPage;
 	}
 

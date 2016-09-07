@@ -8,15 +8,13 @@ import io.github.xeyez.domain.SearchCriteria;
 public interface BoardService {
 	void write(BoardVO vo) throws Exception;
 
-	BoardVO read(int bno) throws Exception;
+	BoardVO read(long bno) throws Exception;
 
 	void modify(BoardVO vo) throws Exception;
 
-	void remove(int bno) throws Exception;
+	void remove(long bno) throws Exception;
 	
-	int totalPostCount() throws Exception;
+	List<BoardVO> list(SearchCriteria cri) throws Exception;
 	
-	List<BoardVO> listSearch(SearchCriteria cri) throws Exception;
-	
-	int searchCount(SearchCriteria cri) throws Exception;
+	long count(SearchCriteria cri) throws Exception;
 }

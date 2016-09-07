@@ -22,7 +22,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public BoardVO read(int bno) throws Exception {
+	public BoardVO read(long bno) throws Exception {
 		return dao.read(bno);
 	}
 
@@ -32,22 +32,17 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void remove(int bno) throws Exception {
+	public void remove(long bno) throws Exception {
 		dao.delete(bno);
 	}
 
 	@Override
-	public int totalPostCount() throws Exception {
-		return dao.totalPostCount();
+	public List<BoardVO> list(SearchCriteria cri) throws Exception {
+		return dao.list(cri);
 	}
 
 	@Override
-	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {
-		return dao.listSearch(cri);
-	}
-
-	@Override
-	public int searchCount(SearchCriteria cri) throws Exception {
-		return dao.searchCount(cri);
+	public long count(SearchCriteria cri) throws Exception {
+		return dao.count(cri);
 	}
 }

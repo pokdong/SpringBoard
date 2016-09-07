@@ -31,10 +31,10 @@ public class BoardController {
 		logger.info(">>>>>>>>>>>>>>> show listPage");
 		
 		logger.info(">>>>>>>>>> cri : " + cri.toString());
-		model.addAttribute("list", service.listSearch(cri));
+		model.addAttribute("list", service.list(cri));
 
-		int searchCount = service.searchCount(cri);
-		pageMaker.calcPaging(cri, searchCount);
+		long postCount = service.count(cri);
+		pageMaker.calcPaging(cri, postCount);
 		
 		logger.info("pageMaker : " + pageMaker.toString());
 	}
@@ -61,7 +61,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
-	public void read(@RequestParam("bno") int bno, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
+	public void read(@RequestParam("bno") long bno, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> read");
 		
 		BoardVO vo = service.read(bno);

@@ -3,18 +3,22 @@ package io.github.xeyez.domain;
 import java.util.Date;
 
 public class BoardVO {
-	private int bno;
+	private long bno;
 	private String title;
 	private String content;
 	private String writer;
 	private Date regdate;
-	private int viewcnt;
+	private long modcnt;
+	private long viewcnt;
+	
+	private long goodcnt;
+	private long badcnt;
 	
 	public BoardVO() {
 	}
 	
 	
-	public BoardVO(int bno) {
+	public BoardVO(long bno) {
 		this.bno = bno;
 	}
 	
@@ -30,10 +34,10 @@ public class BoardVO {
 	}
 	
 	
-	public int getBno() {
+	public long getBno() {
 		return bno;
 	}
-	public void setBno(int bno) {
+	public void setBno(long bno) {
 		this.bno = bno;
 	}
 	
@@ -65,16 +69,39 @@ public class BoardVO {
 		this.regdate = regdate;
 	}
 	
-	public int getViewcnt() {
+	public long getModcnt() {
+		return modcnt;
+	}
+	public void setModcnt(long modcnt) {
+		this.modcnt = modcnt;
+	}
+
+	public long getViewcnt() {
 		return viewcnt;
 	}
-	public void setViewcnt(int viewcnt) {
+	public void setViewcnt(long viewcnt) {
 		this.viewcnt = viewcnt;
 	}
 	
+	public long getGoodcnt() {
+		return goodcnt;
+	}
+	public void setGoodcnt(long goodcnt) {
+		this.goodcnt = goodcnt;
+	}
+	
+	public long getBadcnt() {
+		return badcnt;
+	}
+	public void setBadcnt(long badcnt) {
+		this.badcnt = badcnt;
+	}
+
+
 	@Override
 	public String toString() {
 		return "BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
-				+ regdate + ", viewcnt=" + viewcnt + "]";
+				+ regdate + ", modcnt=" + modcnt + ", viewcnt=" + viewcnt + ", goodcnt=" + goodcnt + ", badcnt="
+				+ badcnt + "]";
 	}
 }

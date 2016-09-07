@@ -22,7 +22,7 @@
 	<update id="update" >
 		<![CDATA[
 			UPDATE TBL_BOARD
-			SET TITLE = #{title}, CONTENT = #{content}
+			SET TITLE = #{title}, CONTENT = #{content}, updatedate = now(), modcnt = modcnt + 1
 			WHERE BNO = #{bno}
 		]]>
 	</update>
@@ -33,14 +33,6 @@
 			WHERE BNO = #{bno}
 		]]>
 	</delete>
-	
-	<select id="totalPostCount" resultType="int" >
-		<![CDATA[
-			SELECT COUNT(BNO)
-			FROM TBL_BOARD
-			WHERE BNO > 0
-		]]>
-	</select>
 	
 	<sql id="search">
 		<if test="searchType != null">
@@ -78,7 +70,7 @@
 		</if>
 	</sql>
 	
-	<select id="listSearch" resultType="BoardVO" >
+	<select id="list" resultType="BoardVO" >
 		<![CDATA[
 			SELECT *
 			FROM TBL_BOARD
@@ -93,7 +85,7 @@
 		]]>
 	</select>
 	
-	<select id="searchCount" resultType="int" >
+	<select id="count" resultType="long" >
 		<![CDATA[
 			SELECT COUNT(BNO)
 			FROM TBL_BOARD

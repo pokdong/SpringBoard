@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${mybatis.reply}">
+
+	<select id="list" resultType="ReplyVO" >
+		<![CDATA[
+			SELECT *
+			FROM TBL_REPLY
+			WHERE BNO = #{bno}
+			ORDER BY RNO DESC;
+		]]>
+	</select>
+
+	<insert id="create">
+		<![CDATA[
+			INSERT INTO TBL_REPLY (BNO, REPLYTEXT, REPLYER)
+			VALUES (#{bno}, #{replytext}, #{replyer})
+		]]>
+	</insert>
+	
+	<update id="update" >
+		<![CDATA[
+			UPDATE TBL_REPLY
+			SET REPLYTEXT = #{replytext}, updatedate = now(), modcnt = modcnt + 1
+			WHERE RNO = #{rno}
+		]]>
+	</update>
+	
+	<delete id="delete" >
+		<![CDATA[
+			DELETE FROM TBL_REPLY
+			WHERE RNO = #{rno}
+		]]>
+	</delete>
+	
+	<select id="count" resultType="long" >
+		<![CDATA[
+			SELECT COUNT(RNO)
+			FROM TBL_REPLY
+			WHERE BNO = #{bno};
+		]]>
+	</select>
+	
+	
+</mapper>

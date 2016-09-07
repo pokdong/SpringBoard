@@ -26,7 +26,7 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public BoardVO read(int bno) throws Exception {
+	public BoardVO read(long bno) throws Exception {
 		return session.selectOne(namespace + ".read", bno);
 	}
 
@@ -36,23 +36,17 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public void delete(int bno) throws Exception {
+	public void delete(long bno) throws Exception {
 		session.delete(namespace + ".delete", bno);
 	}
-
 	
 	@Override
-	public int totalPostCount() throws Exception {
-		return session.selectOne(namespace + ".totalPostCount");
-	}
-	
-	@Override
-	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {
-		return session.selectList(namespace + ".listSearch", cri);
+	public List<BoardVO> list(SearchCriteria cri) throws Exception {
+		return session.selectList(namespace + ".list", cri);
 	}
 
 	@Override
-	public int searchCount(SearchCriteria cri) throws Exception {
-		return session.selectOne(namespace + ".searchCount", cri);
+	public long count(SearchCriteria cri) throws Exception {
+		return session.selectOne(namespace + ".count", cri);
 	}
 }

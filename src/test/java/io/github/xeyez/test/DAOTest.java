@@ -49,11 +49,6 @@ public class DAOTest {
 		logger.info(">>>>>>>>>>>>>>>" + dao.read(1).toString());
 	}
 	
-	
-	public void totalPostCount() throws Exception {
-		logger.info(">>>>>>>>>>>>>>" + dao.totalPostCount());
-	}
-	
 	@Test
 	public void testListSearch() {
 		SearchCriteria cri = new SearchCriteria();
@@ -63,7 +58,7 @@ public class DAOTest {
 		cri.setKeyword("admin");
 		
 		try {
-			List<BoardVO> list = dao.listSearch(cri);
+			List<BoardVO> list = dao.list(cri);
 			
 			for(BoardVO vo : list) {
 				logger.info(">>>>>>>>>>>" + vo.toString());
@@ -76,7 +71,7 @@ public class DAOTest {
 		
 		
 		try {
-			int count = dao.searchCount(cri);
+			long count = dao.count(cri);
 			logger.info("count??? " + count);
 		} catch (Exception e) {
 			System.out.println("=========================================================");

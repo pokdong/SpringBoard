@@ -24,7 +24,7 @@
 	<update id="update" >
 		<![CDATA[
 			UPDATE TBL_REPLY
-			SET REPLYTEXT = #{replytext}, updatedate = now(), modcnt = modcnt + 1;
+			SET REPLYTEXT = #{replytext}, updatedate = now(), modcnt = modcnt + 1
 			WHERE RNO = #{rno}
 		]]>
 	</update>

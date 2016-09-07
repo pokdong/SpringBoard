@@ -22,7 +22,7 @@
 	<update id="update" >
 		<![CDATA[
 			UPDATE TBL_BOARD
-			SET TITLE = #{title}, CONTENT = #{content}, updatedate = now(), modcnt = modcnt + 1;
+			SET TITLE = #{title}, CONTENT = #{content}, updatedate = now(), modcnt = modcnt + 1
 			WHERE BNO = #{bno}
 		]]>
 	</update>

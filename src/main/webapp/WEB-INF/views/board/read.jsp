@@ -1,6 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- <%@ page session="false" %> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@include file="../include/header.jsp" %>
 
@@ -58,6 +58,11 @@
 	        </div>
         
       	</div>
+      	
+      	
+<%@include file="reply.jsp" %>
+
+      	
    	</section>
    	
 	</div>
@@ -92,6 +97,29 @@
 		formObj.attr("action", "/board/list");
 		formObj.attr("method", "get");
 		formObj.submit();
+	});
+	
+</script>
+
+
+
+
+
+
+<script>
+	$(window).scroll(function() {
+		if(endPage < replyPage)
+			return;
+		
+		console.log(replyPage + "/" + replyPage);
+		
+		var scrollHeight = $(window).scrollTop() + $(window).height();
+		var documentHeight = $(document).height();
+		
+		if(scrollHeight == documentHeight) {
+			
+			updatePage('/replies/' + bno + '/' + replyPage);
+		}
 	});
 </script>
     

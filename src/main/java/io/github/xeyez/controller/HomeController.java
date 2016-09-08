@@ -36,4 +36,8 @@ public class HomeController {
 		return "redirect:/board/list";
 	}
 	
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public void ajaxTest() {
+		
+	}
 }

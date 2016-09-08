@@ -4,7 +4,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public class Criteria {
-	private int page;
+	private long page;
 	private int postCount;
 	
 	public Criteria() {
@@ -12,11 +12,11 @@ public class Criteria {
 		postCount = 10;
 	}
 
-	public int getPage() {
+	public long getPage() {
 		return page;
 	}
 
-	public void setPage(int page) {
+	public void setPage(long page) {
 		this.page = page < 1 ? 1 : page;
 	}
 
@@ -28,7 +28,7 @@ public class Criteria {
 		this.postCount = postCount < 1 || postCount > 100 ? 10 : postCount;
 	}
 	
-	public int getPostStart() {
+	public long getPostStart() {
 		return (this.page - 1) * postCount;
 	}
 	

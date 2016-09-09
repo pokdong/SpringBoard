@@ -5,6 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.SearchCriteria;
@@ -21,8 +23,10 @@ public class BoardServiceImpl implements BoardService {
 		dao.create(vo);
 	}
 
+	@Transactional(isolation=Isolation.READ_COMMITTED)
 	@Override
 	public BoardVO read(long bno) throws Exception {
+		dao.updateViewCount(bno);
 		return dao.read(bno);
 	}
 

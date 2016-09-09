@@ -95,5 +95,20 @@
 		<include refid="search"></include>
 	</select>
 	
+	<update id="updateReplyCount">
+		<![CDATA[
+			UPDATE TBL_BOARD
+			SET REPLYCNT = #{amount}
+			WHERE BNO = #{bno}
+		]]>
+	</update>
+	
+	<update id="updateViewCount">
+		<![CDATA[
+			UPDATE TBL_BOARD
+			SET VIEWCNT = VIEWCNT +1
+			WHERE BNO = #{bno}
+		]]>
+	</update>
 	
 </mapper>

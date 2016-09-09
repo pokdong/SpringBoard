@@ -19,4 +19,6 @@ public interface ReplyDAO {
 	long count(long bno) throws Exception;
 	
 	long recentRno(ReplyVO vo) throws Exception;
+
+	long getBno(long rno);
 }

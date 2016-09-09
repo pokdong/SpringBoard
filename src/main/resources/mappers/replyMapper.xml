@@ -64,4 +64,12 @@
 		]]>
 	</select>
 	
+	<select id="getBno" resultType="long">
+		<![CDATA[
+			SELECT BNO
+			FROM TBL_REPLY
+			WHERE RNO = #{rno};
+		]]>
+	</select>
+	
 </mapper>

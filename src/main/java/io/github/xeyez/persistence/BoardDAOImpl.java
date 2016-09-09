@@ -1,6 +1,8 @@
 package io.github.xeyez.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,5 +50,19 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public long count(SearchCriteria cri) throws Exception {
 		return session.selectOne(namespace + ".count", cri);
+	}
+
+	@Override
+	public void updateReplyCount(long bno, long amount) throws Exception {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("bno", bno);
+		paramMap.put("amount", amount);
+		
+		session.update(namespace + ".updateReplyCount", paramMap);
+	}
+
+	@Override
+	public void updateViewCount(long bno) throws Exception {
+		session.update(namespace + ".updateViewCount", bno);
 	}
 }

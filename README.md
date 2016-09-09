@@ -53,7 +53,6 @@ In-depth study for Spring framework
 
 - AJAX
  - [ ] 추천/비추천
- - [ ] 무한 Scrolling (Mode 선택 제공)
  
 - 기타
  - 공지 게시글

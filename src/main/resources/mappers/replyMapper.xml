@@ -5,15 +5,6 @@
 
 <mapper namespace="${mybatis.reply}">
 
-	<select id="list" resultType="ReplyVO" >
-		<![CDATA[
-			SELECT *
-			FROM TBL_REPLY
-			WHERE BNO = #{bno}
-			ORDER BY RNO DESC;
-		]]>
-	</select>
-
 	<insert id="create">
 		<![CDATA[
 			INSERT INTO TBL_REPLY (BNO, REPLYTEXT, REPLYER)
@@ -36,6 +27,25 @@
 		]]>
 	</delete>
 	
+	<select id="listAll" resultType="ReplyVO" >
+		<![CDATA[
+			SELECT *
+			FROM TBL_REPLY
+			WHERE BNO = #{bno}
+			ORDER BY RNO DESC
+		]]>
+	</select>
+	
+	<select id="list" resultType="ReplyVO" >
+		<![CDATA[
+			SELECT *
+			FROM TBL_REPLY
+			WHERE BNO = #{bno}
+			ORDER BY RNO DESC
+			limit #{cri.postStart}, #{cri.postCount}
+		]]>
+	</select>
+	
 	<select id="count" resultType="long" >
 		<![CDATA[
 			SELECT COUNT(RNO)
@@ -44,5 +54,14 @@
 		]]>
 	</select>
 	
+	<select id="recentRno" resultType="long">
+		<![CDATA[
+			SELECT RNO
+			FROM TBL_REPLY
+			WHERE BNO = #{bno} AND REPLYER = #{replyer} AND REPLYTEXT = #{replytext}
+			ORDER BY RNO DESC
+			LIMIT 1;
+		]]>
+	</select>
 	
 </mapper>

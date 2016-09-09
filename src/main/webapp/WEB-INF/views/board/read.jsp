@@ -107,7 +107,18 @@
 		// bno는 reply.jsp 에 위치
 		
 		// 처음 갱신.
-		updatePage(bno, 1, null);
+		
+		var isMoveToReply = ${reply}
+		
+		if(isMoveToReply) {
+			var replyInfo = new ReplyInfo(replyAction.SHOW_WITH_REPLY, -1);
+			updatePage(bno, 1, replyInfo);
+		}
+		else {
+			updatePage(bno, 1, null);
+		}
+		
+		
 
 		$(window).scroll(function() {
 			// endPage, replyPage는 reply.jsp 에 위치

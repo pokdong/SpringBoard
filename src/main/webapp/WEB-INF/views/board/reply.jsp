@@ -88,7 +88,8 @@
 	var replyAction = {
 		ADD : 0,
 		DELETE : 1,
-		MODIFY : 2
+		MODIFY : 2,
+		SHOW_WITH_REPLY : 3
 	};
 	
 	function ReplyInfo(replyAction, rno) {
@@ -213,20 +214,19 @@
 					// Animation만.
 					
 					break;
+					
+				case replyAction.SHOW_WITH_REPLY:
+					var htmlObj = target.before(html);
+					htmlObj.ready(function() {
+						//repliesArea는 reply.jsp에 위치.
+						var offset = $('#repliesArea .timeline').offset();
+						$('html, body').animate({scrollTop: offset.top}, 500);
+					});
+					break;
 			}
 		}
 		else {
 			var htmlObj = target.before(html);
-			
-			var isMoveToReply = ${reply}
-			if(isMoveToReply) {
-				
-				htmlObj.ready(function() {
-					//repliesArea는 reply.jsp에 위치.
-					var offset = $('#repliesArea .timeline').offset();
-					$('html, body').animate({scrollTop: offset.top}, 500);
-				});
-			}
 		}
 		
 		

@@ -18,7 +18,8 @@ In-depth study for Spring framework
  - [X] CRUD 및 Animation
 
 ## 0.3
-- [ ] 댓글 숫자, 게시글 조회수 처리 (AOP, Transaction)
+- [X] 댓글수, 게시글 조회수 처리 (AOP, Transaction)
+ - [X] 게시판 화면에서 댓글수 클릭하면 댓글 부분으로 이동.
 
 ## 0.4
 - File upload 기능

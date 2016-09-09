@@ -15,7 +15,7 @@ In-depth study for Spring framework
 ## 0.2
 - [ ] 댓글 처리 (AJAX 이용)
  - [X] 무한 Scrolling
- - [ ] CRUD
+ - [X] CRUD 및 Animation
 
 ## 0.3
 - [ ] 댓글 숫자, 게시글 조회수 처리 (AOP, Transaction)

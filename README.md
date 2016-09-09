@@ -13,7 +13,7 @@ In-depth study for Spring framework
 - [X] Paging 및 검색 수행 후 CRUD 작업시 Parameter 정보 유지
 
 ## 0.2
-- [ ] 댓글 처리 (AJAX 이용)
+- [X] 댓글 처리 (AJAX 이용)
  - [X] 무한 Scrolling
  - [X] CRUD 및 Animation
 

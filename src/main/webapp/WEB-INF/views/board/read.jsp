@@ -48,9 +48,9 @@
 
 
 <div class="box-footer" align="right"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
-	<button type="submit" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
-	<button type="submit" class="btn btn-danger">삭제</button>
-	<button type="submit" class="btn btn-primary">목록으로</button>
+	<button type="submit" id="btn_modify" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+	<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
+	<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
 </div>
 
 		            
@@ -75,21 +75,21 @@
 	console.log(formObj);
 	
 	// 수정
-	$(".btn-warning").on("click", function() {
+	$(".btn_modify").on("click", function() {
 		formObj.attr("action", "/board/modify");
 		formObj.attr("method", "get");
 		formObj.submit();
 	});
 	
 	// 삭제
-	$(".btn-danger").on("click", function() {
+	$(".btn_remove").on("click", function() {
 		formObj.attr("action", "/board/remove");
 		formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
 		formObj.submit();
 	});
 	
 	// 목록
-	$(".btn-primary").on("click", function() {
+	$(".btn_list").on("click", function() {
 		// self.location = "/board/listPage";
 		
 		//var test = formObj.find("input[name='bno']").val();
@@ -102,23 +102,23 @@
 </script>
 
 
-
-
-
-
 <script>
+	// bno는 reply.jsp 에 위치
+	
+	// 처음 갱신.
+	updatePage(bno, 1, null);
+
 	$(window).scroll(function() {
+		// endPage, replyPage는 reply.jsp 에 위치
 		if(endPage < replyPage)
 			return;
-		
-		console.log(replyPage + "/" + replyPage);
 		
 		var scrollHeight = $(window).scrollTop() + $(window).height();
 		var documentHeight = $(document).height();
 		
 		if(scrollHeight == documentHeight) {
 			
-			updatePage('/replies/' + bno + '/' + replyPage);
+			updatePage(bno, replyPage, null);
 		}
 	});
 </script>

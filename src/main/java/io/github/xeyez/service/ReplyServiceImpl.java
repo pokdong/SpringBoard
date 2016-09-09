@@ -47,7 +47,7 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
-	public long recentRno() throws Exception {
-		return dao.recentRno();
+	public long recentRno(ReplyVO vo) throws Exception {
+		return dao.recentRno(vo);
 	}
 }

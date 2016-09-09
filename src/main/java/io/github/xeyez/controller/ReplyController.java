@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class ReplyController {
 	@Inject
 	private ReplyService service;
 	
+	@Transactional
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> add(@RequestBody ReplyVO vo) {
 		logger.info("add reply");
@@ -40,7 +42,7 @@ public class ReplyController {
 			service.add(vo);
 			// 가장 최근 rno 조회. (= 방금 등록한 글 rno)
 			// animation 효과를 주기 위함.
-			long recentRno = service.recentRno();
+			long recentRno = service.recentRno(vo);
 			
 			paramMap.put("message", "SUCCESS");
 			paramMap.put("rno", recentRno);
@@ -76,7 +78,7 @@ public class ReplyController {
 	
 	@RequestMapping(value = "/{rno}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> remove(@PathVariable("rno") int rno) {
-		logger.info("remove reply");
+		logger.info("remove reply " + rno);
 		
 		ResponseEntity<String> entity = null;
 		
@@ -122,6 +124,9 @@ public class ReplyController {
 			List<ReplyVO> list = service.list(bno, cri);
 			
 			PageMaker pageMaker = new PageMaker();
+			//무한 Scrolling이기 때문에 변경
+			pageMaker.setPageCount(Integer.MAX_VALUE);
+			
 			long replyCount = service.count(bno);
 			pageMaker.calcPaging(cri, replyCount);
 

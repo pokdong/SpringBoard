@@ -57,7 +57,7 @@ public class ReplyDAOImpl implements ReplyDAO {
 	}
 
 	@Override
-	public long recentRno() throws Exception {
-		return session.selectOne(namespace + ".recentRno");
+	public long recentRno(ReplyVO vo) throws Exception {
+		return session.selectOne(namespace + ".recentRno", vo);
 	}
 }

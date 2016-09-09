@@ -6,12 +6,17 @@
 ...최근 번호가 같은 지 비교하고 상단 갱신? or ...무시????... 하면 꼬임 -->
 <!-- 혹은 얼굴책처럼 새 댓글 알림..하고 누르면 그만큼만 붙이기 -->
 
-<!-- 추가시 다른 사람이 이미 추가했다면??? ...전체 갱신하면 Risk!! 10p만 보인다?
+<!-- 추가시 다른 사람이 이미 추가했다면??? ...전체 갱신하면 Risk!!    10p만    보인다?
 혹은 추가된 만큼만 붙이기. ...그러려면 내 화면에 보이는 가장 큰 최근 번호 필요 -->
+
+<!-- 수정/삭제는 해당 번호가 있는 page만 갱신한다?...면 꼬임 -->
+
+<!-- 혹은 다 무시하고 내 화면 기준? -->
 
 <script src="../resources/js/handlebars4.0.5.js"></script>
 
-<div class="row">
+<div id="repliesArea" class="row">
+	
 	<div class="col-md-12">
 		
 		<div class="box box-success">
@@ -24,14 +29,14 @@
 			</div>
 			
 			<div class="box-footer" align="right">
-				<button type="submit" class="btn btn-primary">등록</button>
+				<button type="submit" id="btn_replyAdd" class="btn btn-primary">등록</button>
 			</div>
 			
 		</div>
 		
 		<ul class="timeline">
 			<li class="time-label" id="repliesDiv">
-				<button id="topBtn" class="btn bg-green">맨 위로 가기</button>
+				<button id="btn_top" class="btn bg-green">▲ 맨 위로 가기</button>
 			</li>
 		</ul>
 		
@@ -39,6 +44,70 @@
 </div>
 
 
+
+<!-- Modal -->
+<div id="modifyModal" class="modal modal-primary fade" role="dialog">
+  	<div class="modal-dialog">
+  
+    	<!-- Modal content-->
+    	<div class="modal-content">
+    		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        	<h4 class="modal-title" hidden="true"></h4>
+       		</div>
+       	
+      		<div class="modal-body" data-rno>
+        		<p><input type="text" id="replytext" class="form-control"></p>
+      		</div>
+      		
+      		<div class="modal-footer">
+        		<button class="btn btn-info" id="btn_replyMod" data-dismiss="modal">수정</button>
+        		<button class="btn btn-default" data-dismiss="modal">취소</button>
+      		</div>
+   		</div>
+	</div>
+</div>
+
+<!-- template 작성은 나중으로 -->
+<div id="deleteModal" class="modal modal-primary fade" role="dialog">
+  	<div class="modal-dialog">
+  
+    	<!-- Modal content-->
+    	<div class="modal-content">
+    		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+        		<h4 class="modal-title" hidden="true"></h4>
+       		</div>
+       	
+      		<div class="modal-body" data-rno>
+        		<p>삭제하시겠습니까?</p>
+      		</div>
+      		
+      		<div class="modal-footer">
+        		<button class="btn btn-danger" id="btn_replyDel" data-dismiss="modal">삭제</button>
+        		<button class="btn btn-default" data-dismiss="modal">취소</button>
+      		</div>
+   		</div>
+	</div>
+</div>
+
+<button id="btn_test">test</button>
+
+
+
+<script>
+	var replyAction = {
+		ADD : 0,
+		DELETE : 1,
+		MODIFY : 2
+	};
+	
+	function ReplyInfo(replyAction, rno) {
+		this.action = replyAction;
+		this.rno = rno;
+	}
+	
+</script>
 
 <script id="template" type="text/x-handlebars-template">
     {{#each .}}
@@ -57,8 +126,9 @@
                     {{replytext}}
                 </div>
 
-                <div class="timeline-footer">
-                    <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal">수정</a>
+                <div class="timeline-footer" align="right">
+                    <button class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
+					<button class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
                 </div>
 
             </div>
@@ -67,6 +137,13 @@
 </script>
 
 <script>
+	var bno = ${boardVO.bno}
+	var replyPage = 1;
+	var endPage = 1;
+
+	//추가, 수정, 삭제시 Animation을 주기 위함.
+	var recentRno = Number.MAX_VALUE;
+
 	// fmt tag로 대체 필요?
 	Handlebars.registerHelper("prettifyDate", function(timeValue) {
 			var dateObj = new Date(timeValue);
@@ -79,34 +156,236 @@
 			var min = dateObj.getMinutes();
 			var sec = dateObj.getSeconds();
 			return year + "/" + month + "/" + date + " " + hour + ":" + min + ":" + sec;
-		});
+	});
 	
-	var printData = function(replyArr, target, templateObject) {
+	function printData(replyArr, target, templateObject, replyInfo) {
 		var template = Handlebars.compile(templateObject.html());
-	
 		var html = template(replyArr);
-		target.before(html);
+		
+		
+		//$(".replyLi").remove(); //전체 갱신을 위한 임시 해결책
+		
+		if(replyInfo != null) {
+			switch (replyInfo.action) {
+				case replyAction.ADD:
+					// 1. 댓글 전부 삭제
+					// 2. 1page만 갱신
+					// 3. 갱신된 댓글에서 최근 댓글만 Aniamtion
+					
+					var removeObj = $(".replyLi").remove();
+					
+					removeObj.ready(function() {
+						console.log("remove is ready!");
+						
+						var htmlObj = target.before(html);
+						
+						htmlObj.ready(function() {
+							var newPost = $('.replyLi[data-rno=' + replyInfo.rno + ']');
+							
+							newPost.hide(0, function() {
+								newPost.slideDown('fast');
+							});
+						});
+						
+					});
+					
+					break;
+					
+				case replyAction.DELETE:
+					// 1. 스크롤 상단으로 올림
+					// 2. 1page까지만 갱신
+					
+					var targetReply = $('.replyLi[data-rno=' + replyInfo.rno + ']');
+					targetReply.slideUp('slow', function() {
+						
+						var offset = $('#repliesArea').offset();
+						$('html, body').animate({scrollTop: offset.top}, 500, function() {
+							
+							var removeObj = $(".replyLi").remove();
+							removeObj.ready(function() {
+								
+								target.before(html);
+								
+								/* var allReplies = $('#repliesArea .timeline');
+								
+								allReplies.fadeOut(0, function () {
+									allReplies.fadeIn();
+					            }); */
+							});
+						});
+					});
+					break;
+					
+				case replyAction.MODIFY:
+					
+					// 갱신하지 않음.
+					// Animation만.
+					
+					break;
+			}
+		}
+		else {
+			target.before(html);
+		}
+		
+		
 	}
 	
-	var bno = ${boardVO.bno}
-	var replyPage = 1;
-	var endPage = 1;
-	
-	function updatePage(url) {
+	function updatePage(pBno, pReplyPage, replyInfo) {
+		var url = '/replies/' + pBno + '/' + pReplyPage;
 		console.log(url);
 		
 		$.getJSON(url, function(data) {
-		console.log(data.list.length);
-			
-			printData(data.list, $("#repliesDiv"), $('#template'));
-
+			//console.log(data.list.length);
 			endPage = data.pageMaker.endPage;
-			
 			replyPage++;
+			
+			printData(data.list, $("#repliesDiv"), $('#template'), replyInfo);
 		});
 	}
 	
-	$("#topBtn").on("click", function() {
-		$('html, body').animate({scrollTop: 0}, 300); 
+	
+	
+	$('#btn_top').on('click', function() {
+		var offset = $('#repliesArea').offset();
+		$('html, body').animate({scrollTop: offset.top}, 450);
+	});
+	
+	$('#btn_replyAdd').on('click', function(event) {
+		
+		var replyerObj = $('#newReplyWriter');
+		var replyTextObj = $('#newReplyText');
+		
+		var replyer = replyerObj.val();
+		var replyText = replyTextObj.val().replace(/(^\s*)|(\s*$)/gi, "");
+		
+		if(replyText.length == 0) {
+			alert('내용을 입력해주세요.');
+			return;
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : '/replies/',
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			data : JSON.stringify({
+				bno : bno,
+				replyer : replyer,
+				replytext : replyText
+			}),
+			dataType : "text",
+			success : function(response) {
+				var obj = JSON.parse(response);
+				
+				if(obj.message != 'SUCCESS')
+					return;
+				
+				recentRno = obj.rno;
+				console.log("recentRno : " + recentRno)
+				
+				replyPage = 1;
+				
+				
+				var replyInfo = new ReplyInfo(replyAction.ADD, recentRno);
+				updatePage(bno, replyPage, replyInfo); //data 전달 필요
+				
+				replyerObj.val('');
+				replyTextObj.val('');
+			}
+		});
+	});
+	
+	
+	
+	$(".timeline").on("click", ".replyLi button", function(event){
+		
+		var reply = $(this).parent().parent().parent();
+		
+		var buttonId = event.target.id;
+		
+		switch (buttonId) {
+			case 'btn_modifyDialog':
+				$(".modal-title").html(reply.attr("data-rno"));
+				
+				var replyText = reply.find('.timeline-body').text().replace(/(^\s*)|(\s*$)/gi, "");
+				$("#replytext").val(replyText);
+				break;
+				
+			case 'btn_deleteDialog':
+				$(".modal-title").html(reply.attr("data-rno"));
+				break;
+		}
+	});
+	
+	$('#btn_replyMod').on('click', function(event) {
+		
+		var rno = $(".modal-title").html();
+		var replyText = $('#replytext').val().replace(/(^\s*)|(\s*$)/gi, "");
+		
+		$.ajax({
+			type : 'PUT',
+			url : '/replies/' + rno,
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "PUT"
+			},
+			data : JSON.stringify({
+				replytext : replyText
+			}),
+			dataType : "text",
+			success : function(response) {
+				if(response != 'SUCCESS')
+					return;
+
+				
+				var targetReply = $('.replyLi[data-rno=' + rno + ']');
+				targetReply.find('.timeline-body').text(replyText);
+
+				
+				//갱신하지 않음.
+				//animation만 설정.
+				targetReply.fadeOut(0, function() {
+					targetReply.fadeIn('slow');
+				});
+				
+			}
+		});
+		
+	});
+	
+	$('#btn_replyDel').on('click', function(event) {
+		var rno = $(".modal-title").html();
+		
+		$.ajax({
+			type : 'DELETE',
+			url : "/replies/" + rno,
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "DELETE"
+			},
+			dataType : "text",
+			success : function(response) {
+				if(response != 'SUCCESS')
+					return;
+				
+				replyPage = 1;
+				
+				var replyInfo = new ReplyInfo(replyAction.DELETE, rno);
+				updatePage(bno, replyPage, replyInfo);
+			}
+		});
+	});
+	
+	
+	$('#btn_test').on('click', function() {
+		//$('#repliesArea .timeline').slideUp('fast');
+		
+		var targetReply = $('.replyLi[data-rno=' + 164 + ']');
+		var replyText = targetReply.find('.timeline-body').text().replace(/(^\s*)|(\s*$)/gi, "");
+		
+		alert(replyText);
 	});
 </script>

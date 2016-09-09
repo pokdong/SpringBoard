@@ -58,6 +58,7 @@
 		<![CDATA[
 			SELECT RNO
 			FROM TBL_REPLY
+			WHERE BNO = #{bno} AND REPLYER = #{replyer} AND REPLYTEXT = #{replytext}
 			ORDER BY RNO DESC
 			LIMIT 1;
 		]]>

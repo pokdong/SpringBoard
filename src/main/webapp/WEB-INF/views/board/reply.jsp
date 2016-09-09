@@ -188,7 +188,7 @@
 					// 2. 1page까지만 갱신
 					
 					var targetReply = $('.replyLi[data-rno=' + replyInfo.rno + ']');
-					targetReply.slideUp('slow', function() {
+					targetReply.slideUp(1200, function() {
 						
 						var offset = $('#repliesArea').offset();
 						$('html, body').animate({scrollTop: offset.top}, 500, function() {

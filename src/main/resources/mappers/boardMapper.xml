@@ -98,7 +98,7 @@
 	<update id="updateReplyCount">
 		<![CDATA[
 			UPDATE TBL_BOARD
-			SET REPLYCNT = #{amount}
+			SET REPLYCNT = REPLYCNT + #{amount}
 			WHERE BNO = #{bno}
 		]]>
 	</update>
@@ -106,7 +106,7 @@
 	<update id="updateViewCount">
 		<![CDATA[
 			UPDATE TBL_BOARD
-			SET VIEWCNT = VIEWCNT +1
+			SET VIEWCNT = VIEWCNT + 1
 			WHERE BNO = #{bno}
 		]]>
 	</update>

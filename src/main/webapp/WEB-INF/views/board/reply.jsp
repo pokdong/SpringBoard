@@ -2,17 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!-- 스크롤 중(조회) 다른사람이 글을 써서 갱신된다면???
-...최근 번호가 같은 지 비교하고 상단 갱신? or ...무시????... 하면 꼬임 -->
-<!-- 혹은 얼굴책처럼 새 댓글 알림..하고 누르면 그만큼만 붙이기 -->
-
-<!-- 추가시 다른 사람이 이미 추가했다면??? ...전체 갱신하면 Risk!!    10p만    보인다?
-혹은 추가된 만큼만 붙이기. ...그러려면 내 화면에 보이는 가장 큰 최근 번호 필요 -->
-
-<!-- 수정/삭제는 해당 번호가 있는 page만 갱신한다?...면 꼬임 -->
-
-<!-- 혹은 다 무시하고 내 화면 기준? -->
-
 <script src="../resources/js/handlebars4.0.5.js"></script>
 
 <div id="repliesArea" class="row">
@@ -91,7 +80,7 @@
 	</div>
 </div>
 
-<button id="btn_test">test</button>
+<!-- <button id="btn_test">test</button> -->
 
 
 
@@ -137,6 +126,8 @@
 </script>
 
 <script>
+	$.ajaxSetup({ cache: false });
+
 	var bno = ${boardVO.bno}
 	var replyPage = 1;
 	var endPage = 1;
@@ -225,7 +216,17 @@
 			}
 		}
 		else {
-			target.before(html);
+			var htmlObj = target.before(html);
+			
+			var isMoveToReply = ${reply}
+			if(isMoveToReply) {
+				
+				htmlObj.ready(function() {
+					//repliesArea는 reply.jsp에 위치.
+					var offset = $('#repliesArea .timeline').offset();
+					$('html, body').animate({scrollTop: offset.top}, 500);
+				});
+			}
 		}
 		
 		
@@ -379,7 +380,7 @@
 		});
 	});
 	
-	
+	/* 
 	$('#btn_test').on('click', function() {
 		//$('#repliesArea .timeline').slideUp('fast');
 		
@@ -388,4 +389,5 @@
 		
 		alert(replyText);
 	});
+	 */
 </script>

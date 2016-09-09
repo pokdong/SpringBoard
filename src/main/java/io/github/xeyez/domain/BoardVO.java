@@ -10,6 +10,7 @@ public class BoardVO {
 	private Date regdate;
 	private long modcnt;
 	private long viewcnt;
+	private long replycnt;
 	
 	private long goodcnt;
 	private long badcnt;
@@ -83,6 +84,13 @@ public class BoardVO {
 		this.viewcnt = viewcnt;
 	}
 	
+	public long getReplycnt() {
+		return replycnt;
+	}
+	public void setReplycnt(long replycnt) {
+		this.replycnt = replycnt;
+	}
+
 	public long getGoodcnt() {
 		return goodcnt;
 	}

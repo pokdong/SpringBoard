@@ -60,4 +60,9 @@ public class ReplyDAOImpl implements ReplyDAO {
 	public long recentRno(ReplyVO vo) throws Exception {
 		return session.selectOne(namespace + ".recentRno", vo);
 	}
+
+	@Override
+	public long getBno(long rno) {
+		return session.selectOne(namespace + ".getBno", rno);
+	}
 }

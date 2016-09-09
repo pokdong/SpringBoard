@@ -61,7 +61,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
-	public void read(@RequestParam("bno") long bno, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
+	public void read(@RequestParam("bno") long bno, @RequestParam("reply") boolean isMoveToReply, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> read");
 		
 		BoardVO vo = service.read(bno);
@@ -71,6 +71,7 @@ public class BoardController {
 		logger.info(cri.toString());
 		
 		model.addAttribute(vo);
+		model.addAttribute("reply", isMoveToReply);
 	}
 	
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)

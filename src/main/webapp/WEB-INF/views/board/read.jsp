@@ -75,21 +75,21 @@
 	console.log(formObj);
 	
 	// 수정
-	$(".btn_modify").on("click", function() {
+	$("#btn_modify").on("click", function() {
 		formObj.attr("action", "/board/modify");
 		formObj.attr("method", "get");
 		formObj.submit();
 	});
 	
 	// 삭제
-	$(".btn_remove").on("click", function() {
+	$("#btn_remove").on("click", function() {
 		formObj.attr("action", "/board/remove");
 		formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
 		formObj.submit();
 	});
 	
 	// 목록
-	$(".btn_list").on("click", function() {
+	$("#btn_list").on("click", function() {
 		// self.location = "/board/listPage";
 		
 		//var test = formObj.find("input[name='bno']").val();
@@ -103,24 +103,27 @@
 
 
 <script>
-	// bno는 reply.jsp 에 위치
-	
-	// 처음 갱신.
-	updatePage(bno, 1, null);
+	$(document).ready(function() {
+		// bno는 reply.jsp 에 위치
+		
+		// 처음 갱신.
+		updatePage(bno, 1, null);
 
-	$(window).scroll(function() {
-		// endPage, replyPage는 reply.jsp 에 위치
-		if(endPage < replyPage)
-			return;
-		
-		var scrollHeight = $(window).scrollTop() + $(window).height();
-		var documentHeight = $(document).height();
-		
-		if(scrollHeight == documentHeight) {
+		$(window).scroll(function() {
+			// endPage, replyPage는 reply.jsp 에 위치
+			if(endPage < replyPage)
+				return;
 			
-			updatePage(bno, replyPage, null);
-		}
+			var scrollHeight = $(window).scrollTop() + $(window).height();
+			var documentHeight = $(document).height();
+			
+			if(scrollHeight == documentHeight) {
+				
+				updatePage(bno, replyPage, null);
+			}
+		});
 	});
+	
 </script>
     
     

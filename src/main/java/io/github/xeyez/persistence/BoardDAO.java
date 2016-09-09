@@ -17,4 +17,8 @@ public interface BoardDAO {
 	List<BoardVO> list(SearchCriteria cri) throws Exception;
 	
 	long count(SearchCriteria cri) throws Exception;
+	
+	void updateReplyCount(long bno, long amount) throws Exception;
+	
+	void updateViewCount(long bno) throws Exception;
 }

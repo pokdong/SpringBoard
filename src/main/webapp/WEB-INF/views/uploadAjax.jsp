@@ -40,8 +40,25 @@
 		isIE = IEVersion() <= 9;
 	}
 	
-	
 
+	function isImage(fileName) {
+		return fileName.match(/jpg|jpeg|gif|png/i);
+	}
+	
+	function printData(fileName) {
+		var str = '';
+		
+		if(isImage(fileName)) {
+			str = "<div><img src='displayFile?fileName=" + fileName + "'/>" + fileName + "</div>";
+		}
+		else {
+			str = "<div>" + fileName + "</div>";
+		}
+		
+		$('#uploadedList').append(str);
+	}
+	
+	
 	$(document).ready(function() {
 		$('.fileDrop').on('dragenter dragover', function(event) {
 			event.preventDefault();
@@ -66,8 +83,10 @@
 				contentType : false,
 				data : formData,
 				dataType : "text",
-				success : function(response) {
-					alert(response);
+				success : function(fileName) {
+					//alert(response);
+					
+					printData(fileName);
 				}
 			});
 		});
@@ -79,8 +98,10 @@
             		url: '/uploadAjax',
                     type: 'POST',
                     dataType : "text",
-                    success : function (response){
-                        alert(response);
+                    success : function (fileName){
+                        //alert(fileName);
+                        
+                    	printData(fileName);
                     },
                     error:function(e){e.responseText();}
                 };

@@ -27,10 +27,14 @@ public class UploadFileUtils {
 		mediaMap.put("PNG", MediaType.IMAGE_PNG);
 	}
 	
-	public static MediaType getMediaType(String extension) {
+	public static MediaType getMediaType(String fileName) {
+		String extension = getExtension(fileName);
 		return mediaMap.get(extension.toUpperCase());
 	}
 	
+	public static String getExtension(String fileName) {
+		return fileName.substring(fileName.lastIndexOf(".") + 1);
+	}
 	
 	public static String uploadFile(String uploadPath, MultipartFile mpf) throws Exception {
 		String fileName = UUID.randomUUID().toString() + "_" + mpf.getOriginalFilename();
@@ -59,10 +63,8 @@ public class UploadFileUtils {
 		
 		String uploadedFileName = null;
 		
-		// 확장자 판별
-		String extension = getExtension(file.getName());
 		String hiddenPath = dir.getParentFile().getParent();
-		if(getMediaType(extension) != null) {
+		if(getMediaType(file.getName()) != null) {
 			uploadedFileName = makeThumbnail(hiddenPath, file);
 		}
 		else {
@@ -70,10 +72,6 @@ public class UploadFileUtils {
 		}
 		
 		return uploadedFileName.replace(File.separatorChar, '/');
-	}
-	
-	public static String getExtension(String fileName) {
-		return fileName.substring(fileName.lastIndexOf(".") + 1);
 	}
 	
 	private static String makeThumbnail(String hiddenPath, File file) throws Exception {

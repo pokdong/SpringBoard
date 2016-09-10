@@ -1,5 +1,6 @@
 package io.github.xeyez.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -58,38 +59,49 @@ public class UploadController {
 	@RequestMapping("/displayFile")
 	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
 
-		InputStream in = null;
+		logger.info("fileName : " + fileName);
+		
 		ResponseEntity<byte[]> entity = null;
 
-		logger.info("FILE NAME: " + fileName);
-
-		try {
-
-			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-
-			MediaType mType = UploadFileUtils.getMediaType(formatName);
-
+		try (InputStream in = new FileInputStream(uploadPath + fileName)) {
 			HttpHeaders headers = new HttpHeaders();
-
-			in = new FileInputStream(uploadPath + fileName);
-
-			if (mType != null) {
-				headers.setContentType(mType);
+			
+			MediaType mediaType = UploadFileUtils.getMediaType(fileName);
+			if (mediaType != null) {
+				headers.setContentType(mediaType);
 			} else {
-
 				fileName = fileName.substring(fileName.indexOf("_") + 1);
+				
 				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-				headers.add("Content-Disposition",
-						"attachment; filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");
+				String headerName = "Content-Disposition";
+				StringBuilder sb_headerValue = new StringBuilder();
+				sb_headerValue.append("attachment; filename=\"");
+				sb_headerValue.append(new String(fileName.getBytes("UTF-8"), "ISO-8859-1"));
+				sb_headerValue.append("\"");
+				headers.add(headerName, sb_headerValue.toString());
 			}
-
-			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+			
+			entity = new ResponseEntity<>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-		} finally {
-			in.close();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
 		return entity;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/deleteFile", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteFile(String fileName) throws Exception {
+		logger.info("fileName : " + fileName);
+		
+		MediaType mediaType = UploadFileUtils.getMediaType(fileName);
+		if (mediaType != null) {
+			new File(uploadPath + fileName.replaceFirst("s_", "").replace('/', File.separatorChar)).delete();
+		}
+		
+		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+		
+		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
 	}
 }

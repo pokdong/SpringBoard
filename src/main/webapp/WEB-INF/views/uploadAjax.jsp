@@ -45,20 +45,46 @@
 		return fileName.match(/jpg|jpeg|gif|png/i);
 	}
 	
+	function getOriginalFileName(fileName) {
+		if(isImage(fileName))
+			return;
+		
+		return fileName.substr(fileName.indexOf('_') + 1);
+	}
+	
+	function getFileLink(fileName) {
+		if(!isImage(fileName))
+			return;
+		
+		return fileName.replace(/s_/, '');
+	}
+	
 	function printData(fileName) {
 		var str = '';
 		
 		if(isImage(fileName)) {
-			str = "<div><img src='displayFile?fileName=" + fileName + "'/>" + fileName + "</div>";
+			str = "<div>"
+					+ "<a href='displayFile?fileName=" + getFileLink(fileName) + "'>"
+						+ "<img src='displayFile?fileName=" + fileName + "'/>"
+					+ "</a>"
+					+ "<small data-src='" + fileName + "'>X</small>"
+				+ "</div>";
 		}
 		else {
-			str = "<div>" + fileName + "</div>";
+			str = "<div>" 
+					+ "<a href='displayFile?fileName=" + fileName + "'>" 
+						+ getOriginalFileName(fileName) 
+					+ "</a>" 
+					+ "<small data-src='" + fileName + "'>X</small>"
+				+ "</div>";
 		}
 		
-		$('#uploadedList').append(str);
+		$('.uploadedList').append(str);
 	}
 	
-	
+</script>
+
+<script>
 	$(document).ready(function() {
 		$('.fileDrop').on('dragenter dragover', function(event) {
 			event.preventDefault();
@@ -90,10 +116,8 @@
 				}
 			});
 		});
-
 		
-		
-		$('#submitBtn').click(function() {
+		$('#submitBtn').on('click', function() {
             var options = {
             		url: '/uploadAjax',
                     type: 'POST',
@@ -111,6 +135,26 @@
             
             $("#attachFile").val("");
         });
+		
+		$('.uploadedList').on('click', 'small', function() {
+			
+			var smallObj  = $(this);
+			
+			$.ajax({
+				type : 'POST',
+				url : '/deleteFile',
+				data : {
+					fileName : smallObj.attr('data-src')
+				},
+				dataType : "text",
+				success : function(response) {
+					if(response != 'SUCCESS')
+						return;
+					
+					smallObj.parent('div').remove();
+				}
+			});
+		});
 	});	
 </script>
 
@@ -127,7 +171,7 @@
 	<div class="fileDrop">
 	</div>
 	
-	<div id="uploadedList">
+	<div class="uploadedList">
 	</div>
 	
 	

@@ -18,9 +18,17 @@ public class BoardServiceImpl implements BoardService {
 	@Inject
 	private BoardDAO dao;
 	
+	@Transactional
 	@Override
 	public void write(BoardVO vo) throws Exception {
 		dao.create(vo);
+		
+		String[] files = vo.getFiles();
+		if(files != null) {
+			for(String fileName : files) {
+				dao.addAttach(fileName);
+			}
+		}
 	}
 
 	@Transactional(isolation=Isolation.READ_COMMITTED)

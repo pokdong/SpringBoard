@@ -53,19 +53,19 @@
 </script>
 
 <script>	
-	function isImage(fileName) {
+	function checkImageFile(fileName) {
 		return fileName.match(/jpg|jpeg|gif|png/i);
 	}
 	
 	function getOriginalFileName(fileName) {
-		if(isImage(fileName))
+		if(checkImageFile(fileName))
 			return;
 		
 		return fileName.substr(fileName.indexOf('_') + 1);
 	}
 	
 	function getFileLink(fileName) {
-		if(!isImage(fileName))
+		if(!checkImageFile(fileName))
 			return;
 		
 		return fileName.replace(/s_/, '');
@@ -74,7 +74,7 @@
 	function printData(fileName) {
 		var str = '';
 		
-		if(isImage(fileName)) {
+		if(checkImageFile(fileName)) {
 			str = "<div>"
 					+ "<a href='displayFile?fileName=" + getFileLink(fileName) + "'>"
 						+ "<img src='displayFile?fileName=" + fileName + "'/>"

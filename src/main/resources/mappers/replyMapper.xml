@@ -72,4 +72,11 @@
 		]]>
 	</select>
 	
+	<insert id="addAttach">
+		<![CDATA[
+			INSERT INTO TBL_ATTACH (FULLNAME, BNO)
+			VALUES (#{fullName}, LAST_INSERT_ID())
+		]]>
+	</insert>
+	
 </mapper>

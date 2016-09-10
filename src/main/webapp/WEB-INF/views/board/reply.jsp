@@ -25,7 +25,7 @@
 		
 		<ul class="timeline">
 			<li class="time-label" id="repliesDiv">
-				<button id="btn_top" class="btn bg-green">▲ 맨 위로 가기</button>
+				<button type="button" id="btn_top" class="btn bg-green">▲ 맨 위로 가기</button>
 			</li>
 		</ul>
 		
@@ -50,8 +50,8 @@
       		</div>
       		
       		<div class="modal-footer">
-        		<button class="btn btn-info" id="btn_replyMod" data-dismiss="modal">수정</button>
-        		<button class="btn btn-default" data-dismiss="modal">취소</button>
+        		<button type="button" class="btn btn-info" id="btn_replyMod" data-dismiss="modal">수정</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
       		</div>
    		</div>
 	</div>
@@ -73,8 +73,8 @@
       		</div>
       		
       		<div class="modal-footer">
-        		<button class="btn btn-danger" id="btn_replyDel" data-dismiss="modal">삭제</button>
-        		<button class="btn btn-default" data-dismiss="modal">취소</button>
+        		<button type="button" class="btn btn-danger" id="btn_replyDel" data-dismiss="modal">삭제</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
       		</div>
    		</div>
 	</div>
@@ -117,8 +117,8 @@
                 </div>
 
                 <div class="timeline-footer" align="right">
-                    <button class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
-					<button class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
+                    <button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
+					<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
                 </div>
 
             </div>

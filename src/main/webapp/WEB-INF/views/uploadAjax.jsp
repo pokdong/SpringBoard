@@ -22,22 +22,33 @@
 <script src="../resources/js/jquery.form.js"></script>
 
 <script>
-	var isUnsupportedIE = false;
+	var agent = navigator.userAgent.toLowerCase(); 
+	var name = navigator.appName; 
+	 
+	 function isSupportedIE() { 
+		 var word; 
+		 var version = "N/A"; 
 
-	var agent = navigator.userAgent.toLowerCase();
-	if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
-		var IEVersion = function () {
-	         var rv = -1; // Return value assumes failure.    
-	         if (navigator.appName == 'Microsoft Internet Explorer') {        
-	              var ua = navigator.userAgent;        
-	              var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");        
-	              if (re.exec(ua) != null)            
-	                  rv = parseFloat(RegExp.$1);    
-             }
-	         return rv; 
-		}
+		 var agent = navigator.userAgent.toLowerCase(); 
+		 var name = navigator.appName; 
 
-		isUnsupportedIE = IEVersion() <= 9;
+		 // IE old version ( IE 10 or Lower ) 
+		 if (name == "Microsoft Internet Explorer")
+			 word = "msie "; 
+
+		 else { 
+			 if ( agent.search("trident") > -1 ) // IE 11 
+				 word = "trident/.*rv:"; 
+			 else if ( agent.search("edge/") > -1 ) // Microsoft Edge
+				 word = "edge/"; 
+		 } 
+
+		 var reg = new RegExp( word + "([0-9]{1,})(\\.{0,}[0-9]{0,1})" ); 
+		 //var reg = new RegExp( word + "([0-9]{1,})" ); 
+
+		 if (  reg.exec( agent ) != null  ) version = RegExp.$1 + RegExp.$2; 
+
+		 return version < 10;
 	}
 </script>
 
@@ -88,7 +99,7 @@
 <script>
 	$(document).ready(function() {
 		//IE10 이하면 Drag&Drop 숨김
-		if(isUnsupportedIE) {
+		if(isSupportedIE()) {
 			$('.fileDrop').hide(0);
 		}
 		

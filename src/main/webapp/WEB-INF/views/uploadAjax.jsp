@@ -22,7 +22,7 @@
 <script src="../resources/js/jquery.form.js"></script>
 
 <script>
-	var isIE = false;
+	var isUnsupportedIE = false;
 
 	var agent = navigator.userAgent.toLowerCase();
 	if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
@@ -37,10 +37,11 @@
 	         return rv; 
 		}
 
-		isIE = IEVersion() <= 9;
+		isUnsupportedIE = IEVersion() <= 9;
 	}
-	
+</script>
 
+<script>	
 	function isImage(fileName) {
 		return fileName.match(/jpg|jpeg|gif|png/i);
 	}
@@ -86,6 +87,12 @@
 
 <script>
 	$(document).ready(function() {
+		//IE10 이하면 Drag&Drop 숨김
+		if(isUnsupportedIE) {
+			$('.fileDrop').hide(0);
+		}
+		
+		
 		$('.fileDrop').on('dragenter dragover', function(event) {
 			event.preventDefault();
 		});

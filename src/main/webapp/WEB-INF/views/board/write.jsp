@@ -48,7 +48,7 @@
 	
 					<div class="box-body"> <!-- box-body : 전체 margin -->
 <!-- Content -->
-<form id='registerForm' role="form" action="write" method="post">
+<form id="registerForm" role="form" action="write" method="post">
 
 	<input type='hidden' name='postCount' value="${cri.postCount}">
 	<input type='hidden' name='pageCount' value="${pageMaker.pageCount}">
@@ -68,28 +68,28 @@
 		<input name="writer" type="text" class="form-control" placeholder="Enter Writer"> <!-- 로그인 기능이 구현되면 readonly 필요 -->
 	</div>
 	
-	<div class="box-footer" > <!-- box-footer : 전체 여백 + 상단 테두리 -->
+</form>
+
+<div class="box-footer" > <!-- box-footer : 전체 여백 + 상단 테두리 -->
 	
 	<div class="form-group">
 		<div class="fileDrop" >
 			여기에 파일을 Drag & Drop 하세요.
 		</div>
 		
-		<!-- <div class="fileForm" >
+		<div class="fileForm" >
 			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
 			     <input name="attachFile" id="attachFile" type="file" >
 			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
 			</form>
-		</div> -->
+		</div>
 	</div>
 	
 	<ul class="mailbox-attachments clearfix uploadedList">
 	</ul>
 
-	<button type="submit" class="btn btn-primary" style="float: right;">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+	<button type="submit" id="btn_confirm" class="btn btn-primary" style="float: right;">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
 </div>
-	
-</form>
 
 
 
@@ -189,24 +189,7 @@
 		});
 	});
 	
-	$("#registerForm").submit(function(event){
-		event.preventDefault();
-		
-		var that = $(this);
-		
-		var str ="";
-		$(".uploadedList .delbtn").each(function(index){
-			 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
-		});
-		
-		that.append(str);
-		
-		
-		
-		that.get(0).submit();
-	});
-	
-	
+	//삭제
 	$('.uploadedList').on('click', '.delbtn', function() {
 		var that  = $(this);
 		
@@ -229,7 +212,15 @@
 	
 	
 	// Form을 이용하여 파일 업로드
-	/* $('#fileSubmitBtn').on('click', function() {
+	$('#fileSubmitBtn').on('click', function(event) {
+		
+		var attachFile = $("#attachFile");
+		
+		if(attachFile.val().length <= 0) {
+			alert('파일을 선택해주세요.')
+			return;
+		}
+		
         var options = {
         		url: '/uploadAjax',
                 type: 'POST',
@@ -245,7 +236,33 @@
         
         $("#fileSubmitForm").ajaxForm(options).submit();
         
-        $("#attachFile").val("");
-    }); */
+        attachFile.val("");
+    });
+	
+	
+	$('#btn_confirm').on("click", function() {
+		
+		alert('ok0');
+		
+		$("#registerForm").submit(function(event){
+			alert('ok1');
+			event.preventDefault();
+			alert('ok2');
+			
+			
+			var that = $(this);
+			
+			var str ="";
+			$(".uploadedList .delbtn").each(function(index){
+				 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
+			});
+			
+			that.append(str);
+			
+			
+			
+			//that.get(0).submit();
+		});
+	});
 	
 </script>

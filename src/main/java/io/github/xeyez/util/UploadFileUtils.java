@@ -60,7 +60,7 @@ public class UploadFileUtils {
 		String uploadedFileName = null;
 		
 		// 확장자 판별
-		String extension = getExtension(file);
+		String extension = getExtension(file.getName());
 		String hiddenPath = dir.getParentFile().getParent();
 		if(getMediaType(extension) != null) {
 			uploadedFileName = makeThumbnail(hiddenPath, file);
@@ -72,8 +72,8 @@ public class UploadFileUtils {
 		return uploadedFileName.replace(File.separatorChar, '/');
 	}
 	
-	private static String getExtension(File file) {
-		return file.getName().substring(file.getName().lastIndexOf(".") + 1);
+	public static String getExtension(String fileName) {
+		return fileName.substring(fileName.lastIndexOf(".") + 1);
 	}
 	
 	private static String makeThumbnail(String hiddenPath, File file) throws Exception {
@@ -88,7 +88,7 @@ public class UploadFileUtils {
 		
 		String thumbnailFileName = sb_thumbnailFileName.toString();
 		File thumbnailFile = new File(thumbnailFileName);
-		String extension = getExtension(file);
+		String extension = getExtension(file.getName());
 		ImageIO.write(destImg, extension, thumbnailFile);
 		
 		return thumbnailFileName.replace(hiddenPath, "");

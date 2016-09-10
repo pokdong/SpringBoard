@@ -1,21 +1,20 @@
 package io.github.xeyez.controller;
 
-import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Iterator;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,39 +31,12 @@ public class UploadController {
 	@Resource
 	private String uploadPath;
 	
-	@RequestMapping(value = "/uploadForm", method = RequestMethod.GET)
-	public void uploadForm() {
-	}
-	
-	@RequestMapping(value = "/uploadForm", method = RequestMethod.POST)
-	public void uploadForm(MultipartFile file, Model model) throws Exception {
-		String name = file.getOriginalFilename();
-		long size = file.getSize();
-		String contentType = file.getContentType();
-		
-		logger.info(name + "/" + size + "/" + contentType);
-		
-		String savedName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-		String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-		String dirPath = uploadPath + File.separator + formattedDateTime;
-		File newFile = new File(dirPath, savedName);
-
-		File dir = new File(dirPath);
-		if(!dir.exists()) {
-			dir.mkdirs();
-		}
-		
-		FileCopyUtils.copy(file.getBytes(), newFile);
-		
-		model.addAttribute("savedName", savedName);
-	}
-	
 	@RequestMapping(value = "/uploadAjax", method = RequestMethod.GET)
 	public void uploadAjax() {
 	}
 	
-	@RequestMapping(value = "/uploadAjax", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8")
 	@ResponseBody
+	@RequestMapping(value = "/uploadAjax", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8")
 	public ResponseEntity<String> uploadAjax(MultipartHttpServletRequest req, HttpServletResponse res) throws Exception {
 	    
 		Iterator<String> itr =  req.getFileNames();
@@ -83,4 +55,36 @@ public class UploadController {
 		return new ResponseEntity<>(fileName, HttpStatus.CREATED);
 	}
 
+	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
+		ResponseEntity<byte[]> entity = null;
+		
+		logger.info("fileName : " + fileName);
+		
+		try (InputStream in = new FileInputStream(uploadPath + fileName)) {
+			String extension = UploadFileUtils.getExtension(fileName);
+			
+			HttpHeaders headers = new HttpHeaders();
+			
+			MediaType mediaType = UploadFileUtils.getMediaType(extension);
+			if(mediaType != null) {
+				headers.setContentType(mediaType);
+			}
+			else {
+				fileName = fileName.substring(fileName.indexOf("_") + 1);
+				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+				
+				String headerName = "Content-Disposition";
+				String headerValue = "attachment; filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"";
+				headers.add(headerName, headerValue);
+				
+				entity = new ResponseEntity<>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
 }

@@ -8,7 +8,6 @@ import java.util.Iterator;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.tribes.group.Response;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +33,12 @@ public class UploadController {
 	@Resource
 	private String uploadPath;
 
+/*	
 	@RequestMapping(value = "/uploadAjax", method = RequestMethod.GET)
 	public void uploadAjax() {
 	}
-
+*/
+	
 	@ResponseBody
 	@RequestMapping(value = "/uploadAjax", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8")
 	public ResponseEntity<String> uploadAjax(MultipartHttpServletRequest req, HttpServletResponse res)

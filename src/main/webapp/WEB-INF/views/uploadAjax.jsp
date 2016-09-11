@@ -22,8 +22,6 @@
 <script src="../resources/js/jquery.form.js"></script>
 
 <script>
-	var agent = navigator.userAgent.toLowerCase(); 
-	var name = navigator.appName; 
 	 
 	 function isSupportedIE() { 
 		 var word; 
@@ -100,7 +98,7 @@
 	$(document).ready(function() {
 		//IE10 이하면 Drag&Drop 숨김
 		if(isSupportedIE()) {
-			$('.fileDrop').hide(0);
+			$('.fileDrop').attr('hidden', 'true');
 		}
 		
 		

@@ -68,6 +68,10 @@
 		<input name="writer" type="text" class="form-control" placeholder="Enter Writer"> <!-- 로그인 기능이 구현되면 readonly 필요 -->
 	</div>
 	
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+	</div>
+	
 </form>
 
 <div class="box-footer" > <!-- box-footer : 전체 여백 + 상단 테두리 -->
@@ -106,7 +110,50 @@
 <%@include file="../include/footer.jsp" %>
 
 
+<script>
 
+	function isMobile() {
+		var filter = "win16|win32|win64|mac";
+	
+		if (navigator.platform) {
+			return 0 > filter.indexOf(navigator.platform.toLowerCase());
+		}
+		else
+			return false;
+	}
+	
+	function IEVersionCheck() {
+		 
+	    var word;
+	    var version = "N/A";
+	
+	    var agent = navigator.userAgent.toLowerCase();
+	    var name = navigator.appName;
+	
+	    // IE old version ( IE 10 or Lower )
+	    if ( name == "Microsoft Internet Explorer" ) word = "msie ";
+	
+	    else {
+	        // IE 11
+	        if ( agent.search("trident") > -1 ) word = "trident/.*rv:";
+	
+	        // IE 12  ( Microsoft Edge )
+	        else if ( agent.search("edge/") > -1 ) word = "edge/";
+	    }
+	
+	    var reg = new RegExp( word + "([0-9]{1,})(\\.{0,}[0-9]{0,1})" );
+	    if (  reg.exec( agent ) != null  )
+	        version = RegExp.$1 + RegExp.$2;
+	
+	    return version;
+	};
+
+	// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
+	var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
+	if(isUnavailableBrowser) {
+		$('.fileDrop').attr('hidden', 'true');
+	}
+</script>
 
 <script id="template" type="text/x-handlebars-template">
 <li>
@@ -115,7 +162,7 @@
   </span>
 
   <div class="mailbox-attachment-info">
-	<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	<a href="{{getLink}}" target="_blank" class="mailbox-attachment-name">{{fileName}}</a>
 	<span data-src="{{fullName}}" class="btn btn-default btn-xs pull-right delbtn">
 		<i class="fa fa-fw fa-remove"></i>
 	</span>
@@ -242,19 +289,14 @@
 	
 	$('#btn_confirm').on("click", function() {
 		
-		alert('ok0');
-		
-		$("#registerForm").submit(function(event){
-			alert('ok1');
+		/* $("#registerForm").submit(function(event){
 			event.preventDefault();
-			alert('ok2');
-			
 			
 			var that = $(this);
 			
 			var str ="";
 			$(".uploadedList .delbtn").each(function(index){
-				 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
+				 str += "<input type='hidden' name='files["+index+"]' value='"+that.attr("data-src") +"'> ";
 			});
 			
 			that.append(str);
@@ -262,7 +304,36 @@
 			
 			
 			//that.get(0).submit();
+		}); */
+	});
+	
+	
+	$("#registerForm").submit(function(event){
+		event.preventDefault();
+		
+		var that = $(this);
+		
+		var cnt = 0;
+		
+		// 파일 추가시 삭제한 경우를 대비해 reset 필요
+		that.find("input").each(function(index) {
+			var nameAttr = $(this).attr('name');
+			
+			if(nameAttr.includes('files')) {
+				$(this).remove();
+			}
 		});
+		
+		var str ="";
+		$(".uploadedList .delbtn").each(function(index){
+			 str += "<input type='text' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
+		});
+		
+		that.append(str);
+		
+		
+		
+		//that.get(0).submit();
 	});
 	
 </script>

@@ -5,40 +5,10 @@
 <%@include file="../include/header.jsp" %>
 
 <link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
+<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
 
-<script src="/resources/js/handlebars4.0.5.js"></script>
-<script src="/resources/js/upload.js"></script>
-
-
-<style>
-	.fileDrop {
-	  width: 80%;
-	  height: 100px;
-	  border: 3px dashed gray;
-	  margin: auto;
-	  text-align: center;
-	  line-height: 100px;
-	  font-weight: bold;
-	}
-	
-	.uploadedList {
-		display: table;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	
-	.fileForm {
-		width: 80%;
-		margin-top: 10px;
-		margin-bottom: auto;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	
-	#fileSubmitBtn {
-		width: 100%;
-	}
-</style>
+<script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+<script src="/resources/xeyez/js/upload.js"></script>
 
 
     <!-- Main content -->
@@ -93,7 +63,7 @@
 	</div>
 	
 	<ul class="mailbox-attachments clearfix uploadedList">
-		</ul>
+	</ul>
 
 	<div align="right">
 		<button type="submit" id="btn_confirm" class="btn btn-primary">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
@@ -116,43 +86,6 @@
 
 
 <script>
-
-	function isMobile() {
-		var filter = "win16|win32|win64|mac";
-	
-		if (navigator.platform) {
-			return 0 > filter.indexOf(navigator.platform.toLowerCase());
-		}
-		else
-			return false;
-	}
-	
-	function IEVersionCheck() {
-		 
-	    var word;
-	    var version = "N/A";
-	
-	    var agent = navigator.userAgent.toLowerCase();
-	    var name = navigator.appName;
-	
-	    // IE old version ( IE 10 or Lower )
-	    if ( name == "Microsoft Internet Explorer" ) word = "msie ";
-	
-	    else {
-	        // IE 11
-	        if ( agent.search("trident") > -1 ) word = "trident/.*rv:";
-	
-	        // IE 12  ( Microsoft Edge )
-	        else if ( agent.search("edge/") > -1 ) word = "edge/";
-	    }
-	
-	    var reg = new RegExp( word + "([0-9]{1,})(\\.{0,}[0-9]{0,1})" );
-	    if (  reg.exec( agent ) != null  )
-	        version = RegExp.$1 + RegExp.$2;
-	
-	    return version;
-	};
-
 	// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
 	var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
 	if(isUnavailableBrowser) {
@@ -294,33 +227,6 @@
 		
 		formObj.submit();
 	});
-
-
-	/* $(window).unload(function() {
-		console.log('unload');
-		
-		$(".uploadedList .delbtn").each(function(index){
-			var that  = $(this);
-			
-			$.ajax({
-				type : 'POST',
-				url : '/deleteFile',
-				data : {
-					fileName : that.attr('data-src')
-				},
-				dataType : "text",
-				success : function(response) {
-					if(response != 'SUCCESS')
-						return;
-					
-					//that.parent().parent().remove();
-					
-					console.log('삭제!!!');
-				}
-			});
-		});
-	}); */
-	
 </script>
 
 

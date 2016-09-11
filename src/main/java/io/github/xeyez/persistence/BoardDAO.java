@@ -25,4 +25,8 @@ public interface BoardDAO {
 	void addAttach(String fullName) throws Exception;
 	
 	List<String> getAttach(long bno) throws Exception;
+	
+	void deleteAllAttach(long bno) throws Exception;
+	
+	void replaceAttach(String fullName, long bno) throws Exception;
 }

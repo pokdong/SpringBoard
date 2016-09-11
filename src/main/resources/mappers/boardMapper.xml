@@ -127,4 +127,18 @@
 		]]>
 	</select>
 	
+	<delete id="deleteAllAttach">
+		<![CDATA[
+			DELETE FORM TBL_ATTACH
+			WHERE BNO = #{bno}
+		]]>
+	</delete>
+	
+	<update id="replaceAttach">
+		<![CDATA[
+			INSERT INTO TBL_ATTACH (FULLNAME, BNO)
+			VALUES (#{fullName}, #{bno})
+		]]>
+	</update>
+	
 </mapper>

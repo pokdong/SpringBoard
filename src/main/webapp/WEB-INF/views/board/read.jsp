@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@include file="../include/header.jsp" %>
 
 <link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
+<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
 
-<script src="/resources/js/handlebars4.0.5.js"></script>
-<script src="/resources/js/upload.js"></script>
+<script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+<script src="/resources/xeyez/js/upload.js"></script>
+
 
 <form role="form" method="post">
 	<input type='hidden' name='bno' value="${boardVO.bno}">
@@ -57,7 +59,7 @@
 	<ul class="mailbox-attachments clearfix uploadedList">
 	</ul>
 	
-	<div class="form-control" align="right">
+	<div align="right">
 		<button type="submit" id="btn_modify" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
 		<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
 		<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
@@ -81,7 +83,7 @@
 
 
 
-<script id="templateAttach" type="text/x-handlebars-template">
+<script id="templateAttach_read" type="text/x-handlebars-template">
 <li>
   <span class="mailbox-attachment-icon has-img">
 	<img src="{{imgsrc}}" alt="Attachment">
@@ -168,14 +170,11 @@
 
 
 <script>
-	//bno는 reply.jsp에 있음.
-	var template = Handlebars.compile($('#templateAttach').html());
-		
-		
-	console.log("ㅇㅋ?????");
-	console.log("bno : " + bno);
+	/* 첨부파일 출력 */
 	
-	var template = Handlebars.compile($("#templateAttach").html());
+	//bno는 reply.jsp에 있음.
+	//var bno = ${boardVO.bno};
+	var template = Handlebars.compile($('#templateAttach_read').html());
 	
 	$.getJSON("/board/getAttach/"+bno, function(list){
 		

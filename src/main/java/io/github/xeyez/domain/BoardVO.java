@@ -18,26 +18,6 @@ public class BoardVO {
 	
 	private String[] files;
 	
-	public BoardVO() {
-	}
-	
-	
-	public BoardVO(long bno) {
-		this.bno = bno;
-	}
-	
-	public BoardVO(String title, String content, String writer) {
-		this.title = title;
-		this.content = content;
-		this.writer = writer;
-	}
-	
-	public BoardVO(int bno, int viewcnt) {
-		this.bno = bno;
-		this.viewcnt = viewcnt;
-	}
-	
-	
 	public long getBno() {
 		return bno;
 	}

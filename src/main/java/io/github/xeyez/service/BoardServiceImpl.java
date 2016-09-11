@@ -25,8 +25,8 @@ public class BoardServiceImpl implements BoardService {
 		
 		String[] files = vo.getFiles();
 		if(files != null) {
-			for(String fileName : files) {
-				dao.addAttach(fileName);
+			for(String fullName : files) {
+				dao.addAttach(fullName);
 			}
 		}
 	}

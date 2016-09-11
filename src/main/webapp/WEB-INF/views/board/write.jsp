@@ -48,7 +48,7 @@
 	
 					<div class="box-body"> <!-- box-body : 전체 margin -->
 <!-- Content -->
-<form id="registerForm" role="form" action="write" method="post">
+<form role="form" action="write" method="post">
 
 	<input type='hidden' name='postCount' value="${cri.postCount}">
 	<input type='hidden' name='pageCount' value="${pageMaker.pageCount}">
@@ -68,9 +68,9 @@
 		<input name="writer" type="text" class="form-control" placeholder="Enter Writer"> <!-- 로그인 기능이 구현되면 readonly 필요 -->
 	</div>
 	
-	<div class="form-group">
+	<!-- <div class="form-group">
 		<button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
-	</div>
+	</div> -->
 	
 </form>
 
@@ -287,36 +287,13 @@
     });
 	
 	
-	$('#btn_confirm').on("click", function() {
-		
-		/* $("#registerForm").submit(function(event){
-			event.preventDefault();
-			
-			var that = $(this);
-			
-			var str ="";
-			$(".uploadedList .delbtn").each(function(index){
-				 str += "<input type='hidden' name='files["+index+"]' value='"+that.attr("data-src") +"'> ";
-			});
-			
-			that.append(str);
-			
-			
-			
-			//that.get(0).submit();
-		}); */
-	});
-	
-	
-	$("#registerForm").submit(function(event){
+	$('#btn_confirm').on("click", function(event) {
 		event.preventDefault();
 		
-		var that = $(this);
+		var formObj = $("form[role='form']");
 		
-		var cnt = 0;
-		
-		// 파일 추가시 삭제한 경우를 대비해 reset 필요
-		that.find("input").each(function(index) {
+		// 파일 추가 후 삭제한 경우를 대비해 reset 필요
+		formObj.find("input").each(function(index) {
 			var nameAttr = $(this).attr('name');
 			
 			if(nameAttr.includes('files')) {
@@ -329,11 +306,64 @@
 			 str += "<input type='text' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
 		});
 		
+		formObj.append(str);
+		
+		formObj.submit();
+		//formObj.get(0).submit();
+	});
+	
+	
+	/* $("form[role='form']").submit(function(event){
+		event.preventDefault();
+		
+		var that = $(this);
+		
+		// 파일 추가시 삭제한 경우를 대비해 reset 필요
+		that.find("input").each(function(index) {
+			var nameAttr = $(this).attr('name');
+			
+			if(nameAttr.includes('files')) {
+				$(this).remove();
+			}
+		});
+		
+		var str ="";
+		$(".uploadedList .delbtn").each(function(index){
+			 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
+		});
+		
 		that.append(str);
 		
 		
 		
 		//that.get(0).submit();
-	});
+	}); */
+	
+
+
+	/* $(window).unload(function() {
+		console.log('unload');
+		
+		$(".uploadedList .delbtn").each(function(index){
+			var that  = $(this);
+			
+			$.ajax({
+				type : 'POST',
+				url : '/deleteFile',
+				data : {
+					fileName : that.attr('data-src')
+				},
+				dataType : "text",
+				success : function(response) {
+					if(response != 'SUCCESS')
+						return;
+					
+					//that.parent().parent().remove();
+					
+					console.log('삭제!!!');
+				}
+			});
+		});
+	}); */
 	
 </script>

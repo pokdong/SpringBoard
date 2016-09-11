@@ -123,7 +123,33 @@
 			return;
 		}
 		
-		deleteAllFiles();
+		var arr = [];
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 arr.push($(this).attr("data-src"));
+		});
+		
+		console.log(arr);
+		
+		if(arr.length > 0){
+			$.post("/deleteAllFiles", {files:arr}, function(){
+				
+			});
+		}
+		
+		/* $.ajax({
+			type : 'POST',
+			url : '/deleteAllFiles',
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			data : {files:arr},
+			dataType : "text",
+			success : function(response) {
+				console.log(response);
+			}
+		}); */
+		
 		
 		formObj.attr("action", "/board/remove");
 		formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
@@ -140,20 +166,6 @@
 		formObj.attr("method", "get");
 		formObj.submit();
 	});
-	
-	
-	function deleteAllFiles() {
-		var arr = [];
-		$(".uploadedList .mailbox-attachment-info").each(function(index){
-			 arr.push($(this).attr("data-src"));
-		});
-		
-		if(arr.length > 0){
-			$.post("/deleteAllFiles", {files:arr}, function(){
-				
-			});
-		}
-	}
 </script>
 
 

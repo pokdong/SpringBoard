@@ -107,6 +107,18 @@
 	
 	// 확인
 	$(".btn-primary").on("click", function() {
+		var titleLength = formObj.find("input[name=title]").val().replace(/(^\s*)|(\s*$)/gi, "").length;
+		if(titleLength <= 0) {
+			alert('제목을 입력하세요.');
+			return;
+		}
+		
+		var contentLength = formObj.find("textarea[name=content]").val().replace(/(^\s*)|(\s*$)/gi, "").length;
+		if(contentLength <= 0) {
+			alert('내용을 입력하세요.');
+			return;
+		}
+		
 		formObj.submit();
 	});
 	

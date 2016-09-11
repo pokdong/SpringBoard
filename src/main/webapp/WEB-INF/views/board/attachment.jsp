@@ -109,29 +109,4 @@
         
         attachFile.val("");
     });
-	
-	
-	$('#btn_confirm').on("click", function(event) {
-		event.preventDefault();
-		
-		var formObj = $("form[role='form']");
-		
-		// 파일 추가 후 삭제한 경우를 대비해 reset 필요
-		formObj.find("input").each(function(index) {
-			var nameAttr = $(this).attr('name');
-			
-			if(nameAttr.includes('files')) {
-				$(this).remove();
-			}
-		});
-		
-		var str ="";
-		$(".uploadedList .mailbox-attachment-info").each(function(index){
-			 str += "<input type='text' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
-		});
-		
-		formObj.append(str);
-		
-		formObj.submit();
-	});
 </script>

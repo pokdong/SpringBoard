@@ -96,8 +96,46 @@
 <%@include file="attachment.jsp" %>
 
 <script>
+	$('#btn_confirm').on("click", function(event) {
+		event.preventDefault();
+		
+		var formObj = $("form[role='form']");
+		
+		// 파일 추가 후 삭제한 경우를 대비해 reset 필요
+		formObj.find("input").each(function(index) {
+			var nameAttr = $(this).attr('name');
+			
+			if(nameAttr.includes('files')) {
+				$(this).remove();
+			}
+		});
+
+
+		var titleLength = formObj.find("input[name=title]").val().replace(/(^\s*)|(\s*$)/gi, "").length;
+		if(titleLength <= 0) {
+			alert('제목을 입력하세요.');
+			return;
+		}
+		
+		var contentLength = formObj.find("textarea[name=content]").val().replace(/(^\s*)|(\s*$)/gi, "").length;
+		if(contentLength <= 0) {
+			alert('내용을 입력하세요.');
+			return;
+		}
+		
+		var str ="";
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
+		});
+		
+		formObj.append(str);
+		
+		formObj.submit();
+	});
+
+
 	//뒤로 가기나 다른 페이지 갈 때 첨부했던 파일 삭제
-	$(window).unload(function() {
+	/* $(window).unload(function() {
 		deleteAllFiles();
 	});
 	
@@ -112,7 +150,7 @@
 				
 			});
 		}
-	}
+	} */
 </script>
 
 <script src="/resources/lightbox2/js/lightbox.min.js"></script>

@@ -61,14 +61,14 @@
 	});
 	
 	//삭제
-	$('.uploadedList').on('click', '.mailbox-attachment-info', function() {
+	$('.uploadedList').on('click', '.delbtn', function() {
 		var that  = $(this);
 		
 		$.ajax({
 			type : 'POST',
 			url : '/deleteFile',
 			data : {
-				fileName : that.attr('data-src')
+				fileName : that.parent().attr('data-src')
 			},
 			dataType : "text",
 			success : function(response) {

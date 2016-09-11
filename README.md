@@ -26,7 +26,7 @@ In-depth study for Spring framework
 - File upload 기능
  - [X] 일반 Form Tag 이용 파일 추가
  - [X] AJAX 이용 Drag & Drop 파일 추가
-  - [X] IE 10 이하거나 Mobile인 경우 숨김
+   - [X] IE 10 이하거나 Mobile인 경우 숨김
  - [X] 작성중인 게시글의 첨부파일 삭제 (unload 이용)
  - Transaction
   - [X] 게시글 추가일 때 첨부파일 첨부일 경우

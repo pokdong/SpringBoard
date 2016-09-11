@@ -70,4 +70,9 @@ public class BoardDAOImpl implements BoardDAO {
 	public void addAttach(String fullName) throws Exception {
 		session.selectOne(namespace + ".addAttach", fullName);
 	}
+
+	@Override
+	public List<String> getAttach(long bno) throws Exception {
+		return session.selectOne(namespace + ".getAttach", bno);
+	}
 }

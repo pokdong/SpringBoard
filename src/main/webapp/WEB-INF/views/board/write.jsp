@@ -4,8 +4,13 @@
 
 <%@include file="../include/header.jsp" %>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
-<script src="../resources/js/jquery.form.js"></script>
+<link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
+
+<script src="/resources/js/handlebars4.0.5.js"></script>
+<!-- IE 10 이하 from 이용 파일 업로드 지원 -->
+<script src="/resources/js/jquery.form.js"></script>
+<script src="/resources/js/upload.js"></script>
+
 
 <style>
 	.fileDrop {
@@ -16,6 +21,12 @@
 	  text-align: center;
 	  line-height: 100px;
 	  font-weight: bold;
+	}
+	
+	.uploadedList {
+		display: table;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	
 	.fileForm {
@@ -29,8 +40,6 @@
 	#fileSubmitBtn {
 		width: 100%;
 	}
-	
-	#center { position:absolute; top:50%; left:50%; width:300px; height:200px; overflow:hidden; background-color:#FC0; margin-top:-150px; margin-left:-100px;}
 </style>
 
 
@@ -68,10 +77,6 @@
 		<input name="writer" type="text" class="form-control" placeholder="Enter Writer"> <!-- 로그인 기능이 구현되면 readonly 필요 -->
 	</div>
 	
-	<!-- <div class="form-group">
-		<button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
-	</div> -->
-	
 </form>
 
 <div class="box-footer" > <!-- box-footer : 전체 여백 + 상단 테두리 -->
@@ -83,16 +88,18 @@
 		
 		<div class="fileForm" >
 			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
-			     <input name="attachFile" id="attachFile" type="file" >
+			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
 			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
 			</form>
 		</div>
 	</div>
 	
 	<ul class="mailbox-attachments clearfix uploadedList">
-	</ul>
+		</ul>
 
-	<button type="submit" id="btn_confirm" class="btn btn-primary" style="float: right;">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+	<div align="right">
+		<button type="submit" id="btn_confirm" class="btn btn-primary">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+	</div>
 </div>
 
 
@@ -106,7 +113,8 @@
    	</section>
    	
 	</div>
-    
+
+<script src="/resources/lightbox2/js/lightbox-plus-jquery.min.js"></script>
 <%@include file="../include/footer.jsp" %>
 
 
@@ -155,49 +163,28 @@
 	}
 </script>
 
-<script id="template" type="text/x-handlebars-template">
+<script id="templateAttach" type="text/x-handlebars-template">
 <li>
   <span class="mailbox-attachment-icon has-img">
 	<img src="{{imgsrc}}" alt="Attachment">
   </span>
 
   <div class="mailbox-attachment-info">
-	<a href="{{getLink}}" target="_blank" class="mailbox-attachment-name">{{fileName}}</a>
+	{{#if isImage}}
+		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img">{{fileName}}</a>
+	{{else}}
+		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	{{/if}}
+
 	<span data-src="{{fullName}}" class="btn btn-default btn-xs pull-right delbtn">
 		<i class="fa fa-fw fa-remove"></i>
 	</span>
   </div>
-</li>                
+</li>
 </script>
 
 <script>
-	function checkImageFile(fullName) {
-		return fullName.match(/jpg|jpeg|gif|png/i);
-	}
-
-	function getFileInfo(fullName) {
-		var fileName, imgsrc, getLink;
-		var fileLink;
-		
-		if(checkImageFile(fullName)) {
-			imgsrc = "/displayFile?fileName="+fullName; //thumbnail
-			fileLink = fullName.substr(fullName.lastIndexOf('/') + 3); //UID_파일명
-			getLink = "/displayFile?fileName="+fullName.replace(/s_/, ''); //실제파일
-		}
-		else {
-			imgsrc ="/resources/dist/img/file.png";
-			fileLink = fullName.substr(fullName.lastIndexOf('/') + 1); //UID_파일명
-			getLink = "/displayFile?fileName="+fullName;
-		}
-		
-		fileName = fileLink.substr(fileLink.indexOf("_")+1);
-		
-		return  {fileName:fileName, imgsrc:imgsrc, getLink:getLink, fullName:fullName};
-	}
-</script>
-
-<script>
-	var template = Handlebars.compile($("#template").html());
+	var template = Handlebars.compile($("#templateAttach").html());
 
 	function printData(fullName) {
 		var fileInfo = getFileInfo(fullName);
@@ -309,36 +296,7 @@
 		formObj.append(str);
 		
 		formObj.submit();
-		//formObj.get(0).submit();
 	});
-	
-	
-	/* $("form[role='form']").submit(function(event){
-		event.preventDefault();
-		
-		var that = $(this);
-		
-		// 파일 추가시 삭제한 경우를 대비해 reset 필요
-		that.find("input").each(function(index) {
-			var nameAttr = $(this).attr('name');
-			
-			if(nameAttr.includes('files')) {
-				$(this).remove();
-			}
-		});
-		
-		var str ="";
-		$(".uploadedList .delbtn").each(function(index){
-			 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
-		});
-		
-		that.append(str);
-		
-		
-		
-		//that.get(0).submit();
-	}); */
-	
 
 
 	/* $(window).unload(function() {
@@ -367,3 +325,5 @@
 	}); */
 	
 </script>
+
+

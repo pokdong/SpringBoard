@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<script src="../resources/js/handlebars4.0.5.js"></script>
-
 <div id="repliesArea" class="row">
 	
 	<div class="col-md-12">
@@ -234,7 +232,7 @@
 	
 	function updatePage(pBno, pReplyPage, replyInfo) {
 		var url = '/replies/' + pBno + '/' + pReplyPage;
-		console.log(url);
+		//console.log(url);
 		
 		$.getJSON(url, function(data) {
 			//console.log(data.list.length);

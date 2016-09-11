@@ -118,4 +118,13 @@
 		]]>
 	</insert>
 	
+	<select id="getAttach" resultType="string" >
+		<![CDATA[
+			SELECT FULLNAME
+			FROM TBL_ATTACH
+			WHERE BNO = #{bno}
+			ORDER BY REGDATE
+		]]>
+	</select>
+	
 </mapper>

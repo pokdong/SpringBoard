@@ -57,4 +57,9 @@ public class BoardServiceImpl implements BoardService {
 	public long count(SearchCriteria cri) throws Exception {
 		return dao.count(cri);
 	}
+
+	@Override
+	public List<String> getAttach(long bno) throws Exception {
+		return dao.getAttach(bno);
+	}
 }

@@ -1,35 +1,28 @@
-function checkImageType(fileName){
-	
-	var pattern = /jpg|gif|png|jpeg/i;
-	
-	return fileName.match(pattern);
-
-}
-
-function getFileInfo(fullName){
-		
-	var fileName,imgsrc, getLink;
-	
-	var fileLink;
-	
-	if(checkImageType(fullName)){
-		imgsrc = "/displayFile?fileName="+fullName;
-		fileLink = fullName.substr(14);
-		
-		var front = fullName.substr(0,12); // /2015/07/01/ 
-		var end = fullName.substr(14);
-		
-		getLink = "/displayFile?fileName="+front + end;
-		
-	}else{
-		imgsrc ="/resources/dist/img/file.png";
-		fileLink = fullName.substr(12);
-		getLink = "/displayFile?fileName="+fullName;
+function checkImageFile(fullName) {
+		return fullName.match(/jpg|jpeg|gif|png/i);
 	}
-	fileName = fileLink.substr(fileLink.indexOf("_")+1);
-	
-	return  {fileName:fileName, imgsrc:imgsrc, getLink:getLink, fullName:fullName};
-	
-}
 
+	function getFileInfo(fullName) {
+		var fileName, imgsrc, getLink;
+		var fileLink;
+		
+		if(checkImageFile(fullName)) {
+			imgsrc = "/displayFile?fileName="+fullName; //thumbnail
+			fileLink = fullName.substr(fullName.lastIndexOf('/') + 3); //UID_파일명
+			getLink = "/displayFile?fileName="+fullName.replace(/s_/, ''); //실제파일
+			
+			isImage = true;
+		}
+		else {
+			imgsrc ="/resources/dist/img/file.png";
+			fileLink = fullName.substr(fullName.lastIndexOf('/') + 1); //UID_파일명
+			getLink = "/displayFile?fileName="+fullName;
+			
+			isImage = false;
+		}
+		
+		fileName = fileLink.substr(fileLink.indexOf("_") + 1);
+		
+		return  {fileName:fileName, imgsrc:imgsrc, getLink:getLink, fullName:fullName, isImage:isImage};
+	}
 

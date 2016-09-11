@@ -4,6 +4,9 @@
 
 <%@include file="../include/header.jsp" %>
 
+<script src="/resources/js/handlebars4.0.5.js"></script>
+<script src="/resources/js/upload.js"></script>
+
 <form role="form" method="post">
 	<input type='hidden' name='bno' value="${boardVO.bno}">
 	<input type='hidden' name='page' value="${cri.page}">
@@ -47,10 +50,16 @@
 					</div>
 
 
-<div class="box-footer" align="right"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
-	<button type="submit" id="btn_modify" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
-	<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
-	<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
+<div class="box-footer"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
+
+	<ul class="mailbox-attachments clearfix uploadedList">
+	</ul>
+	
+	<div class="form-control" align="right">
+		<button type="submit" id="btn_modify" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+		<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
+		<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
+	</div>
 </div>
 
 		            
@@ -59,16 +68,41 @@
         
       	</div>
       	
-      	
 <%@include file="reply.jsp" %>
-
       	
    	</section>
    	
 	</div>
     
-    
-    
+<%@include file="../include/footer.jsp" %>
+
+
+
+
+<!-- 
+<script id="templateAttach" type="text/x-handlebars-template">
+<li>
+  <span class="mailbox-attachment-icon has-img">
+	<img src="{{imgsrc}}" alt="Attachment">
+  </span>
+
+  <div class="mailbox-attachment-info">
+	<a href="{{getLink}}" target="_blank" class="mailbox-attachment-name">{{fileName}}</a>
+  </div>
+</li>                
+</script>
+-->
+
+<script id="templateAttach" type="text/x-handlebars-template">
+<li data-src='{{fullName}}'>
+  <span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
+  <div class="mailbox-attachment-info">
+	<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	</span>
+  </div>
+</li>                
+</script>
+
 <script>
 	var formObj = $("form[role='form']");
 	
@@ -136,6 +170,32 @@
 	});
 	
 </script>
-    
-    
-<%@include file="../include/footer.jsp" %>
+
+
+
+<script>
+	//bno는 reply.jsp에 있음.
+	var template = Handlebars.compile($('#templateAttach').html());
+		
+		
+	console.log("ㅇㅋ?????");
+	console.log("bno : " + bno);
+	
+	var template = Handlebars.compile($("#templateAttach").html());
+	
+	$.getJSON("/board/getAttach/"+bno, function(list){
+		
+		console.log("넌 뭐냐? " + list);
+		
+		$(list).each(function(){
+			
+			var fileInfo = getFileInfo(this);
+			console.log("fileInfo : " + fileInfo);
+			
+			var html = template(fileInfo);
+			
+			 $(".uploadedList").append(html);
+			
+		});
+	});
+</script>

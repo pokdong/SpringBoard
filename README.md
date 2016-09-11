@@ -29,10 +29,11 @@ In-depth study for Spring framework
    - [X] IE 10 이하거나 Mobile인 경우 숨김
  - [X] 작성중인 게시글의 첨부파일 삭제 (unload 이용)
  - Transaction
-  - [X] 게시글 추가일 때 첨부파일 첨부일 경우
-  - [X] 이미 등록된 게시글의 첨부파일 수정 (전체 삭제 후 다시 추가)
-  - [X] 게시글 삭제일 때 첨부파일도 삭제
- - 첨부파일이 Image일 경우 Lightbox 적용.
+    - [X] 게시글 추가일 때 첨부파일 첨부일 경우
+    - [X] 이미 등록된 게시글의 첨부파일 수정 (전체 삭제 후 다시 추가)
+    - [X] 게시글 삭제일 때 첨부파일도 삭제
+
+ - [X] 첨부파일이 Image일 경우 Lightbox 적용.
 
 ## 0.5
 - Log-in / Log-out

@@ -29,13 +29,15 @@
   </head>
       <!-- jQuery 2.1.4 -->
     <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- IE 10 이하 from 이용 파일 업로드 지원 -->
+	<script src="/resources/xeyez/js/jquery.form.js"></script>
     
   <body class="skin-blue sidebar-mini">
     <div class="wrapper">
       
       <header class="main-header">
         <!-- Logo -->
-        <a href="/resources/index2.html" class="logo">
+        <a href="/board/list" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>LT</span>
           <!-- logo for regular state and mobile devices -->

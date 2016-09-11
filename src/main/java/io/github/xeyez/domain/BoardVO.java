@@ -1,5 +1,6 @@
 package io.github.xeyez.domain;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class BoardVO {
@@ -15,25 +16,7 @@ public class BoardVO {
 	private long goodcnt;
 	private long badcnt;
 	
-	public BoardVO() {
-	}
-	
-	
-	public BoardVO(long bno) {
-		this.bno = bno;
-	}
-	
-	public BoardVO(String title, String content, String writer) {
-		this.title = title;
-		this.content = content;
-		this.writer = writer;
-	}
-	
-	public BoardVO(int bno, int viewcnt) {
-		this.bno = bno;
-		this.viewcnt = viewcnt;
-	}
-	
+	private String[] files;
 	
 	public long getBno() {
 		return bno;
@@ -104,12 +87,18 @@ public class BoardVO {
 	public void setBadcnt(long badcnt) {
 		this.badcnt = badcnt;
 	}
-
+	
+	public String[] getFiles() {
+		return files;
+	}
+	public void setFiles(String[] files) {
+		this.files = files;
+	}
 
 	@Override
 	public String toString() {
 		return "BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
-				+ regdate + ", modcnt=" + modcnt + ", viewcnt=" + viewcnt + ", goodcnt=" + goodcnt + ", badcnt="
-				+ badcnt + "]";
+				+ regdate + ", modcnt=" + modcnt + ", viewcnt=" + viewcnt + ", replycnt=" + replycnt + ", goodcnt="
+				+ goodcnt + ", badcnt=" + badcnt + ", files=" + Arrays.toString(files) + "]";
 	}
 }

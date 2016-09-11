@@ -18,9 +18,17 @@ public class BoardServiceImpl implements BoardService {
 	@Inject
 	private BoardDAO dao;
 	
+	@Transactional
 	@Override
 	public void write(BoardVO vo) throws Exception {
 		dao.create(vo);
+		
+		String[] files = vo.getFiles();
+		if(files != null) {
+			for(String fullName : files) {
+				dao.addAttach(fullName);
+			}
+		}
 	}
 
 	@Transactional(isolation=Isolation.READ_COMMITTED)
@@ -30,13 +38,26 @@ public class BoardServiceImpl implements BoardService {
 		return dao.read(bno);
 	}
 
+	@Transactional
 	@Override
 	public void modify(BoardVO vo) throws Exception {
 		dao.update(vo);
+		
+		long bno = vo.getBno();
+		dao.deleteAllAttach(bno);
+		
+		String[] files = vo.getFiles();
+		if(files != null) {
+			for(String fullName : files) {
+				dao.replaceAttach(fullName, bno);
+			}
+		}
 	}
 
+	@Transactional
 	@Override
 	public void remove(long bno) throws Exception {
+		dao.deleteAllAttach(bno);
 		dao.delete(bno);
 	}
 
@@ -48,5 +69,10 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public long count(SearchCriteria cri) throws Exception {
 		return dao.count(cri);
+	}
+
+	@Override
+	public List<String> getAttach(long bno) throws Exception {
+		return dao.getAttach(bno);
 	}
 }

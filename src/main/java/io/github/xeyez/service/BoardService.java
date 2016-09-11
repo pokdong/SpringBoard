@@ -17,4 +17,6 @@ public interface BoardService {
 	List<BoardVO> list(SearchCriteria cri) throws Exception;
 	
 	long count(SearchCriteria cri) throws Exception;
+	
+	List<String> getAttach(long bno) throws Exception;
 }

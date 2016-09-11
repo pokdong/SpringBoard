@@ -1,8 +1,15 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- <%@ page session="false" %> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="../include/header.jsp" %>
+
+<link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
+<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
+
+<script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+<script src="/resources/xeyez/js/upload.js"></script>
+
 
     <!-- Main content -->
 	<section class="content">
@@ -49,9 +56,28 @@
 </form>
 
 
-<div class="box-footer" align="right"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
-	<button type="submit" class="btn btn-primary">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
-	<button type="submit" class="btn btn-warning">취소</button>
+<div class="box-footer"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
+
+	<div class="form-group">
+		<div class="fileDrop" >
+			여기에 파일을 Drag & Drop 하세요.
+		</div>
+		
+		<div class="fileForm" >
+			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
+			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
+			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
+			</form>
+		</div>
+	</div>
+	
+	<ul class="mailbox-attachments clearfix uploadedList">
+	</ul>
+
+	<div align="right">
+		<button type="submit" class="btn btn-primary">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+		<button type="submit" class="btn btn-warning">취소</button>
+	</div>
 </div>
 
 		            
@@ -63,8 +89,17 @@
    	
 	</div>
     
-    
-    
+
+<%@include file="../include/footer.jsp" %>
+
+<script>
+	// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
+	var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
+	if(isUnavailableBrowser) {
+		$('.fileDrop').attr('hidden', 'true');
+	}
+</script>
+
 <script>
 	var formObj = $("form[role='form']");
 	
@@ -95,6 +130,33 @@
 		self.location = query;
 	});
 </script>
-    
-    
-<%@include file="../include/footer.jsp" %>
+
+<%@include file="attachment.jsp" %>
+
+<!-- 출력 후 삭제하면 이전 첨부된 파일이 실제 삭제됨. 이 때, 취소를 누를 때 추가 로직 필요.. -->
+<!-- 
+<script>
+	/* 첨부파일 출력 */
+	
+	//templateAttach는 attachment.jsp
+	
+	var bno = ${boardVO.bno};
+	var template = Handlebars.compile($('#templateAttach').html());
+	
+	$.getJSON("/board/getAttach/"+bno, function(list){
+		
+		$(list).each(function(){
+			
+			var fileInfo = getFileInfo(this);
+			console.log("fileInfo : " + fileInfo);
+			
+			var html = template(fileInfo);
+			
+			 $(".uploadedList").append(html);
+			
+		});
+	});
+</script>
+ -->
+
+<script src="/resources/lightbox2/js/lightbox.min.js"></script>

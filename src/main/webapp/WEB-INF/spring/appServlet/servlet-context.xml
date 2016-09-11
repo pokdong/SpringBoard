@@ -23,6 +23,13 @@
 	
 	<context:component-scan base-package="io.github.xeyez.controller" />
 	
+	<!-- File Upload -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485860" />
+	</beans:bean>
 	
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="C:\\springboard\\upload" />
+	</beans:bean>
 	
 </beans:beans>

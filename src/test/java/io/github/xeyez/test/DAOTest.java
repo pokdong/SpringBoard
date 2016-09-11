@@ -10,8 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.SearchCriteria;
@@ -41,15 +43,14 @@ public class DAOTest {
 		
 		//BoardVO vo = new BoardVO("adminTitle", "adminContent", "admin");
 		//BoardVO vo = new BoardVO("managerTitle", "managerContent", "manager");
-		BoardVO vo = new BoardVO("userTitle", "userContent", "user");
-		dao.create(vo);
+		//BoardVO vo = new BoardVO("userTitle", "userContent", "user");
+		//dao.create(vo);
 	}
 
 	public void testRead() throws Exception {
 		logger.info(">>>>>>>>>>>>>>>" + dao.read(1).toString());
 	}
 	
-	@Test
 	public void testListSearch() {
 		SearchCriteria cri = new SearchCriteria();
 		cri.setPage(1);
@@ -78,5 +79,17 @@ public class DAOTest {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	@Test
+	@Transactional
+	public void test() throws Exception {
+		List<String> list = dao.getAttach(917500);
+		
+		logger.info("==================================");
+		for(String s : list) {
+			logger.info(s);
+		}
 	}
 }

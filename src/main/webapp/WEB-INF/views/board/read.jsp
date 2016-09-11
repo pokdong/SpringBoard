@@ -1,8 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@include file="../include/header.jsp" %>
+
+<link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
+<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
+
+<script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+<script src="/resources/xeyez/js/upload.js"></script>
+
 
 <form role="form" method="post">
 	<input type='hidden' name='bno' value="${boardVO.bno}">
@@ -47,10 +54,16 @@
 					</div>
 
 
-<div class="box-footer" align="right"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
-	<button type="submit" id="btn_modify" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
-	<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
-	<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
+<div class="box-footer"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
+
+	<ul class="mailbox-attachments clearfix uploadedList">
+	</ul>
+	
+	<div align="right">
+		<button type="submit" id="btn_modify" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+		<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
+		<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
+	</div>
 </div>
 
 		            
@@ -59,16 +72,33 @@
         
       	</div>
       	
-      	
 <%@include file="reply.jsp" %>
-
       	
    	</section>
    	
 	</div>
     
-    
-    
+<%@include file="../include/footer.jsp" %>
+
+
+
+
+<script id="templateAttach_read" type="text/x-handlebars-template">
+<li>
+  <span class="mailbox-attachment-icon has-img">
+	<img src="{{imgsrc}}" alt="Attachment">
+  </span>
+
+  <div class="mailbox-attachment-info" data-src="{{fullName}}">
+	{{#if isImage}}
+		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img">{{fileName}}</a>
+	{{else}}
+		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	{{/if}}
+  </div>
+</li>
+</script>
+
 <script>
 	var formObj = $("form[role='form']");
 	
@@ -83,6 +113,18 @@
 	
 	// 삭제
 	$("#btn_remove").on("click", function() {
+		
+		//replycnt는 reply.jsp에.
+		//el 변수를 사용하지 않는 이유는 클릭할 때마다 count가 달라질 수 있기 때문.
+		var replyCnt =  $("#replycnt").html().replace(/[^0-9]/g, "");
+		
+		if(replyCnt > 0) {
+			alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
+			return;
+		}
+		
+		deleteAllFiles();
+		
 		formObj.attr("action", "/board/remove");
 		formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
 		formObj.submit();
@@ -99,6 +141,19 @@
 		formObj.submit();
 	});
 	
+	
+	function deleteAllFiles() {
+		var arr = [];
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 arr.push($(this).attr("data-src"));
+		});
+		
+		if(arr.length > 0){
+			$.post("/deleteAllFiles", {files:arr}, function(){
+				
+			});
+		}
+	}
 </script>
 
 
@@ -136,6 +191,30 @@
 	});
 	
 </script>
-    
-    
-<%@include file="../include/footer.jsp" %>
+
+
+
+<script>
+	/* 첨부파일 출력 */
+	
+	//bno는 reply.jsp에 있음.
+	//var bno = ${boardVO.bno};
+	var template = Handlebars.compile($('#templateAttach_read').html());
+	
+	$.getJSON("/board/getAttach/"+bno, function(list){
+		
+		$(list).each(function(){
+			
+			var fileInfo = getFileInfo(this);
+			console.log("fileInfo : " + fileInfo);
+			
+			var html = template(fileInfo);
+			
+			 $(".uploadedList").append(html);
+			
+		});
+	});
+</script>
+
+
+<script src="/resources/lightbox2/js/lightbox.min.js"></script>

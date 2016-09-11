@@ -4,6 +4,13 @@
 
 <%@include file="../include/header.jsp" %>
 
+<link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
+<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
+
+<script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+<script src="/resources/xeyez/js/upload.js"></script>
+
+
     <!-- Main content -->
 	<section class="content">
     	<div class="row">
@@ -38,11 +45,32 @@
 		<input name="writer" type="text" class="form-control" placeholder="Enter Writer"> <!-- 로그인 기능이 구현되면 readonly 필요 -->
 	</div>
 	
-	<div class="box-footer" align="right"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
-		<button type="submit" class="btn btn-primary">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+</form>
+
+<div class="box-footer" > <!-- box-footer : 전체 여백 + 상단 테두리 -->
+	
+	<div class="form-group">
+		<div class="fileDrop" >
+			여기에 파일을 Drag & Drop 하세요.
+		</div>
+		
+		<div class="fileForm" >
+			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
+			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
+			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
+			</form>
+		</div>
 	</div>
 	
-</form>
+	<ul class="mailbox-attachments clearfix uploadedList">
+	</ul>
+
+	<div align="right">
+		<button type="submit" id="btn_confirm" class="btn btn-primary">확인</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
+	</div>
+</div>
+
+
 
 					</div>
 		            
@@ -53,5 +81,38 @@
    	</section>
    	
 	</div>
-    
+
 <%@include file="../include/footer.jsp" %>
+
+
+<script>
+	// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
+	var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
+	if(isUnavailableBrowser) {
+		$('.fileDrop').attr('hidden', 'true');
+	}
+</script>
+
+<%@include file="attachment.jsp" %>
+
+<script>
+	//뒤로 가기나 다른 페이지 갈 때 첨부했던 파일 삭제
+	$(window).unload(function() {
+		deleteAllFiles();
+	});
+	
+	function deleteAllFiles() {
+		var arr = [];
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 arr.push($(this).attr("data-src"));
+		});
+		
+		if(arr.length > 0){
+			$.post("/deleteAllFiles", {files:arr}, function(){
+				
+			});
+		}
+	}
+</script>
+
+<script src="/resources/lightbox2/js/lightbox.min.js"></script>

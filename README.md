@@ -18,15 +18,21 @@ In-depth study for Spring framework
  - [X] CRUD 및 Animation
 
 ## 0.3
-- [X] 댓글수, 게시글 조회수 처리 (AOP, Transaction)
- - [X] 게시판 화면에서 댓글수 클릭하면 댓글 부분으로 이동.
+- [X] AOP, Transaction 처리
+ - [X] 댓글수, 게시글 조회수 처리 (AOP, Transaction)
+  - [X] 게시판 화면에서 댓글수 클릭하면 댓글 부분으로 이동.
 
 ## 0.4
 - File upload 기능
- - [ ] 일반 Form Tag 이용 파일 추가
- - [ ] AJAX 이용 Drag & Drop 파일 추가
- - [ ] 작성중인 게시글의 첨부파일 삭제
- - [ ] 이미 등록된 게시글에 첨부된 파일 삭제
+ - [X] 일반 Form Tag 이용 파일 추가
+ - [X] AJAX 이용 Drag & Drop 파일 추가
+  - [X] IE 10 이하거나 Mobile인 경우 숨김
+ - [X] 작성중인 게시글의 첨부파일 삭제 (unload 이용)
+ - Transaction
+  - [X] 게시글 추가일 때 첨부파일 첨부일 경우
+  - [X] 이미 등록된 게시글의 첨부파일 수정 (전체 삭제 후 다시 추가)
+  - [X] 게시글 삭제일 때 첨부파일도 삭제
+ - 첨부파일이 Image일 경우 Lightbox 적용.
 
 ## 0.5
 - Log-in / Log-out

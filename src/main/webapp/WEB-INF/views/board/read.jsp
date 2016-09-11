@@ -89,7 +89,7 @@
 	<img src="{{imgsrc}}" alt="Attachment">
   </span>
 
-  <div class="mailbox-attachment-info">
+  <div class="mailbox-attachment-info" data-src="{{fullName}}">
 	{{#if isImage}}
 		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img">{{fileName}}</a>
 	{{else}}
@@ -113,6 +113,18 @@
 	
 	// 삭제
 	$("#btn_remove").on("click", function() {
+		
+		//replycnt는 reply.jsp에.
+		//el 변수를 사용하지 않는 이유는 클릭할 때마다 count가 달라질 수 있기 때문.
+		var replyCnt =  $("#replycnt").html().replace(/[^0-9]/g, "");
+		
+		if(replyCnt > 0) {
+			alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
+			return;
+		}
+		
+		deleteAllFiles();
+		
 		formObj.attr("action", "/board/remove");
 		formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
 		formObj.submit();
@@ -129,6 +141,19 @@
 		formObj.submit();
 	});
 	
+	
+	function deleteAllFiles() {
+		var arr = [];
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 arr.push($(this).attr("data-src"));
+		});
+		
+		if(arr.length > 0){
+			$.post("/deleteAllFiles", {files:arr}, function(){
+				
+			});
+		}
+	}
 </script>
 
 

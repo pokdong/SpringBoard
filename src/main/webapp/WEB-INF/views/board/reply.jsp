@@ -21,6 +21,10 @@
 			
 		</div>
 		
+		<div id="replycnt" hidden="true">
+			${boardVO.replycnt};
+		</div>
+		
 		<ul class="timeline">
 			<li class="time-label" id="repliesDiv">
 				<button type="button" id="btn_top" class="btn bg-green">▲ 맨 위로 가기</button>

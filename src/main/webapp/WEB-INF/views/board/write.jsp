@@ -95,4 +95,24 @@
 
 <%@include file="attachment.jsp" %>
 
+<script>
+	//뒤로 가기나 다른 페이지 갈 때 첨부했던 파일 삭제
+	$(window).unload(function() {
+		deleteAllFiles();
+	});
+	
+	function deleteAllFiles() {
+		var arr = [];
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 arr.push($(this).attr("data-src"));
+		});
+		
+		if(arr.length > 0){
+			$.post("/deleteAllFiles", {files:arr}, function(){
+				
+			});
+		}
+	}
+</script>
+
 <script src="/resources/lightbox2/js/lightbox.min.js"></script>

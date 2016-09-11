@@ -6,14 +6,14 @@
 	<img src="{{imgsrc}}" alt="Attachment">
   </span>
 
-  <div class="mailbox-attachment-info">
+  <div class="mailbox-attachment-info" data-src="{{fullName}}">
 	{{#if isImage}}
 		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img">{{fileName}}</a>
 	{{else}}
 		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
 	{{/if}}
 
-	<span data-src="{{fullName}}" class="btn btn-default btn-xs pull-right delbtn">
+	<span class="btn btn-default btn-xs pull-right delbtn">
 		<i class="fa fa-fw fa-remove"></i>
 	</span>
   </div>
@@ -61,7 +61,7 @@
 	});
 	
 	//삭제
-	$('.uploadedList').on('click', '.delbtn', function() {
+	$('.uploadedList').on('click', '.mailbox-attachment-info', function() {
 		var that  = $(this);
 		
 		$.ajax({
@@ -126,7 +126,7 @@
 		});
 		
 		var str ="";
-		$(".uploadedList .delbtn").each(function(index){
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
 			 str += "<input type='text' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
 		});
 		

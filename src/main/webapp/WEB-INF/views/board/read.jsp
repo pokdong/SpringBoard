@@ -4,6 +4,8 @@
 
 <%@include file="../include/header.jsp" %>
 
+<link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
+
 <script src="/resources/js/handlebars4.0.5.js"></script>
 <script src="/resources/js/upload.js"></script>
 
@@ -74,6 +76,7 @@
    	
 	</div>
     
+<script src="/resources/lightbox2/js/lightbox-plus-jquery.min.js"></script>
 <%@include file="../include/footer.jsp" %>
 
 

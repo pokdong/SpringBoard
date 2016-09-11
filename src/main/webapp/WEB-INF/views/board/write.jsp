@@ -7,8 +7,6 @@
 <link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
 
 <script src="/resources/js/handlebars4.0.5.js"></script>
-<!-- IE 10 이하 from 이용 파일 업로드 지원 -->
-<script src="/resources/js/jquery.form.js"></script>
 <script src="/resources/js/upload.js"></script>
 
 
@@ -114,7 +112,6 @@
    	
 	</div>
 
-<script src="/resources/lightbox2/js/lightbox-plus-jquery.min.js"></script>
 <%@include file="../include/footer.jsp" %>
 
 
@@ -327,3 +324,4 @@
 </script>
 
 
+<script src="/resources/lightbox2/js/lightbox.min.js"></script>

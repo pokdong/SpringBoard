@@ -36,15 +36,6 @@ In-depth study for Spring framework
  - [X] 첨부된 파일 클릭시 Image일 경우 Lightbox 적용하여 바로 보기
 
 ## 0.5
-- Log-in / Log-out
-
-### 0.5.1
-- Intercepor 이용
- - [ ] Log-in
- - [ ] Log-out
- - [ ] 자동 Log-in (Remeber me)
-
-### 0.5.2
 - Spring Security 적용
  - [ ] Log-in
  - [ ] Log-out

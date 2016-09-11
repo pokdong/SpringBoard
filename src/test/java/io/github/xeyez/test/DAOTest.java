@@ -82,23 +82,14 @@ public class DAOTest {
 	}
 	
 	
-	
-	
-	
-	@Value("${mybatis.board}")
-	private String namespace1;
-	
-	@Value("${mybatis.reply}")
-	private String namespace2;
-	
 	@Test
 	@Transactional
-	public void testWrite() throws Exception {
+	public void test() throws Exception {
+		List<String> list = dao.getAttach(917500);
 		
-		logger.info("================================================");
-		logger.info(namespace1);
-		logger.info(namespace2);
-		logger.info("================================================");
-
+		logger.info("==================================");
+		for(String s : list) {
+			logger.info(s);
+		}
 	}
 }

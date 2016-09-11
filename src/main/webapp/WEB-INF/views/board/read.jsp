@@ -76,13 +76,11 @@
    	
 	</div>
     
-<script src="/resources/lightbox2/js/lightbox-plus-jquery.min.js"></script>
 <%@include file="../include/footer.jsp" %>
 
 
 
 
-<!-- 
 <script id="templateAttach" type="text/x-handlebars-template">
 <li>
   <span class="mailbox-attachment-icon has-img">
@@ -90,20 +88,13 @@
   </span>
 
   <div class="mailbox-attachment-info">
-	<a href="{{getLink}}" target="_blank" class="mailbox-attachment-name">{{fileName}}</a>
+	{{#if isImage}}
+		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img">{{fileName}}</a>
+	{{else}}
+		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	{{/if}}
   </div>
-</li>                
-</script>
--->
-
-<script id="templateAttach" type="text/x-handlebars-template">
-<li data-src='{{fullName}}'>
-  <span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
-  <div class="mailbox-attachment-info">
-	<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
-	</span>
-  </div>
-</li>                
+</li>
 </script>
 
 <script>
@@ -188,8 +179,6 @@
 	
 	$.getJSON("/board/getAttach/"+bno, function(list){
 		
-		console.log("넌 뭐냐? " + list);
-		
 		$(list).each(function(){
 			
 			var fileInfo = getFileInfo(this);
@@ -202,3 +191,6 @@
 		});
 	});
 </script>
+
+
+<script src="/resources/lightbox2/js/lightbox.min.js"></script>

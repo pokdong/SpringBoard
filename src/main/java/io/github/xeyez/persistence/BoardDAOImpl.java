@@ -73,6 +73,6 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public List<String> getAttach(long bno) throws Exception {
-		return session.selectOne(namespace + ".getAttach", bno);
+		return session.selectList(namespace + ".getAttach", bno);
 	}
 }

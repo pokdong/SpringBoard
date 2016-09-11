@@ -133,6 +133,8 @@
 
 <%@include file="attachment.jsp" %>
 
+<!-- 출력 후 삭제하면 이전 첨부된 파일이 실제 삭제됨. 이 때, 취소를 누를 때 추가 로직 필요.. -->
+<!-- 
 <script>
 	/* 첨부파일 출력 */
 	
@@ -155,5 +157,6 @@
 		});
 	});
 </script>
+ -->
 
 <script src="/resources/lightbox2/js/lightbox.min.js"></script>

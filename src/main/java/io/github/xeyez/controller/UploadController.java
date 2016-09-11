@@ -112,14 +112,16 @@ public class UploadController {
 	public ResponseEntity<String> deleteAllFiles(@RequestParam("files[]") String[] files) throws Exception {
 		logger.info("deleteAllFiles : " + files);
 		
-		if(files != null || files.length > 0) {
-			for(String fileName : files) {
-				MediaType mediaType = UploadFileUtils.getMediaType(fileName);
-				if (mediaType != null) {
-					new File(uploadPath + fileName.replaceFirst("s_", "").replace('/', File.separatorChar)).delete();
+		if(files != null) {
+			if(files.length > 0) {
+				for(String fileName : files) {
+					MediaType mediaType = UploadFileUtils.getMediaType(fileName);
+					if (mediaType != null) {
+						new File(uploadPath + fileName.replaceFirst("s_", "").replace('/', File.separatorChar)).delete();
+					}
+					
+					new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
 				}
-				
-				new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
 			}
 		}
 		

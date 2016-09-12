@@ -11,28 +11,32 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import io.github.xeyez.user.NewUser;
-import io.github.xeyez.user.NewUserValidator;
-import io.github.xeyez.user.UserJoinService;
+import io.github.xeyez.domain.NewUserVO;
+import io.github.xeyez.security.CustomUserDetailsService;
+import io.github.xeyez.security.NewUserValidator;
 
 @Controller
-@RequestMapping("/sec/user/join")
+@RequestMapping("sec/user/join")
 public class JoinController {
 	private static final Logger logger = LoggerFactory.getLogger(JoinController.class);
 	
 	public static final String USER_JOIN_SUCCESS = "user/joinsuccess";
 	public static final String USER_JOIN_FORM = "user/joinform";
+
+	//private UserJoinService userJoinService;
 	
 	@Inject
-	private UserJoinService userJoinService;
+	private CustomUserDetailsService userJoinService;
+	
 	
 	@ModelAttribute("newUser")
-	public NewUser formBacking() {
+	public NewUserVO formBacking() {
 		logger.info("============== formBacking()");
 		
-		return new NewUser();
+		return new NewUserVO();
 	}
 
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String form() {
 		logger.info("============== form()");
@@ -40,25 +44,31 @@ public class JoinController {
 		return USER_JOIN_FORM;
 	}
 
+	
 	@RequestMapping(method = RequestMethod.POST)
-	public String submit(@ModelAttribute("newUser") NewUser newUser, Errors errors) {
+	public String submit(@ModelAttribute("newUser") NewUserVO newUser, Errors errors) throws Exception {
 		logger.info("============== submit()");
+
+		//joinform.jsp의 form:form Tag와 연동.
+		//errors가 스프링에 의해 객체가 만들어지고
 		
+		//입력 값 검증
 		new NewUserValidator().validate(newUser, errors);
+		
+		//계속 참조되어 전달됨.
+		
 		if (errors.hasErrors())
 			return USER_JOIN_FORM;
 		
 		try {
-			if(newUser == null)
-				throw new NullPointerException("newUser is NULL!!");
-			else
-				logger.info(">>>>>>>>>>>>>>>>>" + newUser.toString());
+			// 가입(생성) 처리
+			userJoinService.signUp(newUser);
 			
-			userJoinService.join(newUser);
 			return USER_JOIN_SUCCESS;
 		} catch (DuplicateKeyException ex) {
 			errors.rejectValue("name", "duplicate");
 			return USER_JOIN_FORM;
 		}
 	}
+	
 }

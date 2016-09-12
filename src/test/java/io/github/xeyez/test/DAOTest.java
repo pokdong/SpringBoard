@@ -82,14 +82,12 @@ public class DAOTest {
 	}
 	
 	
+	@Value("${attach.uploadPath}")
+	private String uploadPath;
+	
+	
 	@Test
-	@Transactional
 	public void test() throws Exception {
-		List<String> list = dao.getAttach(917500);
-		
-		logger.info("==================================");
-		for(String s : list) {
-			logger.info(s);
-		}
+		logger.info(uploadPath);
 	}
 }

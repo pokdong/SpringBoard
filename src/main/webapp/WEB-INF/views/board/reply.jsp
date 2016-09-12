@@ -15,14 +15,11 @@
 				<textarea class="form-control" id="newReplyText" maxlength="100" placeholder="reply text"></textarea>
 			</div>
 			
-			<div class="box-footer" align="right">
-				<button type="submit" id="btn_replyAdd" class="btn btn-primary">등록</button>
+			<div class="box-footer">
+				<button type="button" id="btn_replyUpdate" class="btn bg-green">갱신</button>
+				<button type="submit" id="btn_replyAdd" class="btn btn-primary" style="float: right;">등록</button>
 			</div>
 			
-		</div>
-		
-		<div id="replycnt" hidden="true">
-			${boardVO.replycnt};
 		</div>
 		
 		<ul class="timeline">
@@ -91,7 +88,8 @@
 		ADD : 0,
 		DELETE : 1,
 		MODIFY : 2,
-		SHOW_WITH_REPLY : 3
+		SHOW_WITH_REPLY : 3,
+		UPDATE : 4
 	};
 	
 	function ReplyInfo(replyAction, rno) {
@@ -225,6 +223,19 @@
 						$('html, body').animate({scrollTop: offset.top}, 500);
 					});
 					break;
+					
+				case replyAction.UPDATE :
+					var offset = $('#repliesArea').offset();
+					$('html, body').animate({scrollTop: offset.top}, 250, function() {
+						
+						var removeObj = $(".replyLi").remove();
+						removeObj.ready(function() {
+							
+							target.before(html);
+							
+						});
+					});
+					break;
 			}
 		}
 		else {
@@ -249,7 +260,9 @@
 	
 	
 	
-	$('#btn_top').on('click', function() {
+	$('#btn_top').on('click', function(e) {
+		e.preventDefault();
+		
 		var offset = $('#repliesArea').offset();
 		$('html, body').animate({scrollTop: offset.top}, 450);
 	});
@@ -380,6 +393,15 @@
 				updatePage(bno, replyPage, replyInfo);
 			}
 		});
+	});
+	
+	$('#btn_replyUpdate').on('click', function(e) {
+		e.preventDefault();
+		
+		replyPage = 1;
+		
+		var replyInfo = new ReplyInfo(replyAction.UPDATE, -1);
+		updatePage(bno, replyPage, replyInfo);
 	});
 	
 	/* 

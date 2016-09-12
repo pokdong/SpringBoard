@@ -69,7 +69,9 @@
 		            
 		        </div>
 	        </div>
-        
+	        
+<!-- <button id="testbtn">test</button> -->
+
       	</div>
       	
 <%@include file="reply.jsp" %>
@@ -136,46 +138,36 @@
 	// 삭제
 	$("#btn_remove").on("click", function() {
 		
-		//replycnt는 reply.jsp에.
-		//el 변수를 사용하지 않는 이유는 클릭할 때마다 count가 달라질 수 있기 때문.
-		var replyCnt =  $("#replycnt").html().replace(/[^0-9]/g, "");
+		//var replyCnt =  $("#replycnt").html().replace(/[^0-9]/g, "");
+		//var replyCnt = ${boardVO.replycnt};
 		
-		if(replyCnt > 0) {
-			alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
-			return;
-		}
+		// 실시간으로 댓글 개수 얻고 삭제
 		
-		var arr = [];
-		$(".uploadedList .mailbox-attachment-info").each(function(index){
-			 arr.push($(this).attr("data-src"));
-		});
-		
-		console.log(arr);
-		
-		if(arr.length > 0){
-			$.post("/deleteAllFiles", {files:arr}, function(){
-				
-			});
-		}
-		
-		/* $.ajax({
-			type : 'POST',
-			url : '/deleteAllFiles',
+		$.ajax({
+			type : "POST",
+			url : '/replies/count/' + bno,
 			headers : {
 				"Content-Type" : "application/json",
 				"X-HTTP-Method-Override" : "POST"
 			},
-			data : {files:arr},
 			dataType : "text",
-			success : function(response) {
-				console.log(response);
+			success : function(replyCnt) {
+				console.log("response : " + replyCnt);
+				
+				if(replyCnt > 0) {
+					alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
+					return;
+				}
+				
+				formObj.attr("action", "/board/remove");
+				formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
+				formObj.submit();
+				
+			},
+			error : function(request, status, error) {
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
-		}); */
-		
-		
-		formObj.attr("action", "/board/remove");
-		formObj.attr("method", "post"); // 삭제 후 현재 보던 페이지로 유지 필요
-		formObj.submit();
+		});
 	});
 	
 	// 목록
@@ -188,6 +180,21 @@
 		formObj.attr("method", "get");
 		formObj.submit();
 	});
+	
+	function deleteAllFiles() {
+		var arr = [];
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 arr.push($(this).attr("data-src"));
+		});
+		
+		console.log(arr);
+		
+		if(arr.length > 0){
+			$.post("/deleteAllFiles", {files:arr}, function(){
+				
+			});
+		}
+	}
 </script>
 
 
@@ -221,6 +228,42 @@
 				
 				updatePage(bno, replyPage, null);
 			}
+		});
+		
+		
+		$('#testbtn').click(function(e) {
+			e.preventDefault();
+			
+			/* var arr = [];
+			$(".uploadedList .mailbox-attachment-info").each(function(index){
+				 arr.push($(this).attr("data-src"));
+			});
+			
+			console.log(arr);
+			
+			if(arr.length > 0){
+				$.post("/deleteAllFiles", {files:arr}, function(){
+					
+				});
+			} */
+			
+			//var replyCnt = ${boardVO.replycnt};
+			$.ajax({
+				type : "POST",
+				url : '/replies/count/' + bno,
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "POST"
+				},
+				dataType : "text",
+				success : function(response) {
+					console.log("response : " + response);
+				},
+				error : function(request, status, error) {
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+			
 		});
 	});
 	

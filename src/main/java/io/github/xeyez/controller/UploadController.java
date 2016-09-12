@@ -5,12 +5,12 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +30,7 @@ public class UploadController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
-	@Resource
+	@Value("${attach.uploadPath}")
 	private String uploadPath;
 
 /*	
@@ -63,6 +63,7 @@ public class UploadController {
 	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
 
 		logger.info("fileName : " + fileName);
+		logger.info("uploadPath : " + uploadPath);
 		
 		ResponseEntity<byte[]> entity = null;
 
@@ -111,7 +112,7 @@ public class UploadController {
 	@ResponseBody
 	@RequestMapping(value = "/deleteAllFiles", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteAllFiles(@RequestParam("files[]") String[] files) throws Exception {
-		logger.info("deleteAllFiles : " + files);
+		logger.info("deleteAllFiles : " + files.toString());
 		
 		if(files != null) {
 			if(files.length > 0) {

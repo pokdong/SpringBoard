@@ -22,14 +22,18 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="io.github.xeyez.controller" />
+
+	<context:property-placeholder location="classpath:config/attach.properties"/>
 	
 	<!-- File Upload -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10485860" />
+		<beans:property name="defaultEncoding" value="UTF-8"/>
+		<beans:property name="maxUploadSize" value="${attach.maxUploadSize}" />
+		<beans:property name="uploadTempDir" ref="uploadDirResource" />
 	</beans:bean>
 	
-	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="C:\\springboard\\upload" />
-	</beans:bean>
+	<beans:bean id="uploadDirResource" class="org.springframework.core.io.FileSystemResource">
+		<beans:constructor-arg value="${attach.uploadTempDir}" />
+ 	</beans:bean>
 	
 </beans:beans>

@@ -142,4 +142,24 @@ public class ReplyController {
 		
 		return entity;
 	}
+	
+	@RequestMapping(value = "/count/{bno}", method = RequestMethod.POST)
+	public ResponseEntity<Long> count(@PathVariable("bno") long bno) {
+		
+		logger.info("replyCount, bno : " + bno);
+		
+		ResponseEntity<Long> entity = null;
+		
+		try {
+			long replyCnt = service.count(bno);
+			logger.info("replyCnt : " + replyCnt);
+			
+			return new ResponseEntity<>(replyCnt, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
 }

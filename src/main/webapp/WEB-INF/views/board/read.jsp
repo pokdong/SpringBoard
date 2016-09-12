@@ -100,6 +100,28 @@
 </script>
 
 <script>
+	/* 첨부파일 출력 */
+	
+	//bno는 reply.jsp에 있음.
+	//var bno = ${boardVO.bno};
+	var template = Handlebars.compile($('#templateAttach_read').html());
+	
+	$.getJSON("/board/getAttach/"+bno, function(list){
+		
+		$(list).each(function(){
+			
+			var fileInfo = getFileInfo(this);
+			console.log("fileInfo : " + fileInfo);
+			
+			var html = template(fileInfo);
+			
+			 $(".uploadedList").append(html);
+			
+		});
+	});
+</script>
+
+<script>
 	var formObj = $("form[role='form']");
 	
 	console.log(formObj);
@@ -202,30 +224,6 @@
 		});
 	});
 	
-</script>
-
-
-
-<script>
-	/* 첨부파일 출력 */
-	
-	//bno는 reply.jsp에 있음.
-	//var bno = ${boardVO.bno};
-	var template = Handlebars.compile($('#templateAttach_read').html());
-	
-	$.getJSON("/board/getAttach/"+bno, function(list){
-		
-		$(list).each(function(){
-			
-			var fileInfo = getFileInfo(this);
-			console.log("fileInfo : " + fileInfo);
-			
-			var html = template(fileInfo);
-			
-			 $(".uploadedList").append(html);
-			
-		});
-	});
 </script>
 
 

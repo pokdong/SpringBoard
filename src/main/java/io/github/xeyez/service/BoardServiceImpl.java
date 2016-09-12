@@ -29,6 +29,8 @@ public class BoardServiceImpl implements BoardService {
 				dao.addAttach(fullName);
 			}
 		}
+		
+		dao.updateFilescnt(vo.getBno());
 	}
 
 	@Transactional(isolation=Isolation.READ_COMMITTED)

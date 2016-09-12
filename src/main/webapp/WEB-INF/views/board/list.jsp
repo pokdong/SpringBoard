@@ -42,6 +42,9 @@
 			<c:if test="${boardVO.replycnt > 0}">
 				<a href="/board/read${pageMaker.makeSearchQuery(boardVO.bno, pageMaker.cri.page)}&reply=true"><strong><small>[${boardVO.replycnt}]</small></strong></a>
 			</c:if>
+			<c:if test="${boardVO.filescnt > 0}">
+				<img src="/resources/xeyez/images/attach_small.png">
+			</c:if>
 		</td>
 		<td>${boardVO.writer}</td>
 		<td><fmt:formatDate value="${boardVO.regdate}" pattern="yyyy-MM-dd HH:mm" /></td>

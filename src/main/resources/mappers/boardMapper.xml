@@ -134,10 +134,21 @@
 		]]>
 	</delete>
 	
-	<update id="replaceAttach">
+	<insert id="replaceAttach">
 		<![CDATA[
 			INSERT INTO TBL_ATTACH (FULLNAME, BNO)
 			VALUES (#{fullName}, #{bno})
+		]]>
+	</insert>
+	
+	<update id="updateFilescnt">
+		<![CDATA[
+			UPDATE TBL_BOARD
+			SET FILESCNT = 
+				(SELECT COUNT(bno)
+				FROM TBL_ATTACH
+				WHERE BNO = #{bno})
+			WHERE BNO = #{bno}
 		]]>
 	</update>
 	

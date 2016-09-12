@@ -29,4 +29,6 @@ public interface BoardDAO {
 	void deleteAllAttach(long bno) throws Exception;
 	
 	void replaceAttach(String fullName, long bno) throws Exception;
+
+	void updateFilescnt(long bno);
 }

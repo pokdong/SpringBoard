@@ -16,6 +16,7 @@ public class BoardVO {
 	private long goodcnt;
 	private long badcnt;
 	
+	private int filescnt;
 	private String[] files;
 	
 	public long getBno() {
@@ -94,11 +95,18 @@ public class BoardVO {
 	public void setFiles(String[] files) {
 		this.files = files;
 	}
-
+	
+	public int getFilescnt() {
+		return filescnt;
+	}
+	public void setFilescnt(int filescnt) {
+		this.filescnt = filescnt;
+	}
+	
 	@Override
 	public String toString() {
 		return "BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
 				+ regdate + ", modcnt=" + modcnt + ", viewcnt=" + viewcnt + ", replycnt=" + replycnt + ", goodcnt="
-				+ goodcnt + ", badcnt=" + badcnt + ", files=" + Arrays.toString(files) + "]";
+				+ goodcnt + ", badcnt=" + badcnt + ", filescnt=" + filescnt + ", files=" + Arrays.toString(files) + "]";
 	}
 }

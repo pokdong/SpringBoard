@@ -68,7 +68,7 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	@Override
 	public void addAttach(String fullName) throws Exception {
-		session.selectOne(namespace + ".addAttach", fullName);
+		session.insert(namespace + ".addAttach", fullName);
 	}
 
 	@Override
@@ -87,6 +87,11 @@ public class BoardDAOImpl implements BoardDAO {
 		paramMap.put("fullName", fullName);
 		paramMap.put("bno", bno);
 		
-		session.update(namespace + ".replaceAttach", paramMap);
+		session.insert(namespace + ".replaceAttach", paramMap);
+	}
+
+	@Override
+	public void updateFilescnt(long bno) {
+		session.update(namespace + ".updateFilescnt", bno);
 	}
 }

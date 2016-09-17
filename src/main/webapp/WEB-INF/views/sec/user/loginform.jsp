@@ -60,7 +60,7 @@
 
 
         <!-- <a href="#">비밀번호 찾기</a><br> -->
-        <a href="register.html" class="text-center">회원 가입</a>
+        <a href="/sec/user/join" class="text-center">회원 가입</a>
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->

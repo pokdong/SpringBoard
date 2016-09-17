@@ -35,13 +35,13 @@
 <strong>아이디와 암호가 일치하지 않습니다.</strong>
 </c:if>
 
-<form action="/user/loginPost" method="post">
+<form action="<c:url value='/user/login'/>" method="post">
   <div class="form-group has-feedback">
     <input type="text" name="userid" class="form-control" placeholder="USER ID"/>
     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
   </div>
   <div class="form-group has-feedback">
-    <input type="password" name="upw" class="form-control" placeholder="Password"/>
+    <input type="password" name="password" class="form-control" placeholder="Password"/>
     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
   </div>
   <div class="row">
@@ -60,7 +60,7 @@
 
 
         <!-- <a href="#">비밀번호 찾기</a><br> -->
-        <a href="register.html" class="text-center">회원 가입</a>
+        <a href="/user/join" class="text-center">회원 가입</a>
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->

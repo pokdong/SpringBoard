@@ -20,8 +20,8 @@ import io.github.xeyez.security.NewUserValidator;
 public class JoinController {
 	private static final Logger logger = LoggerFactory.getLogger(JoinController.class);
 	
-	public static final String USER_JOIN_SUCCESS = "user/joinsuccess";
-	public static final String USER_JOIN_FORM = "user/joinform";
+	public static final String USER_JOIN_SUCCESS = "sec/user/joinsuccess";
+	public static final String USER_JOIN_FORM = "sec/user/joinform";
 
 	//private UserJoinService userJoinService;
 	

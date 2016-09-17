@@ -8,21 +8,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getUser" resultType="UserVO">
 	<![CDATA[
 		SELECT * 
-		FROM T_USER 
+		FROM TBL_USER 
 		WHERE USERID = #{userid}
 	]]>
 	</select>
 	
 	<insert id="createUser">
 	<![CDATA[
-		INSERT INTO T_USER
+		INSERT INTO TBL_USER
 		VALUES (#{userid}, #{userpw}, #{username}, #{role})
 	]]>
 	</insert>
 	
 	<update id="updateUser">
 	<![CDATA[
-		UPDATE T_USER
+		UPDATE TBL_USER
 		SET USERPW = #{userpw}, USERNAME = #{username}, ROLE = #{role}
 		WHERE USERID = #{userid}
 	]]>
@@ -30,14 +30,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<delete id="deleteUser">
 	<![CDATA[
-		DELETE FROM T_USER
+		DELETE FROM TBL_USER
 		WHERE USERID = #{userid}
 	]]>
 	</delete>
 	
 	<update id="changePassword">
 	<![CDATA[
-		UPDATE T_USER
+		UPDATE TBL_USER
 		SET USERPW = #{userpw}
 		WHERE USERID = #{userid}
 	]]>
@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="userExists" resultType="int">
 	<![CDATA[
 		SELECT COUNT(*) 
-		FROM T_USER 
+		FROM TBL_USER 
 		WHERE USERID = #{userid}
 	]]>
 	</select>

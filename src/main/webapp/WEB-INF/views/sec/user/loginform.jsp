@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Log in</title>
+    <title>Sign in</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.4 -->
     <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -22,28 +22,41 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <style>
+    	div .formError {
+    		text-align: right;
+    		font-size: smaller;
+    		color: red;
+    	}
+    </style>
+    
   </head>
   <body class="login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="/resources/index2.html"><b>Spring</b>Board</a>
+        <a href="/board/list"><b>Spring</b>Board</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
-
-<c:if test="${param.error == 'true'}">
-<strong>아이디와 암호가 일치하지 않습니다.</strong>
-</c:if>
 
 <form action="<c:url value='/sec/user/login'/>" method="post">
   <div class="form-group has-feedback">
     <input type="text" name="userid" class="form-control" placeholder="USER ID"/>
     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
   </div>
+  
   <div class="form-group has-feedback">
     <input type="password" name="password" class="form-control" placeholder="Password"/>
     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    
+    <c:if test="${param.error == 'true'}">
+		<div class="formError">
+	    	아이디와 암호가 일치하지 않습니다.
+	    </div>
+  	</c:if>
   </div>
+  
   <div class="row">
     <div class="col-xs-8">    
       <div class="checkbox icheck">

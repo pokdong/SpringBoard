@@ -37,13 +37,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		
 		UserDetails principal = userDetailsService.loadUserByUsername(userid);
 		
+		if(principal == null || !principal.getUsername().equalsIgnoreCase(userid))
+			throw new UsernameNotFoundException("Username not found.");
+		
 		logger.info("id from login :" + userid);
 		logger.info("password from login :" + userpw.toLowerCase());
 		logger.info("possword from DB : " + principal.getPassword());
-		
-		
-		if(principal == null || !principal.getUsername().equalsIgnoreCase(userid))
-			throw new UsernameNotFoundException("Username not found.");
 		
 		/*if (!userpw.equals(principal.getPassword()))
 			throw new BadCredentialsException("Wrong password.");*/

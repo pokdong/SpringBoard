@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -30,9 +31,13 @@
       <div class="login-box-body">
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
+<c:if test="${param.error == 'true'}">
+<strong>아이디와 암호가 일치하지 않습니다.</strong>
+</c:if>
+
 <form action="/user/loginPost" method="post">
   <div class="form-group has-feedback">
-    <input type="text" name="uid" class="form-control" placeholder="USER ID"/>
+    <input type="text" name="userid" class="form-control" placeholder="USER ID"/>
     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
   </div>
   <div class="form-group has-feedback">
@@ -43,7 +48,7 @@
     <div class="col-xs-8">    
       <div class="checkbox icheck">
         <label>
-          <input type="checkbox" name="useCookie"> 로그인 상태 유지
+          <input type="checkbox" id = "remember_me" name ="_spring_security_remember_me" > 로그인 상태 유지
         </label>
       </div>                        
     </div><!-- /.col -->

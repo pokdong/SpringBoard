@@ -16,7 +16,7 @@ import io.github.xeyez.security.CustomUserDetailsService;
 import io.github.xeyez.security.NewUserValidator;
 
 @Controller
-@RequestMapping("sec/user/join")
+@RequestMapping("/sec/user/join")
 public class JoinController {
 	private static final Logger logger = LoggerFactory.getLogger(JoinController.class);
 	

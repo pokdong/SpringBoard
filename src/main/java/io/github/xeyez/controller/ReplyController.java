@@ -143,6 +143,7 @@ public class ReplyController {
 		return entity;
 	}
 	
+	// 삭제할 때 사용
 	@RequestMapping(value = "/count/{bno}", method = RequestMethod.POST)
 	public ResponseEntity<Long> count(@PathVariable("bno") long bno) {
 		

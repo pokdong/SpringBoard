@@ -22,27 +22,44 @@
 	</sec:authentication-manager>
 
 
-	<sec:http use-expressions="true">
-		<sec:access-denied-handler error-page="/sec/denied"/>
+	<bean id="loginPathValue" class="java.lang.String">
+		<constructor-arg value="/sec/user/loginform" />
+	</bean>
+
+	<bean id="customAuthenticationEntryPoint" class="io.github.xeyez.security.handler.CustomAuthenticationEntryPoint">
+		<property name="loginPath" ref="loginPathValue" />
+	</bean>
 	
-		<sec:intercept-url pattern="/board/write/**" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/board/modify/**" access="isAuthenticated()" />
+	<bean id="customAuthenticationSuccessHandler" class="io.github.xeyez.security.handler.CustomAuthenticationSuccessHandler">
+		<property name="defaultTargetUrl" value="/sec/index" />
+	</bean>
+	
+	<bean id="customAuthenticationFailureHandler" class="io.github.xeyez.security.handler.CustomAuthenticationFailureHandler">
+		<property name="loginPath" ref="loginPathValue" />
+	</bean>
+	
+	<bean id="nullRequestCache" class="org.springframework.security.web.savedrequest.NullRequestCache" />
+	
+	
+
+	<sec:http use-expressions="true" 
+		entry-point-ref="customAuthenticationEntryPoint" >
+		<sec:request-cache ref="nullRequestCache"/>
+	
+		<sec:access-denied-handler error-page="/denied"/>
 	
 		<sec:intercept-url pattern="/sec/admin/**" access="hasRole('ADMIN')" />
 		<sec:intercept-url pattern="/sec/manager/**" access="hasRole('MANAGER')" />
 		<sec:intercept-url pattern="/sec/member/**" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/sec/**" access="permitAll" />
 
-		<sec:form-login 
-			login-page="/sec/user/loginform"
-			login-processing-url="/sec/user/login"
+		<sec:form-login
+			authentication-success-handler-ref="customAuthenticationSuccessHandler"
+			authentication-failure-handler-ref="customAuthenticationFailureHandler"
+			login-processing-url="/sec/user/login" 
 			
 			username-parameter="userid"
 			password-parameter="password"
-			
-			default-target-url="/sec/index"
-			
-			authentication-failure-url="/sec/user/loginform?error=true"
 		/>
 		<sec:logout 
 			logout-url="/sec/user/logout"

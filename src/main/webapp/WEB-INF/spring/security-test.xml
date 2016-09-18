@@ -23,7 +23,7 @@
 
 
 	<bean id="loginPathValue" class="java.lang.String">
-		<constructor-arg value="/user/login" />
+		<constructor-arg value="/sec/user/loginform" />
 	</bean>
 
 	<bean id="customAuthenticationEntryPoint" class="io.github.xeyez.security.handler.CustomAuthenticationEntryPoint">
@@ -31,7 +31,7 @@
 	</bean>
 	
 	<bean id="customAuthenticationSuccessHandler" class="io.github.xeyez.security.handler.CustomAuthenticationSuccessHandler">
-		<property name="defaultTargetUrl" value="/board/list" />
+		<property name="defaultTargetUrl" value="/sec/index" />
 	</bean>
 	
 	<bean id="customAuthenticationFailureHandler" class="io.github.xeyez.security.handler.CustomAuthenticationFailureHandler">
@@ -46,24 +46,24 @@
 		entry-point-ref="customAuthenticationEntryPoint" >
 		<sec:request-cache ref="nullRequestCache"/>
 	
-		<sec:access-denied-handler error-page="/board/list"/>
+		<sec:access-denied-handler error-page="/denied"/>
 	
-		<sec:intercept-url pattern="/board/write" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/board/modify" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/board/remove" access="isAuthenticated()" />
-		<!-- <sec:intercept-url pattern="/user/profile" access="isAuthenticated()" /> -->
+		<sec:intercept-url pattern="/sec/admin/**" access="hasRole('ADMIN')" />
+		<sec:intercept-url pattern="/sec/manager/**" access="hasRole('MANAGER')" />
+		<sec:intercept-url pattern="/sec/member/**" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/sec/**" access="permitAll" />
 
 		<sec:form-login
 			authentication-success-handler-ref="customAuthenticationSuccessHandler"
 			authentication-failure-handler-ref="customAuthenticationFailureHandler"
-			login-processing-url="/user/login_processing"
+			login-processing-url="/sec/user/login" 
 			
 			username-parameter="userid"
 			password-parameter="password"
 		/>
 		<sec:logout 
-			logout-url="/user/logout"
-			logout-success-url="/board/list"
+			logout-url="/sec/user/logout"
+			logout-success-url="/sec/index"
 			
 			invalidate-session="true"
 			delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"

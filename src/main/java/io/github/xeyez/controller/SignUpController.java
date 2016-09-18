@@ -5,26 +5,28 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.github.xeyez.domain.NewUserVO;
 import io.github.xeyez.security.CustomUserDetailsService;
 import io.github.xeyez.security.NewUserValidator;
 import io.github.xeyez.security.UnavailableIDException;
 
-/*@Controller
-@RequestMapping("/sec/user/join")*/
-public class JoinController {
-	private static final Logger logger = LoggerFactory.getLogger(JoinController.class);
+@Controller
+@RequestMapping("/user/signup")
+public class SignUpController {
+	private static final Logger logger = LoggerFactory.getLogger(SignUpController.class);
 	
-	private static final String USER_JOIN_SUCCESS = "sec/user/joinsuccess";
-	private static final String USER_JOIN_FORM = "sec/user/joinform";
-	
+	private static final String USER_JOIN_SUCCESS = "/user/login";
+	private static final String USER_JOIN_FORM = "/user/signup";
+
 	@Inject
-	private CustomUserDetailsService userDetailsService;
+	private CustomUserDetailsService userJoinService;
 	
 	@ModelAttribute("newUser")
 	public NewUserVO formBacking() {
@@ -43,7 +45,7 @@ public class JoinController {
 
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public String submit(@ModelAttribute("newUser") NewUserVO newUser, Errors errors) throws Exception {
+	public String submit(@ModelAttribute("newUser") NewUserVO newUser, Errors errors, RedirectAttributes rttr) throws Exception {
 		logger.info("============== submit()");
 
 		//joinform.jsp의 form:form Tag와 연동.
@@ -59,9 +61,10 @@ public class JoinController {
 		
 		try {
 			// 가입(생성) 처리
-			userDetailsService.signUp(newUser);
+			userJoinService.signUp(newUser);
 			
-			return USER_JOIN_SUCCESS;
+			rttr.addFlashAttribute("message", "SUCCESS");
+			return "redirect:" + USER_JOIN_SUCCESS;
 		} catch (DuplicateKeyException e) {
 			errors.rejectValue("userid", "duplicate");
 			return USER_JOIN_FORM;

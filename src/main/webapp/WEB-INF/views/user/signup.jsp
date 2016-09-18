@@ -31,6 +31,16 @@
     	}
     </style>
     
+    <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script>
+    	/* $(document).ready(function() {
+			$('#input_userid').blur(function(e) {
+				e.preventDefault();
+				alert('blur!');
+			});
+		}); */
+    </script>
+    
   </head>
   <body class="login-page">
     <div class="login-box">
@@ -42,7 +52,7 @@
 
 <form:form method="post" commandName="newUser">
   <div class="form-group has-feedback">
-    <form:input  path="userid" class="form-control" placeholder="USER ID" />
+    <form:input path="userid" id="input_userid" class="form-control" placeholder="USER ID" />
     <div class="formError">
     	<form:errors path="userid"/>
     </div>

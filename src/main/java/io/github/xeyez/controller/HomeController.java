@@ -42,9 +42,4 @@ public class HomeController {
 		
 	}
 	*/
-	
-	@RequestMapping("/user/login")
-	public void test() {
-		
-	}
 }

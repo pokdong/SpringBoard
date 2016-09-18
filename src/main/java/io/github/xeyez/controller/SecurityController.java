@@ -2,11 +2,10 @@ package io.github.xeyez.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
-@RequestMapping("/sec")
+/*@Controller
+@RequestMapping("/sec")*/
 public class SecurityController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SecurityController.class);

@@ -247,28 +247,32 @@
               </li>
                -->
               
-              
               <sec:authorize access="!isAuthenticated()">
               <li>
-              	<a href="#" class="btn btn-lg btn-flat">Log-in</a>
+              	<a href="/user/signup" class="btn btn-lg btn-flat">Sign-up</a>
+              </li>
+              
+              <li>
+              	<a href="/user/login" class="btn btn-lg btn-flat">Log-in</a>
               </li>
               </sec:authorize>
               
-              
               <sec:authorize access="isAuthenticated()">
+              	<sec:authentication property="name" var="name"/>
+              
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                  <span class="hidden-xs">Alexander1 Pierce</span>
+                  <img src="/resources/dist/img/user_160x160.jpg" class="user-image" alt="User Image"/>
+                  <span class="hidden-xs">${name}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                    <img src="/resources/dist/img/user_160x160.jpg" class="img-circle" alt="User Image" />
                     <p>
-                      Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
+                      ${name}
+                      <!-- <small>Member since Nov. 2012</small> -->
                     </p>
                   </li>
                   <!-- Menu Body -->
@@ -287,10 +291,10 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
+                      <a href="/user/profile" class="btn btn-default btn-flat">Profile</a>
                     </div>
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="/user/logout" class="btn btn-default btn-flat">Log-out</a>
                     </div>
                   </li>
                 </ul>

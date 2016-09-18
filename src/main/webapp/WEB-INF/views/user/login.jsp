@@ -29,6 +29,14 @@
     		font-size: smaller;
     		color: red;
     	}
+    	
+    	div .message {
+    		text-align: center;
+    		font-size: smaller;
+    		font-weight: bold;
+    		color: red;
+    		margin-bottom: 15px;
+    	}
     </style>
     
   </head>
@@ -40,7 +48,13 @@
       <div class="login-box-body">
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
-<form action="<c:url value='/user/login'/>" method="post">
+<c:if test="${message == 'SUCCESS'}">
+	<div class="message">
+		회원가입이 완료되었습니다. 로그인 하세요.
+	</div>
+</c:if>
+
+<form action="<c:url value='/user/login_processing'/>" method="post">
   <div class="form-group has-feedback">
     <input type="text" name="userid" class="form-control" placeholder="USER ID"/>
     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -73,7 +87,7 @@
 
 
         <!-- <a href="#">비밀번호 찾기</a><br> -->
-        <a href="/sec/user/join" class="text-center">회원 가입</a>
+        <a href="/user/signup" class="text-center">회원 가입</a>
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->

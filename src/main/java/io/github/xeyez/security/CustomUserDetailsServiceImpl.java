@@ -29,7 +29,12 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
 	}
-	
+
+	// 회원탈퇴할 때 암호화된 문자열 비교시 사용
+	public PasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+
 	@Inject
 	private UserDAO dao;
 

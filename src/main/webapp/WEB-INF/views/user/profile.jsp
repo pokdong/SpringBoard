@@ -129,9 +129,9 @@
 	
 </div>
 
-<div class="form-group">
+<!-- <div class="form-group">
 	<a href="#" class="btn btn-flat btn-info form-control">회원정보 수정</a>
-</div>
+</div> -->
 
 <div class="form-group" style="margin-bottom: 30px;">
 	<button type="button" id="btn_withdrawal" class="btn btn-flat btn-danger form-control">회원 탈퇴</button>
@@ -140,7 +140,7 @@
 		<span id="passwordError" class="error" hidden="true"></span>
 	
 		<form role="form" method="post">
-			<input type='hidden' name='userid' value="${name}">
+			<input type='hidden' name='userid' value="${userVO.userid}">
 			
 			<div class="has-feedback">
 				<input type="password" name="userpw" class="form-control" placeholder="Password">

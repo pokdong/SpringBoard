@@ -35,18 +35,26 @@ In-depth study for Spring framework
  - [X] 첨부된 파일 클릭시 Image일 경우 Lightbox 적용하여 바로 보기
 
 ## 0.5
+### 0.5.1
 - Spring Security 적용
- - [ ] Log-in
- - [ ] Log-out
- - [ ] 자동 Log-in (Remeber me)
- - [ ] 회원가입 (Sign-in)
+ - [X] Log-in
+ - [X] Log-out
+ - [X] 자동 Log-in (Remeber me)
+ - [X] 회원가입 (Sign-in)
+ - [X] Profile
+ - [X] 회원탈퇴
+ - [X] 접근 권한 제어 (글 쓰기, 수정, Profile)
 
+### 0.5.2
+- Spring Security 심화
+ - [ ] 로그인된 사용자에 한하여 댓글 작성 허용
+ - [ ] 글 쓰기, 수정시 로그인된 ID 사용.
+ - [ ] 목록 화면에 ID 대신, 닉네임 표시
+ - [ ] 회원 정보 수정 (Profile Image, 닉네임, 비밀번호)
 
 ## TBA
 - Spring Security 심화
- - [ ] 목록 화면에 ID 대신, 닉네임 표시
- - [ ] 익명/회원 게시글 작성 권한 분할
- - [ ] 회원정보 수정
+ - [ ] 익명 게시글 쓰기/수정 권한 부여
  - [ ] ID/비밀번호 찾기
 
 - AJAX

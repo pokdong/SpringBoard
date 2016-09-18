@@ -31,6 +31,7 @@
 		}
 		
 		.textArea {
+			margin: 5px;
 			text-align: center;
 		}
 		
@@ -118,8 +119,12 @@
 	<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" alt="User Image" />
 	
 	<div class="textArea bold">
-		<sec:authentication property="name" var="name"/>
-		${name}
+		${userVO.userid}<br>
+		(${userVO.username})
+	</div>
+	
+	<div class="textArea">
+		${userVO.regdate}
 	</div>
 	
 </div>

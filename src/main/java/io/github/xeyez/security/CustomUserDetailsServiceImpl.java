@@ -158,4 +158,14 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		return dao.userExists(userid);
 	}
 
+	@Override
+	public UserVO getUser(String userId) throws Exception {
+		UserVO vo;
+		vo = dao.getUser(userId);
+		if(vo == null)
+			throw new UsernameNotFoundException(userId);
+		
+		return vo;
+	}
+
 }

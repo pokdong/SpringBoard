@@ -1,10 +1,15 @@
 package io.github.xeyez.domain;
 
+import java.sql.Date;
+
 public class UserVO {
-	String userid;
-	String userpw;
-	String username;
-	String role;
+	private String userid;
+	private String userpw;
+	private String username;
+	private String role;
+	private long upoint;
+	private String profilepath;
+	private Date regdate;
 	
 	public UserVO() {
 	}
@@ -43,9 +48,31 @@ public class UserVO {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
+	public long getUpoint() {
+		return upoint;
+	}
+	public void setUpoint(long upoint) {
+		this.upoint = upoint;
+	}
+
+	public String getProfilepath() {
+		return profilepath;
+	}
+	public void setProfilepath(String profilepath) {
+		this.profilepath = profilepath;
+	}
+
+	public Date getRegdate() {
+		return regdate;
+	}
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
+
 	@Override
 	public String toString() {
-		return "UserVO [userid=" + userid + ", userpw=" + userpw + ", username=" + username + ", role=" + role + "]";
+		return "UserVO [userid=" + userid + ", userpw=" + userpw + ", username=" + username + ", role=" + role
+				+ ", upoint=" + upoint + ", profilepath=" + profilepath + ", regdate=" + regdate + "]";
 	}
 }

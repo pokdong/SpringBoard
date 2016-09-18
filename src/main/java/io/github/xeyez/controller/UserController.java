@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,8 +34,11 @@ public class UserController {
 	}
 	
 	@RequestMapping("/profile")
-	public void profile() {
-		logger.info("=========== profile");
+	public void profile(Model model, Authentication auth) throws Exception {
+		logger.info("=========== profile / " + auth.getName());
+		
+		UserVO userVO = userDetailsService.getUser(auth.getName());
+		model.addAttribute(userVO);
 	}
 	
 	// 회원 탈퇴 이전 비밀번호 확인

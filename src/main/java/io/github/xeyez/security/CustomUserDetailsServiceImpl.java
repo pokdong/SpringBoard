@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -77,11 +78,12 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		else if(pw == null || pw.isEmpty())
 			throw new NullPointerException("Password is null or empty.");
 		
+		if(id.contains("admin") || id.contains("manager"))
+			throw new UnavailableIDException(id);
 		
-		if(id.contains("admin"))
-			throw new UnavailableIDException("\"admin\"은 포함될 수 없습니다.");
-		if(id.contains("manager"))
-			throw new UnavailableIDException("\"manager\"는 포함될 수 없습니다.");
+		if(dao.userExists(id))
+			throw new DuplicateKeyException(id);
+		
 		
 		vo.setUsername(id); // default : id
 		vo.setUserpw(pw); // 암호화된 Password 삽입

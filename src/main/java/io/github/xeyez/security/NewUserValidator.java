@@ -22,8 +22,12 @@ public class NewUserValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirm", "required", "필수 항목");
 		
 		NewUserVO newUser = (NewUserVO) target;
-		if (!errors.hasErrors() && !newUser.isPasswordAndConfirmSame())
-			errors.rejectValue("confirm", "notSame");
+		if(!errors.hasErrors()) {
+			if (!newUser.isPasswordAndConfirmSame())
+				errors.rejectValue("confirm", "notSame");
+			else if(!newUser.isPasswordGreaterThanMinLength())
+				errors.rejectValue("confirm", "pwLength");
+		}
 	}
 
 }

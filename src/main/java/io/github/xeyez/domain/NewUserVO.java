@@ -3,6 +3,8 @@ package io.github.xeyez.domain;
 public class NewUserVO extends UserVO {
 	private String confirm;
 
+	private final int MIN_LENGHTH = 8;
+	
 	public String getConfirm() {
 		return confirm;
 	}
@@ -13,6 +15,10 @@ public class NewUserVO extends UserVO {
 	
 	public boolean isPasswordAndConfirmSame() {
 		return userpw.equals(confirm);
+	}
+	
+	public boolean isPasswordGreaterThanMinLength() {
+		return isPasswordAndConfirmSame() && (userpw.length() >= MIN_LENGHTH);
 	}
 
 	@Override

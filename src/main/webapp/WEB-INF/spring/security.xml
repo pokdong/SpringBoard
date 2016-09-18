@@ -48,6 +48,10 @@
 	
 		<sec:access-denied-handler error-page="/denied"/>
 	
+		<sec:intercept-url pattern="/board/write" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/board/modify" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/board/remove" access="isAuthenticated()" />
+	
 		<sec:intercept-url pattern="/sec/admin/**" access="hasRole('ADMIN')" />
 		<sec:intercept-url pattern="/sec/manager/**" access="hasRole('MANAGER')" />
 		<sec:intercept-url pattern="/sec/member/**" access="isAuthenticated()" />

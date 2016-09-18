@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import io.github.xeyez.domain.NewUserVO;
 import io.github.xeyez.security.CustomUserDetailsService;
 import io.github.xeyez.security.NewUserValidator;
+import io.github.xeyez.security.UnavailableIDException;
 
 @Controller
 @RequestMapping("/sec/user/join")
@@ -65,8 +66,11 @@ public class JoinController {
 			userJoinService.signUp(newUser);
 			
 			return USER_JOIN_SUCCESS;
-		} catch (DuplicateKeyException ex) {
-			errors.rejectValue("name", "duplicate");
+		} catch (DuplicateKeyException e) {
+			errors.rejectValue("userid", "duplicate");
+			return USER_JOIN_FORM;
+		} catch (UnavailableIDException e) {
+			errors.rejectValue("userid", "unavailable");
 			return USER_JOIN_FORM;
 		}
 	}

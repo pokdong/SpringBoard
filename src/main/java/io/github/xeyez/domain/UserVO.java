@@ -3,13 +3,13 @@ package io.github.xeyez.domain;
 import java.sql.Date;
 
 public class UserVO {
-	private String userid;
-	private String userpw;
-	private String username;
-	private String role;
-	private long upoint;
-	private String profilepath;
-	private Date regdate;
+	protected String userid;
+	protected String userpw;
+	protected String username;
+	protected String role;
+	protected long upoint;
+	protected String profilepath;
+	protected Date regdate;
 	
 	public UserVO() {
 	}

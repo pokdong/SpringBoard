@@ -19,6 +19,14 @@
 		<level value="info" />
 	</logger>
 	
+	<logger name="io.github.xeyez.security">
+		<level value="info" />
+	</logger>
+	
+	<logger name="io.github.xeyez.security.handler">
+		<level value="info" />
+	</logger>
+	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />

@@ -1,5 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- <%@ page session="false" %> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@include file="../include/header.jsp" %>
@@ -9,6 +7,7 @@
 
 <script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
 <script src="/resources/xeyez/js/upload.js"></script>
+<script src="/resources/xeyez/js/utils.js"></script>
 
 
     <!-- Main content -->
@@ -32,17 +31,31 @@
 	
 	<div class="form-group"> <!-- form-group : 하단 여백 -->
 		<label>제목</label>
+		
+		<div class="pull-right">
+			<span id="titleCount"></span>
+			<span>/</span>
+			<span id="titleLimit"></span>
+		</div>
+		
 		<input type="text" name="title" class="form-control" maxlength="30" placeholder="Enter Title"> <!-- form-control : 테두리 및 개행 -->
 	</div>
 	
 	<div class="form-group">
 		<label>내용</label>
-		<textarea name="content" class="form-control" rows="3" cols="1" maxlength="1000" placeholder="Enter content"></textarea>
+		
+		<div class="pull-right">
+			<span id="contentCount"></span>
+			<span>/</span>
+			<span id="contentLimit"></span>
+		</div>
+		
+		<textarea name="content" class="form-control" rows="10" cols="1" maxlength="2000" placeholder="Enter content" style="resize: none;"></textarea>
 	</div>
 	
 	<div class="form-group">
-		<label>닉네임</label>
-		<input name="writer" type="text" class="form-control" placeholder="Enter Writer"> <!-- 로그인 기능이 구현되면 readonly 필요 -->
+		<label>작성자</label>
+		<input type="text" name="writer" class="form-control" value="${userid}" readonly="readonly" onfocus="this.blur()">
 	</div>
 	
 </form>
@@ -96,10 +109,14 @@
 <%@include file="attachment.jsp" %>
 
 <script>
-	$('#btn_confirm').on("click", function(event) {
+	var btn_confirm = $('#btn_confirm');
+	
+	var formObj = $("form[role='form']");
+	var title = formObj.find("input[name=title]");
+	var content = formObj.find("textarea[name=content]");
+
+	btn_confirm.on("click", function(event) {
 		event.preventDefault();
-		
-		var formObj = $("form[role='form']");
 		
 		// 파일 추가 후 삭제한 경우를 대비해 reset 필요
 		formObj.find("input").each(function(index) {
@@ -111,13 +128,13 @@
 		});
 
 
-		var titleLength = formObj.find("input[name=title]").val().replace(/(^\s*)|(\s*$)/gi, "").length;
+		var titleLength = trim(title.val()).length;
 		if(titleLength <= 0) {
 			alert('제목을 입력하세요.');
 			return;
 		}
 		
-		var contentLength = formObj.find("textarea[name=content]").val().replace(/(^\s*)|(\s*$)/gi, "").length;
+		var contentLength = trim(content.val()).length;
 		if(contentLength <= 0) {
 			alert('내용을 입력하세요.');
 			return;
@@ -151,6 +168,67 @@
 			});
 		}
 	} */
+	
+	//글자 count
+	function enabledConfirmButton(obj, keyCode) {
+		
+		var objLength = trim(obj.val()).length;
+		if(objLength <= 0) {
+			//엔터이거나 스페이스인 경우
+			if(keyCode == 13 || keyCode == 32)
+				obj.val('');
+		}
+		
+		var titleLength = trim(title.val()).length;
+		var contentLength = trim(content.val()).length;
+		
+		if(titleLength <= 0 || contentLength <= 0)
+			btn_confirm.attr('disabled', 'true');
+		else
+			btn_confirm.removeAttr('disabled');
+	}
+	
+	
+	btn_confirm.attr('disabled', 'true'); //초기 비활성화
+	
+	$('#titleCount').html(prependZero(0, 2));
+	$('#titleLimit').html(title.attr('maxlength'));
+	
+	title.on('keyup', function(e) {
+		enabledConfirmButton($(this), e.keyCode);
+		
+		var len = trim($(this).val()).length;
+		$('#titleCount').html(prependZero(len, 2));
+	});
+	
+	
+
+	$('#contentCount').html(prependZero(0, 3));
+	$('#contentLimit').html(content.attr('maxlength'));
+	
+	content.on('keyup', function(e) {
+		enabledConfirmButton($(this), e.keyCode);
+		
+		var len = trim($(this).val()).length;
+		$('#contentCount').html(prependZero(len, 3));
+	});
+	
+	
+	/* Firefox에서 한글 인식 문제로 포커스 잃을 때 재계산 */
+	title.blur(function(e) {
+		enabledConfirmButton($(this), e.keyCode);
+		
+		var len = trim($(this).val()).length;
+		$('#titleCount').html(prependZero(len, 2));
+	});
+	
+	content.blur(function(e) {
+		enabledConfirmButton($(this), e.keyCode);
+		
+		var len = trim($(this).val()).length;
+		$('#contentCount').html(prependZero(len, 3));
+	});
+	
 </script>
 
 <script src="/resources/lightbox2/js/lightbox.min.js"></script>

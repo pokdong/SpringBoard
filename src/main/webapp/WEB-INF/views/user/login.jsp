@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="returl" value="${fn:replace(pageContext.request.queryString, 'returl=', '')}" />
 
 <!DOCTYPE html>
 <html>
@@ -48,6 +50,7 @@
       <div class="login-box-body">
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
+
 <c:if test="${message == 'SUCCESS'}">
 	<div class="message">
 		회원가입이 완료되었습니다. 로그인 하세요.
@@ -55,6 +58,8 @@
 </c:if>
 
 <form action="<c:url value='/user/login_processing'/>" method="post">
+	<input type="hidden" name="returl" value="${returl}">
+
   <div class="form-group has-feedback">
     <input type="text" name="userid" class="form-control" placeholder="USER ID"/>
     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -75,7 +80,7 @@
     <div class="col-xs-8">    
       <div class="checkbox icheck">
         <label>
-          <input type="checkbox" id = "remember_me" name ="_spring_security_remember_me" > 로그인 상태 유지
+          <input type="checkbox" id="remember_me" name="_spring_security_remember_me" > 로그인 상태 유지
         </label>
       </div>                        
     </div><!-- /.col -->

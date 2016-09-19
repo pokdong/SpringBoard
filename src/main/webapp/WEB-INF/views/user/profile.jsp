@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<sec:authorize access="hasRole('ADMIN')" var="isAdmin" />
 
 <!DOCTYPE html>
 <html>
@@ -53,15 +54,14 @@
     		var formObj = $("form[role='form']");
     		
     		$('#btn_withdrawal').on('click', function(e) {
-				$('#div_withdrawal').toggle('fast');
+				$('#div_withdrawal').toggle('fast', function() {
+					$('#passwordError').html('');
+					$('#passwordError').slideUp('fast');
+				});
 			});
     		
 			$('#btn_withdrawal_pwConfirm').on('click', function(e) {
 				e.preventDefault();
-				
-				/* formObj.attr("action", "/board/remove");
-				formObj.attr("method", "post");
-				formObj.submit(); */
 				
 				var userid = formObj.find('input[name=userid]').val();
 				var userpw = formObj.find('input[name=userpw]').val();
@@ -82,9 +82,7 @@
 						
 						switch (response) {
 							case 'SUCCESS':
-								//$('#passwordError').html('성공!');
-								
-								formObj.attr("action", "/user/withdrawal");
+								formObj.attr("action", "/user/info/withdrawal");
 								formObj.attr("method", "post");
 								formObj.submit();
 								
@@ -129,10 +127,11 @@
 	
 </div>
 
-<!-- <div class="form-group">
+<div class="form-group">
 	<a href="#" class="btn btn-flat btn-info form-control">회원정보 수정</a>
-</div> -->
+</div>
 
+<c:if test="${!isAdmin}">
 <div class="form-group" style="margin-bottom: 30px;">
 	<button type="button" id="btn_withdrawal" class="btn btn-flat btn-danger form-control">회원 탈퇴</button>
 	
@@ -152,7 +151,7 @@
 	</div>
 	
 </div>
-
+</c:if>
 
 
       </div><!-- /.login-box-body -->

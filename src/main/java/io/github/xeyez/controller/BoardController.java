@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -79,8 +80,16 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
-	public String remove(@RequestParam("bno") int bno, SearchCriteria cri, PageMaker pageMaker, RedirectAttributes rttr) throws Exception {
+	public String remove(@RequestParam("bno") int bno, @RequestParam("writer") String writer, SearchCriteria cri, PageMaker pageMaker, RedirectAttributes rttr, Authentication auth) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> remove");
+		logger.info("writer : " + writer + " / id : " + auth.getName());
+		
+		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
+		if(!auth.getName().equals(writer) && !auth.getName().equals("admin")) {
+			return "redirect:/user/accessdenied";
+		}
+		
+		
 		logger.info(cri.toString());
 		
 		service.remove(bno);

@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="../include/header.jsp" %>
 
@@ -9,6 +7,7 @@
 
 <script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
 <script src="/resources/xeyez/js/upload.js"></script>
+<script src="/resources/xeyez/js/utils.js"></script>
 
 
 <form role="form" method="post">
@@ -19,6 +18,8 @@
 	<input type='hidden' name='pageCount' value="${pageMaker.pageCount}">
 	<input type='hidden' name='searchType' value="${cri.searchType}">
 	<input type='hidden' name='keyword' value="${cri.keyword}">
+	
+	<input type='hidden' name='writer' value="${boardVO.writer}">
 </form>
 
     <!-- Main content -->
@@ -42,11 +43,11 @@
 
 <div class="form-group">
 	<label>내용</label>
-	<textarea name="content" class="form-control" rows="3" cols="1" readonly="readonly" onfocus="this.blur()">${boardVO.content}</textarea>
+	<textarea name="content" class="form-control" rows="10" cols="1" readonly="readonly" onfocus="this.blur()" style="resize: none;">${boardVO.content}</textarea>
 </div>
 
 <div class="form-group">
-	<label>닉네임</label>
+	<label>작성자</label>
 	<input type="text" name="writer" class="form-control" value="${boardVO.writer}" readonly="readonly" onfocus="this.blur()">
 </div>
 
@@ -60,8 +61,12 @@
 	</ul>
 	
 	<div align="right">
-		<button type="submit" id="btn_modify" class="btn btn-warning">수정</button> <!-- btn-primary : 배경 및 글자 색상 변경 -->
-		<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
+		<sec:authorize access="isAuthenticated()">
+			<c:if test="${userid == boardVO.writer || isAdmin}">
+				<button type="submit" id="btn_modify" class="btn btn-warning">수정</button>
+				<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
+			</c:if>
+		</sec:authorize>
 		<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
 	</div>
 </div>

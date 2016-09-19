@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,11 +33,17 @@ public class ReplyController {
 	
 	@Transactional
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> add(@RequestBody ReplyVO vo) {
+	public ResponseEntity<Map<String, Object>> add(@RequestBody ReplyVO vo, Authentication auth) {
 		logger.info("add reply");
 		
 		ResponseEntity<Map<String, Object>> entity = null;
 		Map<String, Object> paramMap = new HashMap<>();
+		
+		//로그인된 사용자만 댓글 쓰기 허용
+		if(!auth.isAuthenticated()) {
+			paramMap.put("message", "ACCESS_DENIED");
+			return new ResponseEntity<>(paramMap, HttpStatus.BAD_REQUEST);
+		}
 		
 		try {
 			service.add(vo);
@@ -59,7 +66,15 @@ public class ReplyController {
 	}
 	
 	@RequestMapping(value = "/{rno}", method = {RequestMethod.PUT, RequestMethod.PATCH})
-	public ResponseEntity<String> modify(@PathVariable("rno") int rno, @RequestBody ReplyVO vo) {
+	public ResponseEntity<String> modify(@PathVariable("rno") int rno, @RequestBody ReplyVO vo, Authentication auth) {
+		logger.info("replyer : " + vo.getReplyer() + " / id : " + auth.getName());
+		
+		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
+		if(!auth.getName().equals(vo.getReplyer()) && !auth.getName().equals("admin")) {
+			return new ResponseEntity<>("ACCESS_DENIED", HttpStatus.BAD_REQUEST);
+		}
+		
+		
 		logger.info("modify reply");
 		
 		ResponseEntity<String> entity = null;
@@ -77,7 +92,14 @@ public class ReplyController {
 	}
 	
 	@RequestMapping(value = "/{rno}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> remove(@PathVariable("rno") int rno) {
+	public ResponseEntity<String> remove(@PathVariable("rno") int rno, @RequestBody String replyer, Authentication auth) {
+		logger.info("replyer : " + replyer + " / id : " + auth.getName());
+		
+		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
+		if(!auth.getName().equals(replyer) && !auth.getName().equals("admin")) {
+			return new ResponseEntity<>("ACCESS_DENIED", HttpStatus.BAD_REQUEST);
+		}
+		
 		logger.info("remove reply " + rno);
 		
 		ResponseEntity<String> entity = null;

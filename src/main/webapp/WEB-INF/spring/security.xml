@@ -46,12 +46,13 @@
 		entry-point-ref="customAuthenticationEntryPoint" >
 		<sec:request-cache ref="nullRequestCache"/>
 	
-		<sec:access-denied-handler error-page="/board/list"/>
+		<sec:access-denied-handler error-page="/user/accessdenied"/>
 	
 		<sec:intercept-url pattern="/board/write" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/board/modify" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/board/remove" access="isAuthenticated()" />
-		<!-- <sec:intercept-url pattern="/user/profile" access="isAuthenticated()" /> -->
+		<sec:intercept-url pattern="/user/profile" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/user/withdrawal" access="isAuthenticated()" method="POST" />
 
 		<sec:form-login
 			authentication-success-handler-ref="customAuthenticationSuccessHandler"

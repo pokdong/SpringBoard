@@ -44,9 +44,11 @@
     			userpw_error.text('');
     			confirm_error.text('');
     			
-    			var userid = $('#userid').val();
-    			var userpw = $('#userpw').val();
-    			var confirm = $('#confirm').val();
+    			var formObj = $('#from_info');
+    			
+    			var userid = formObj.find('input[name=userid]').val();
+    			var userpw = formObj.find('input[name=userpw]').val();
+    			var confirm = formObj.find('input[name=confirm]').val();
     			
     			//var span_test = $('#span_test');
     			
@@ -67,7 +69,7 @@
 						var obj = JSON.parse(response);
 						
 						if(obj.result == 'SUCCESS') {
-							$('#from_info').submit();
+							formObj.submit();
 						}
 						else if(obj.result == 'ERROR') {
 							
@@ -108,11 +110,10 @@
       <div class="login-box-body">
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
-<form:form id="from_info" action="/user/signup" method="post" commandName="newUser">
+<form id="from_info" action="/user/signup" method="post">
   <div class="form-group has-feedback">
-    <form:input path="userid" class="form-control" placeholder="USER ID" />
+    <input type="text" name="userid" class="form-control" placeholder="USER ID" />
     <div class="formError">
-    	<%-- <form:errors path="userid"/> --%>
     	<span id="userid_error"></span>
     </div>
     
@@ -120,9 +121,8 @@
   </div>
   
   <div class="form-group has-feedback">
-    <form:password path="userpw" class="form-control" placeholder="Password" />
+    <input type="password" name="userpw" class="form-control" placeholder="Password" />
     <div class="formError">
-    	<%-- <form:errors path="userpw"/> --%>
     	<span id="userpw_error"></span>
     </div>
     
@@ -130,17 +130,15 @@
   </div>
   
   <div class="form-group has-feedback">
-    <form:password path="confirm" class="form-control" placeholder="Confirm Password" />
+    <input type="password" name="confirm" class="form-control" placeholder="Confirm Password" />
     <div class="formError">
-    	<%-- <form:errors path="confirm"/> --%>
     	<span id="confirm_error"></span>
     </div>
     
     <span class="glyphicon glyphicon-check form-control-feedback"></span>
   </div>
   
-  
-</form:form>
+</form>
 
 <div class="row">
 	<div class="col-xs-8">

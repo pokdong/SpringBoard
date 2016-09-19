@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,18 +28,11 @@ import io.github.xeyez.security.NewUserValidator;
 public class SignUpController {
 	private static final Logger logger = LoggerFactory.getLogger(SignUpController.class);
 	
-	//private static final String USER_JOIN_SUCCESS = "/user/login";
-	//private static final String USER_JOIN_FORM = "/user/signup";
-
 	@Inject
 	private CustomUserDetailsService userService;
 	
 	@Inject
 	private MessageSource messageSource;
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public void signUpGET(@ModelAttribute("newUser") NewUserVO newUser) {
-	}
 	
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> signUpAjax(@RequestBody NewUserVO newUser, Errors errors) throws Exception {

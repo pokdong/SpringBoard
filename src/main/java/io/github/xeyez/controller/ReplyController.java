@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.xeyez.domain.PageMaker;
 import io.github.xeyez.domain.ReplyCriteria;
 import io.github.xeyez.domain.ReplyVO;
+import io.github.xeyez.security.CustomUserDetailsService;
 import io.github.xeyez.service.ReplyService;
 
 @RestController
@@ -30,6 +32,9 @@ public class ReplyController {
 	
 	@Inject
 	private ReplyService service;
+	
+	@Inject
+	private CustomUserDetailsService userDetailsService;
 	
 	@Transactional
 	@RequestMapping(value = "", method = RequestMethod.POST)
@@ -70,10 +75,9 @@ public class ReplyController {
 		logger.info("replyer : " + vo.getReplyer() + " / id : " + auth.getName());
 		
 		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
-		if(!auth.getName().equals(vo.getReplyer()) && !auth.getName().equals("admin")) {
+		if(!userDetailsService.hasAuthority(vo.getReplyer(), auth)) {
 			return new ResponseEntity<>("ACCESS_DENIED", HttpStatus.BAD_REQUEST);
 		}
-		
 		
 		logger.info("modify reply");
 		
@@ -96,7 +100,7 @@ public class ReplyController {
 		logger.info("replyer : " + replyer + " / id : " + auth.getName());
 		
 		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
-		if(!auth.getName().equals(replyer) && !auth.getName().equals("admin")) {
+		if(!userDetailsService.hasAuthority(replyer, auth)) {
 			return new ResponseEntity<>("ACCESS_DENIED", HttpStatus.BAD_REQUEST);
 		}
 		

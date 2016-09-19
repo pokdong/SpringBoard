@@ -113,29 +113,29 @@
 <form id="from_info" action="/user/signup" method="post">
   <div class="form-group has-feedback">
     <input type="text" name="userid" class="form-control" placeholder="USER ID" />
+    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    
     <div class="formError">
     	<span id="userid_error"></span>
     </div>
-    
-    <span class="glyphicon glyphicon-user form-control-feedback"></span>
   </div>
   
   <div class="form-group has-feedback">
     <input type="password" name="userpw" class="form-control" placeholder="Password" />
+    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    
     <div class="formError">
     	<span id="userpw_error"></span>
     </div>
-    
-    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
   </div>
   
   <div class="form-group has-feedback">
     <input type="password" name="confirm" class="form-control" placeholder="Confirm Password" />
+    <span class="glyphicon glyphicon-check form-control-feedback"></span>
+    
     <div class="formError">
     	<span id="confirm_error"></span>
     </div>
-    
-    <span class="glyphicon glyphicon-check form-control-feedback"></span>
   </div>
   
 </form>

@@ -24,6 +24,10 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+	<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
+    
+    <script src="/resources/xeyez/js/upload.js"></script>
     
     <style>
     	img {
@@ -45,11 +49,23 @@
 			color: red;
 			font-weight: bold;
 		}
+		
+    	div .formError {
+    		text-align: right;
+    		font-size: smaller;
+    		color: red;
+    	}
     </style>
     
     <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script>
     	$(document).ready(function() {
+    		// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
+    		var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
+    		if(isUnavailableBrowser) {
+    			$('.fileDrop').attr('hidden', 'true');
+    		}
+    		
     		
     		var formObj = $("form[role='form']");
     		
@@ -107,6 +123,12 @@
 			var div_modify = $('#div_modify'); 
 			
 			$('#btn_modify').on('click', function() {
+				$('#div_withdrawal').slideUp(0, function() {
+					formObj.find('input[name=userpw]').val('');
+					$('#passwordError').html('');
+					$('#passwordError').slideUp('fast');
+				});
+				
 				div_main.slideUp('fast', function() {
 					div_modify.slideDown('fast', function() {
 						
@@ -156,7 +178,7 @@
 		<button type="button" id="btn_modify" class="btn btn-flat btn-info form-control">회원정보 수정</button>
 	</div>
 	
-	<c:if test="${!isAdmin}">
+<c:if test="${!isAdmin}">
 	<div class="form-group" style="margin-bottom: 30px;">
 		<button type="button" id="btn_withdrawal" class="btn btn-flat btn-danger form-control">회원 탈퇴</button>
 		
@@ -176,18 +198,62 @@
 		</div>
 		
 	</div>
-	</c:if>
+</c:if>
 </div>
 
 <div id="div_modify" >
-	<div>
+	<div id="div_imgArea">
 		<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
 	</div>
 	
-	<div class="form-group has-feedback">
-	    <input type="text" name="userid" class="form-control" placeholder="Nickname" value="${userVO.username}"/>
-	    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+	<div class="form-group">
+		<div class="fileDrop" >
+			여기에 파일을 Drag & Drop 하세요.
+		</div>
+		
+		<div class="fileForm" >
+			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
+			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
+			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
+			</form>
+		</div>
 	</div>
+	
+	<div style="margin-top: 30px">
+	</div>
+	
+	<form id="from_info" action="/user/profile" method="post">
+		<div class="form-group has-feedback">
+		    <input type="text" name="userid" class="form-control" placeholder="Nickname" value="${userVO.username}"/>
+		    <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
+		    
+		    <div class="formError">
+	    		<span id="username_error"></span>
+	    	</div>
+		</div>
+		
+		<div style="margin-top: 30px">
+		</div>
+		
+		<div class="form-group has-feedback">
+		    <input type="text" name="userpw" class="form-control" placeholder="Password" />
+		    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+		    
+		    <div class="formError">
+	    		<span id="userpw_error"></span>
+	    	</div>
+		</div>
+		
+		<div class="form-group has-feedback">
+		    <input type="text" name="confirm" class="form-control" placeholder="Confirm Password" />
+		    <span class="glyphicon glyphicon-check form-control-feedback"></span>
+		    
+		    <div class="formError">
+	    		<span id="confirm_error"></span>
+	    	</div>
+		</div>
+	</form>
+	
 
 	<div align="right">
 		<button type="button" id="btn_modify_cancel" class="btn btn-warning">취소</button>

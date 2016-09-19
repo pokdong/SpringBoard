@@ -153,8 +153,8 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
 	@Override
 	public boolean userExists(String userid) throws Exception {
-		if(userid == null || userid.isEmpty())
-			throw new NullPointerException("ID is null or empty.");
+		/*if(userid == null || userid.isEmpty())
+			throw new NullPointerException("ID is null or empty.");*/
 		
 		return dao.userExists(userid);
 	}

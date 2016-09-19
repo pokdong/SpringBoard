@@ -82,7 +82,7 @@
 						
 						switch (response) {
 							case 'SUCCESS':
-								formObj.attr("action", "/user/info/withdrawal");
+								formObj.attr("action", "/user/withdrawal");
 								formObj.attr("method", "post");
 								formObj.submit();
 								
@@ -101,6 +101,30 @@
 				formObj.find('input[name=userpw]').val('');
 				
 			});
+			
+			
+			var div_main = $('#div_main');
+			var div_modify = $('#div_modify'); 
+			
+			$('#btn_modify').on('click', function() {
+				div_main.slideUp('fast', function() {
+					div_modify.slideDown('fast', function() {
+						
+					});
+				});
+				
+				
+			});
+			
+			$('#btn_modify_cancel').on('click', function() {
+				
+				
+				div_modify.slideUp('fast', function() {
+					div_main.slideDown('fast', function() {
+						
+					});
+				});
+			});
 		});
     </script>
     
@@ -113,45 +137,65 @@
       <div class="login-box-body">
 
 
-<div class="form-group">
-	<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" alt="User Image" />
-	
-	<div class="textArea bold">
-		${userVO.userid}<br>
-		(${userVO.username})
-	</div>
-	
-	<div class="textArea">
-		${userVO.regdate}
-	</div>
-	
-</div>
-
-<div class="form-group">
-	<a href="#" class="btn btn-flat btn-info form-control">회원정보 수정</a>
-</div>
-
-<c:if test="${!isAdmin}">
-<div class="form-group" style="margin-bottom: 30px;">
-	<button type="button" id="btn_withdrawal" class="btn btn-flat btn-danger form-control">회원 탈퇴</button>
-	
-	<div id="div_withdrawal" style="margin-top: 10px;" hidden="true">
-		<span id="passwordError" class="error" hidden="true"></span>
-	
-		<form role="form" method="post">
-			<input type='hidden' name='userid' value="${userVO.userid}">
-			
-			<div class="has-feedback">
-				<input type="password" name="userpw" class="form-control" placeholder="Password">
-				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
-			</div>
-		</form>
+<div id="div_main">
+	<div class="form-group">
+		<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
 		
-		<button type="button" id="btn_withdrawal_pwConfirm" class="btn btn-danger pull-right" style="margin-top: 5px">확인</button>
+		<div class="textArea bold">
+			${userVO.userid}<br>
+			(${userVO.username})
+		</div>
+		
+		<div class="textArea">
+			${userVO.regdate}
+		</div>
+		
 	</div>
 	
+	<div class="form-group">
+		<button type="button" id="btn_modify" class="btn btn-flat btn-info form-control">회원정보 수정</button>
+	</div>
+	
+	<c:if test="${!isAdmin}">
+	<div class="form-group" style="margin-bottom: 30px;">
+		<button type="button" id="btn_withdrawal" class="btn btn-flat btn-danger form-control">회원 탈퇴</button>
+		
+		<div id="div_withdrawal" style="margin-top: 10px;" hidden="true">
+			<span id="passwordError" class="error" hidden="true"></span>
+		
+			<form role="form" method="post">
+				<input type='hidden' name='userid' value="${userVO.userid}">
+				
+				<div class="has-feedback">
+					<input type="password" name="userpw" class="form-control" placeholder="Password">
+					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+				</div>
+			</form>
+			
+			<button type="button" id="btn_withdrawal_pwConfirm" class="btn btn-danger pull-right" style="margin-top: 5px">확인</button>
+		</div>
+		
+	</div>
+	</c:if>
 </div>
-</c:if>
+
+<div id="div_modify" >
+	<div>
+		<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+	</div>
+	
+	<div class="form-group has-feedback">
+	    <input type="text" name="userid" class="form-control" placeholder="Nickname" value="${userVO.username}"/>
+	    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+	</div>
+
+	<div align="right">
+		<button type="button" id="btn_modify_cancel" class="btn btn-warning">취소</button>
+		<button type="button" id="btn_modify_confirm" class="btn btn-danger">확인</button>
+	</div>
+</div>
+
+
 
 
       </div><!-- /.login-box-body -->

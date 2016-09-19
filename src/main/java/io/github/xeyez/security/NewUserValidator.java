@@ -28,6 +28,10 @@ public class NewUserValidator implements Validator {
 			else if(!newUser.isPasswordGreaterThanMinLength())
 				errors.rejectValue("confirm", "pwLength");
 		}
+		
+		String userid = newUser.getUserid();
+		if(userid.contains("admin") || userid.contains("manager"))
+			errors.rejectValue("userid", "unavailable");
 	}
 
 }

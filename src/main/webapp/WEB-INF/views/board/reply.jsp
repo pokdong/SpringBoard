@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> --%>
 
 <style>
 	.userid {
@@ -130,12 +132,10 @@
                 </div>
 
 				<div class="timeline-footer" align="right">
-					<sec:authorize access="isAuthenticated()">
-						<c:if test="${userid == {{replyer}} || isAdmin}">
-                    		<button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
-							<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
-						</c:if>
-					</sec:authorize>
+					{{#hasAuthority replyer}}
+						<button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
+						<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
+					{{/hasAuthority}}
 				</div>
 
             </div>
@@ -165,6 +165,18 @@
 			var min = dateObj.getMinutes();
 			var sec = dateObj.getSeconds();
 			return year + "/" + month + "/" + date + " " + hour + ":" + min + ":" + sec;
+	});
+	
+	Handlebars.registerHelper("hasAuthority", function(replyer, options) {
+		var hasAuth = options.inverse(this);
+		
+		var isAdmin = '${isAdmin}';
+		var isAuthenticated = '${isAuthenticated}';
+		var userid = '${userid}';
+		if((isAuthenticated == 'true' && userid == replyer) || isAdmin == 'true')
+			hasAuth = options.fn(this);
+		
+		return hasAuth;
 	});
 	
 	function printData(replyArr, target, templateObject, replyInfo) {

@@ -47,14 +47,21 @@ In-depth study for Spring framework
 
 ### 0.5.2
 - Spring Security 심화
- - [ ] 로그인된 사용자에 한하여 댓글 작성 허용
- - [ ] 글 쓰기, 수정시 로그인된 ID 사용.
- - [ ] 목록 화면에 ID 대신, 닉네임 표시
+ - [X] 로그인된 사용자에 한하여 댓글 작성,수정,삭제 허용
+   - [X] URL로 임의 접근시 메인화면으로 차단 및 Redirect
+ - [X] 게시글 쓰기, 수정, 삭제 URL로 임의 접근시 차단 및 Redirect
+ - [X] Profile 접근시 로그인 유도
+ - [X] 회원 탈퇴 URL로 임의 접근시 차단 및 Redirect
+ - [X] 글 쓰기, 수정 및 댓글 작성시 로그인된 ID 사용.
+
+### 0.5.3
  - [ ] 회원 정보 수정 (Profile Image, 닉네임, 비밀번호)
+ - [ ] 목록 화면에 ID 대신 닉네임 표시
 
 ## TBA
 - Spring Security 심화
  - [ ] 익명 게시글 쓰기/수정 권한 부여
+ - [ ] 비밀글
  - [ ] ID/비밀번호 찾기
 
 - AJAX

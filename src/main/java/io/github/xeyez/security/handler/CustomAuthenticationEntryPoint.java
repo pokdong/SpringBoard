@@ -30,6 +30,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 		String encoded = response.encodeRedirectURL(redirectUrl);
 		String fullUrl = request.getContextPath() + loginPath + "?returl=" + encoded;
 		
+		logger.info(redirectUrl + " /// " + encoded);
+		
 		logger.info("####### entryPoint : " + fullUrl);
 		
 		response.sendRedirect(fullUrl);

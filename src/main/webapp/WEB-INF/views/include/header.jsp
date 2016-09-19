@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+   
+<sec:authorize access="isAuthenticated()" var="isAuthenticated">
+	<sec:authentication property="name" var="userid"/>
+</sec:authorize>
+<sec:authorize access="hasRole('ADMIN')" var="isAdmin" />
    
 <!DOCTYPE html>
 <html>
@@ -258,20 +265,19 @@
               </sec:authorize>
               
               <sec:authorize access="isAuthenticated()">
-              	<sec:authentication property="name" var="name"/>
               
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="/resources/dist/img/user_160x160.jpg" class="user-image" alt="User Image"/>
-                  <span class="hidden-xs">${name}</span>
+                  <span class="hidden-xs">${userid}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
                     <img src="/resources/dist/img/user_160x160.jpg" class="img-circle" alt="User Image" />
                     <p>
-                      ${name}
+                      ${userid}
                       <!-- <small>Member since Nov. 2012</small> -->
                     </p>
                   </li>

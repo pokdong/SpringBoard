@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%@include file="../include/header.jsp" %>
 
@@ -28,7 +26,7 @@
 	<tr>
 		<th style="width: 70px">번호</th>
 		<th>제목</th>
-		<th>닉네임</th>
+		<th>작성자</th>
 		<th>날짜</th>
 		<th style="width: 100px">조회</th>
 	</tr>
@@ -152,6 +150,11 @@
 			
 			self.location = "write" + query;
 		});
+		
+		
+		if('${auth}' == 'error') {
+			alert('권한이 없습니다.');
+		}
 	})
 	
 </script>

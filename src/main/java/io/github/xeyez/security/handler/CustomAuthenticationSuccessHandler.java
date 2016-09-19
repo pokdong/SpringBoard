@@ -24,11 +24,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,	HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
-		
 		String retUrl = request.getParameter("returl");
-		String redirectUrl = retUrl != null && !retUrl.trim().isEmpty() ? retUrl : defaultTargetUrl;
+		logger.info("####### SUCCESS / returl : " + retUrl);
 		
-		logger.info("####### SUCCESS : " + redirectUrl);
+		String redirectUrl = retUrl != null && !retUrl.trim().isEmpty() ? retUrl : defaultTargetUrl;
+		logger.info("####### SUCCESS / redirectUrl : " + redirectUrl);
 		
 		response.sendRedirect(redirectUrl);
 	}

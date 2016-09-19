@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<style>
+	.userid {
+		margin-bottom: 5px;
+		font-weight: bold;
+		font-size: large;
+	}
+</style>
 
 <div id="repliesArea" class="row">
 	
@@ -11,13 +17,20 @@
 			</div>
 			
 			<div class="box-body">
-				<input type="text" id="newReplyWriter" placeholder="USER ID" style="margin-bottom: 5px">
-				<textarea class="form-control" id="newReplyText" maxlength="100" placeholder="reply text"></textarea>
+				<span class="userid" id="newReplyWriter">${userid}</span>
+				
+				<div class="pull-right">
+					<span id="replyTextCount"></span>
+					<span>/</span>
+					<span id="replyTextLimit"></span>
+				</div>
+				
+				<textarea class="form-control" id="newReplyText" rows="3" cols="1"  maxlength="300" style="resize: none;"></textarea>
 			</div>
 			
 			<div class="box-footer">
 				<button type="button" id="btn_replyUpdate" class="btn bg-green">갱신</button>
-				<button type="submit" id="btn_replyAdd" class="btn btn-primary" style="float: right;">등록</button>
+				<button type="submit" id="btn_replyAdd" class="btn btn-primary pull-right" >등록</button>
 			</div>
 			
 		</div>
@@ -31,8 +44,6 @@
 	</div>
 </div>
 
-
-
 <!-- Modal -->
 <div id="modifyModal" class="modal modal-primary fade" role="dialog">
   	<div class="modal-dialog">
@@ -41,10 +52,11 @@
     	<div class="modal-content">
     		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal">&times;</button>
-	        	<h4 class="modal-title" hidden="true"></h4>
+	        	<h1 class="modal-title" hidden="true"></h1>
+	        	<h1 class="modal-title2" hidden="true"></h1>
        		</div>
        	
-      		<div class="modal-body" data-rno>
+      		<div class="modal-body" data-rno=''>
         		<p><input type="text" id="replytext" class="form-control"></p>
       		</div>
       		
@@ -64,10 +76,11 @@
     	<div class="modal-content">
     		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal">&times;</button>
-        		<h4 class="modal-title" hidden="true"></h4>
+        		<h1 class="modal-title" hidden="true"></h1>
+        		<h1 class="modal-title2" hidden="true"></h1>
        		</div>
        	
-      		<div class="modal-body" data-rno>
+      		<div class="modal-body" data-rno=''>
         		<p>삭제하시겠습니까?</p>
       		</div>
       		
@@ -101,7 +114,7 @@
 
 <script id="template" type="text/x-handlebars-template">
     {{#each .}}
-        <li class="replyLi" data-rno={{rno}}>
+        <li class="replyLi" data-rno={{rno}} data-replyer={{replyer}}>
             <i class="fa fa-comments bg-blue"></i>
             <div class="timeline-item">
                 <span class="time">
@@ -109,17 +122,21 @@
                 </span>
 
                 <h3 class="timeline-header">
-                    <strong>{{rno}} {{replyer}}</strong>
+                    <strong>{{replyer}}</strong>
                 </h3>
 
                 <div class="timeline-body">
                     {{replytext}}
                 </div>
 
-                <div class="timeline-footer" align="right">
-                    <button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
-					<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
-                </div>
+				<div class="timeline-footer" align="right">
+					<sec:authorize access="isAuthenticated()">
+						<c:if test="${userid == {{replyer}} || isAdmin}">
+                    		<button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
+							<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
+						</c:if>
+					</sec:authorize>
+				</div>
 
             </div>
         </li>
@@ -272,8 +289,9 @@
 		var replyerObj = $('#newReplyWriter');
 		var replyTextObj = $('#newReplyText');
 		
-		var replyer = replyerObj.val();
-		var replyText = replyTextObj.val().replace(/(^\s*)|(\s*$)/gi, "");
+		//var replyer = replyerObj.val();
+		var replyer = replyerObj.html();
+		var replyText = trim(replyTextObj.val());
 		
 		if(replyText.length == 0) {
 			alert('내용을 입력해주세요.');
@@ -322,16 +340,21 @@
 		
 		var buttonId = event.target.id;
 		
+		var rno = reply.attr("data-rno");
+		var replyer = reply.attr("data-replyer");
+		
 		switch (buttonId) {
 			case 'btn_modifyDialog':
-				$(".modal-title").html(reply.attr("data-rno"));
+				$(".modal-title").html(rno);
+				$(".modal-title2").html(replyer);
 				
-				var replyText = reply.find('.timeline-body').text().replace(/(^\s*)|(\s*$)/gi, "");
+				var replyText = trim(reply.find('.timeline-body').text());
 				$("#replytext").val(replyText);
 				break;
 				
 			case 'btn_deleteDialog':
-				$(".modal-title").html(reply.attr("data-rno"));
+				$(".modal-title").html(rno);
+				$(".modal-title2").html(replyer);
 				break;
 		}
 	});
@@ -339,7 +362,8 @@
 	$('#btn_replyMod').on('click', function(event) {
 		
 		var rno = $(".modal-title").html();
-		var replyText = $('#replytext').val().replace(/(^\s*)|(\s*$)/gi, "");
+		var replyer = $(".modal-title2").html();
+		var replyText = trim($('#replytext').val());
 		
 		$.ajax({
 			type : 'PUT',
@@ -349,24 +373,28 @@
 				"X-HTTP-Method-Override" : "PUT"
 			},
 			data : JSON.stringify({
+				replyer : replyer,
 				replytext : replyText
 			}),
 			dataType : "text",
 			success : function(response) {
 				if(response != 'SUCCESS')
 					return;
-
 				
 				var targetReply = $('.replyLi[data-rno=' + rno + ']');
 				targetReply.find('.timeline-body').text(replyText);
-
 				
 				//갱신하지 않음.
 				//animation만 설정.
 				targetReply.fadeOut(0, function() {
 					targetReply.fadeIn('slow');
 				});
-				
+			},
+			error : function(request, status, error) {
+				if(request.responseText == 'ACCESS_DENIED')
+					alert('권한이 없습니다.');
+				else
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 		
@@ -374,6 +402,7 @@
 	
 	$('#btn_replyDel').on('click', function(event) {
 		var rno = $(".modal-title").html();
+		var replyer = $(".modal-title2").html();
 		
 		$.ajax({
 			type : 'DELETE',
@@ -382,6 +411,7 @@
 				"Content-Type" : "application/json",
 				"X-HTTP-Method-Override" : "DELETE"
 			},
+			data : replyer,
 			dataType : "text",
 			success : function(response) {
 				if(response != 'SUCCESS')
@@ -391,6 +421,12 @@
 				
 				var replyInfo = new ReplyInfo(replyAction.DELETE, rno);
 				updatePage(bno, replyPage, replyInfo);
+			},
+			error : function(request, status, error) {
+				if(request.responseText == 'ACCESS_DENIED')
+					alert('권한이 없습니다.');
+				else
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 	});
@@ -414,4 +450,81 @@
 		alert(replyText);
 	});
 	 */
+</script>
+
+
+<script>
+	//newReplyText
+	//isAuthenticated
+	
+	var isAuthenticated = ${isAuthenticated};
+	
+	var newReplyText = $('#newReplyText');
+	var btn_replyAdd = $('#btn_replyAdd');
+	
+	if(isAuthenticated) {
+		newReplyText.removeAttr('disabled');
+		newReplyText.removeAttr('placeholder');
+		
+		btn_replyAdd.removeAttr('disabled');
+	}
+	else {
+		//newReplyText.attr('disabled', 'true');
+		newReplyText.focus(function(e) {
+			e.preventDefault();
+			this.blur();
+		});
+		
+		newReplyText.attr('placeholder', '로그인 하세요.');
+		newReplyText.on('click', function(e) {
+			e.preventDefault();
+			
+			var curUrl = $(location).attr('href');
+			self.location = '/user/login' + "?returl=" + curUrl;
+			
+			//alert('/user/login' + "?returl=" + curUrl);
+		});
+		
+		btn_replyAdd.attr('disabled', 'true');
+	}
+	
+	// Text count
+	$('#replyTextCount').html(prependZero(0, 3));
+	btn_replyAdd.attr('disabled', 'true'); //초기 비활성화
+	$('#replyTextLimit').html(newReplyText.attr('maxlength'));
+	
+	newReplyText.on('keyup', function(e) {
+		var len = trim(newReplyText.val()).length;
+		
+		if(len <= 0) {
+			//엔터이거나 스페이스인 경우
+			if(e.keyCode == 13 || e.keyCode == 32)
+				$(this).val('');
+			
+			btn_replyAdd.attr('disabled', 'true');
+		}
+		else
+			btn_replyAdd.removeAttr('disabled');
+		
+		$('#replyTextCount').html(prependZero(len, 3));
+	});
+	
+	/* Firefox에서 한글 인식 문제로 포커스 잃을 때 재계산 */
+	newReplyText.blur(function(e) {
+		var len = trim(newReplyText.val()).length;
+		
+		if(len <= 0) {
+			//엔터이거나 스페이스인 경우
+			if(e.keyCode == 13 || e.keyCode == 32) {
+				$(this).val('');
+			}
+			
+			btn_replyAdd.attr('disabled', 'true');
+		}
+		else
+			btn_replyAdd.removeAttr('disabled');
+		
+		$('#replyTextCount').html(prependZero(len, 3));
+	});
+	
 </script>

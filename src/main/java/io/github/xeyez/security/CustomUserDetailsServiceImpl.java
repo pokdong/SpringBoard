@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -152,8 +153,8 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
 	@Override
 	public boolean userExists(String userid) throws Exception {
-		if(userid == null || userid.isEmpty())
-			throw new NullPointerException("ID is null or empty.");
+		/*if(userid == null || userid.isEmpty())
+			throw new NullPointerException("ID is null or empty.");*/
 		
 		return dao.userExists(userid);
 	}
@@ -166,6 +167,24 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 			throw new UsernameNotFoundException(userId);
 		
 		return vo;
+	}
+
+	@Override
+	public boolean hasAuthority(String writer, Authentication auth) {
+		boolean isAdmin = false;
+		@SuppressWarnings("unchecked")
+		List<GrantedAuthority> authList = (List<GrantedAuthority>) auth.getAuthorities();
+		for(GrantedAuthority gAuth : authList) {
+			if(gAuth.getAuthority().equals("ADMIN")) {
+				isAdmin = true;
+				break;
+			}
+		}
+		
+		logger.info("isAdmin : " + isAdmin);
+		
+		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
+		return auth.getName().equals(writer) || isAdmin;
 	}
 
 }

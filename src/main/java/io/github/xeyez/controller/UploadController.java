@@ -33,11 +33,9 @@ public class UploadController {
 	@Value("${attach.uploadPath}")
 	private String uploadPath;
 
-/*	
-	@RequestMapping(value = "/uploadAjax", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/uploadAjax2", method = RequestMethod.GET)
 	public void uploadAjax() {
-	}
-*/
+	}*/
 	
 	@ResponseBody
 	@RequestMapping(value = "/uploadAjax", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8")
@@ -101,10 +99,10 @@ public class UploadController {
 		
 		MediaType mediaType = UploadFileUtils.getMediaType(fileName);
 		if (mediaType != null) {
-			new File(uploadPath + fileName.replaceFirst("s_", "").replace('/', File.separatorChar)).delete();
+			new File(getThumbnailPath(fileName)).delete();
 		}
 		
-		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+		new File(getFilePath(fileName)).delete();
 		
 		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
 	}
@@ -119,14 +117,22 @@ public class UploadController {
 				for(String fileName : files) {
 					MediaType mediaType = UploadFileUtils.getMediaType(fileName);
 					if (mediaType != null) {
-						new File(uploadPath + fileName.replaceFirst("s_", "").replace('/', File.separatorChar)).delete();
+						new File(getThumbnailPath(fileName)).delete();
 					}
 					
-					new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+					new File(getFilePath(fileName)).delete();
 				}
 			}
 		}
 		
 		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+	}
+
+	private String getThumbnailPath(String fileName) {
+		return uploadPath + fileName.replaceFirst("s_", "").replace('/', File.separatorChar);
+	}
+	
+	private String getFilePath(String fileName) {
+		return uploadPath + fileName.replace('/', File.separatorChar);
 	}
 }

@@ -63,15 +63,14 @@
 <div class="box-footer" > <!-- box-footer : 전체 여백 + 상단 테두리 -->
 	
 	<div class="form-group">
+		<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
+		     <input name="attachFile" type="file">
+		</form>
+	
 		<div class="fileDrop" >
-			여기에 파일을 Drag & Drop 하세요.
-		</div>
-		
-		<div class="fileForm" >
-			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
-			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
-			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
-			</form>
+			파일을 추가하려면<br>
+			클릭하거나<br>
+			파일을 Drag & Drop 하세요.
 		</div>
 	</div>
 	
@@ -98,14 +97,6 @@
 <%@include file="../include/footer.jsp" %>
 
 
-<script>
-	// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
-	var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
-	if(isUnavailableBrowser) {
-		$('.fileDrop').attr('hidden', 'true');
-	}
-</script>
-
 <%@include file="attachment.jsp" %>
 
 <script>
@@ -115,8 +106,7 @@
 	var title = formObj.find("input[name=title]");
 	var content = formObj.find("textarea[name=content]");
 
-	btn_confirm.on("click", function(event) {
-		event.preventDefault();
+	btn_confirm.on("click", function() {
 		
 		// 파일 추가 후 삭제한 경우를 대비해 reset 필요
 		formObj.find("input").each(function(index) {
@@ -140,11 +130,11 @@
 			return;
 		}
 		
+		//파일 첨부
 		var str ="";
 		$(".uploadedList .mailbox-attachment-info").each(function(index){
 			 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
 		});
-		
 		formObj.append(str);
 		
 		formObj.submit();

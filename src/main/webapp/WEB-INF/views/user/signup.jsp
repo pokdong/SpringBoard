@@ -33,12 +33,72 @@
     
     <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script>
-    	/* $(document).ready(function() {
-			$('#input_userid').blur(function(e) {
-				e.preventDefault();
-				alert('blur!');
+    	$(document).ready(function() {
+    		
+    		var userid_error = $('#userid_error');
+			var userpw_error = $('#userpw_error');
+			var confirm_error = $('#confirm_error');
+    		
+    		$('.btn-primary').on('click', function() {
+    			userid_error.text('');
+    			userpw_error.text('');
+    			confirm_error.text('');
+    			
+    			var formObj = $('#from_info');
+    			
+    			var userid = formObj.find('input[name=userid]').val();
+    			var userpw = formObj.find('input[name=userpw]').val();
+    			var confirm = formObj.find('input[name=confirm]').val();
+    			
+    			//var span_test = $('#span_test');
+    			
+				$.ajax({
+					type : "POST",
+					url : "/user/signup/validate",
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					dataType : "text",
+					data : JSON.stringify({
+						userid : userid,
+						userpw : userpw,
+						confirm : confirm
+					}),
+					success : function(response) {
+						var obj = JSON.parse(response);
+						
+						if(obj.result == 'SUCCESS') {
+							formObj.submit();
+						}
+						else if(obj.result == 'ERROR') {
+							
+							$.each(obj, function(key, value) {
+								switch (key) {
+									case 'userid':
+										userid_error.text(value);
+										break;
+										
+									case 'userpw':
+										userpw_error.text(value);
+										break;
+										
+									case 'confirm':
+										confirm_error.text(value);
+										break;
+								}
+							});
+						}
+						
+					},
+					error : function(request, status, error) {
+						alert("code : " + request.status + "\n" 
+								+ "message : " + request.result.responseText + "\n" 
+								+ "error : " + error);
+					}
+				});
 			});
-		}); */
+		});
     </script>
     
   </head>
@@ -50,43 +110,47 @@
       <div class="login-box-body">
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
-<form:form method="post" commandName="newUser">
+<form id="from_info" action="/user/signup" method="post">
   <div class="form-group has-feedback">
-    <form:input path="userid" id="input_userid" class="form-control" placeholder="USER ID" />
-    <div class="formError">
-    	<form:errors path="userid"/>
-    </div>
+    <input type="text" name="userid" class="form-control" placeholder="USER ID" />
+    <span class="glyphicon glyphicon-user form-control-feedback"></span>
     
-    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+    <div class="formError">
+    	<span id="userid_error"></span>
+    </div>
   </div>
   
   <div class="form-group has-feedback">
-    <form:password path="userpw" class="form-control" placeholder="Password" />
-    <div class="formError">
-    	<form:errors path="userpw"/>
-    </div>
-    
+    <input type="password" name="userpw" class="form-control" placeholder="Password" />
     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    
+    <div class="formError">
+    	<span id="userpw_error"></span>
+    </div>
   </div>
   
   <div class="form-group has-feedback">
-    <form:password path="confirm" class="form-control" placeholder="Confirm Password" />
-    <div class="formError">
-    	<form:errors path="confirm"/>
-    </div>
-    
+    <input type="password" name="confirm" class="form-control" placeholder="Confirm Password" />
     <span class="glyphicon glyphicon-check form-control-feedback"></span>
+    
+    <div class="formError">
+    	<span id="confirm_error"></span>
+    </div>
   </div>
   
-  <div class="row">
-  	<div class="col-xs-8">    
-    </div>
-    
-    <div class="col-xs-4">
-      <button type="submit" class="btn btn-primary btn-block btn-flat">가입</button>
-    </div><!-- /.col -->
-  </div>
-</form:form>
+</form>
+
+<div class="row">
+	<div class="col-xs-8">
+   	</div>
+   
+   	<div class="col-xs-4">
+    	<button type="button" class="btn btn-primary btn-block btn-flat">가입</button>
+   	</div>
+</div>
+
+
+
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->

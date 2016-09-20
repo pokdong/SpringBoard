@@ -51,7 +51,7 @@
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
 
-<c:if test="${message == 'SUCCESS'}">
+<c:if test="${message == 'SIGNUP_SUCCESS'}">
 	<div class="message">
 		회원가입이 완료되었습니다. 로그인 하세요.
 	</div>
@@ -62,7 +62,7 @@
 
   <div class="form-group has-feedback">
     <input type="text" name="userid" class="form-control" placeholder="USER ID"/>
-    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+    <span class="glyphicon glyphicon-user form-control-feedback"></span>
   </div>
   
   <div class="form-group has-feedback">

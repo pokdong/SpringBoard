@@ -52,6 +52,7 @@ public class BoardServiceImpl implements BoardService {
 	public void modify(BoardVO vo) throws Exception {
 		dao.update(vo);
 		
+		//전체 삭제 하고 전체 파일 경로 갱신
 		long bno = vo.getBno();
 		dao.deleteAllAttach(bno);
 		

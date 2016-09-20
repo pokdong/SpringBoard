@@ -1,13 +1,20 @@
 package io.github.xeyez.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,63 +22,75 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import io.github.xeyez.domain.NewUserVO;
 import io.github.xeyez.security.CustomUserDetailsService;
 import io.github.xeyez.security.NewUserValidator;
-import io.github.xeyez.security.UnavailableIDException;
 
 @Controller
 @RequestMapping("/user/signup")
 public class SignUpController {
 	private static final Logger logger = LoggerFactory.getLogger(SignUpController.class);
 	
-	private static final String USER_JOIN_SUCCESS = "/user/login";
-	private static final String USER_JOIN_FORM = "/user/signup";
-
 	@Inject
-	private CustomUserDetailsService userJoinService;
+	private CustomUserDetailsService userService;
 	
-	@ModelAttribute("newUser")
-	public NewUserVO formBacking() {
-		logger.info("============== formBacking()");
-		
-		return new NewUserVO();
-	}
-
+	@Inject
+	private MessageSource messageSource;
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public String form() {
-		logger.info("============== form()");
+	@RequestMapping(value = "/validate", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, String>> signUpAjax(@RequestBody NewUserVO newUser, Errors errors) throws Exception {
+		ResponseEntity<Map<String, String>> entity = null;
 		
-		return USER_JOIN_FORM;
-	}
-
-	
-	@RequestMapping(method = RequestMethod.POST)
-	public String submit(@ModelAttribute("newUser") NewUserVO newUser, Errors errors, RedirectAttributes rttr) throws Exception {
-		logger.info("============== submit()");
-
-		//joinform.jsp의 form:form Tag와 연동.
-		//errors가 스프링에 의해 객체가 만들어지고
-		
-		//입력 값 검증
-		new NewUserValidator().validate(newUser, errors);
-		
-		//계속 참조되어 전달됨.
-		
-		if (errors.hasErrors())
-			return USER_JOIN_FORM;
+		Map<String, String> paramMap = new HashMap<>();
 		
 		try {
-			// 가입(생성) 처리
-			userJoinService.signUp(newUser);
+			logger.info(newUser.toString());
 			
-			rttr.addFlashAttribute("message", "SUCCESS");
-			return "redirect:" + USER_JOIN_SUCCESS;
-		} catch (DuplicateKeyException e) {
-			errors.rejectValue("userid", "duplicate");
-			return USER_JOIN_FORM;
-		} catch (UnavailableIDException e) {
-			errors.rejectValue("userid", "unavailable");
-			return USER_JOIN_FORM;
+			if(userService.userExists(newUser.getUserid()))
+				errors.rejectValue("userid", "duplicate");
+			
+			new NewUserValidator().validate(newUser, errors);
+			
+			
+			if(!errors.hasErrors()) {
+				paramMap.put("result", "SUCCESS");
+				
+				entity = new ResponseEntity<>(paramMap, HttpStatus.OK);
+			}
+			else {
+				paramMap.put("result", "ERROR");
+				
+				for (ObjectError objError : errors.getAllErrors()) {
+				    if(objError instanceof FieldError) {
+				        FieldError fieldError = (FieldError) objError;
+				        
+				        // Use null as second parameter if you do not use i18n (internationalization)
+				        String message = messageSource.getMessage(fieldError, null);
+				        
+				        logger.info(fieldError.getField() + " / " + message);
+				        paramMap.put(fieldError.getField(), message);
+				    }
+				}
+				
+				entity = new ResponseEntity<>(paramMap, HttpStatus.OK);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			paramMap.put("result", e.getMessage());
+			entity = new ResponseEntity<>(paramMap, HttpStatus.BAD_REQUEST);
 		}
+		
+		return entity;
 	}
 	
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public String submit(NewUserVO newUser, RedirectAttributes rttr) {
+		try {
+			userService.signUp(newUser);
+			
+			rttr.addFlashAttribute("message", "SIGNUP_SUCCESS");
+			return "redirect:/user/login";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/user/signup";
+		}
+	}
 }

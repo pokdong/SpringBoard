@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.PageMaker;
 import io.github.xeyez.domain.SearchCriteria;
+import io.github.xeyez.security.CustomUserDetailsService;
 import io.github.xeyez.service.BoardService;
 
 @Controller
@@ -29,6 +30,9 @@ public class BoardController {
 	
 	@Inject
 	private BoardService service;
+	
+	@Inject
+	private CustomUserDetailsService userDetailsService;
 	
 	// parameter에 pageMaker의 존재 이유 : pageCount를 사용하기 위함. 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -85,7 +89,7 @@ public class BoardController {
 		logger.info("writer : " + writer + " / id : " + auth.getName());
 		
 		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
-		if(!auth.getName().equals(writer) && !auth.getName().equals("admin")) {
+		if(!userDetailsService.hasAuthority(writer, auth)) {
 			return "redirect:/user/accessdenied";
 		}
 		

@@ -107,7 +107,7 @@
 </script>
 
 <script>
-	/* 첨부파일 출력 */
+	/* 첨부파일 출력, 불러오기, Load */
 	
 	//bno는 reply.jsp에 있음.
 	//var bno = ${boardVO.bno};

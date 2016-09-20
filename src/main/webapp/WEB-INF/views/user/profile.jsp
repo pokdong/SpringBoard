@@ -92,6 +92,7 @@
     		//var defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
     		var defaultProfilePath = null;
     		var tempProfilePath = null;
+    		var pureFilePath = null;
     		
     		
     		function changeProfileImage(fileName) {
@@ -99,6 +100,7 @@
 				$('#img_profile').attr('data-changed', 'true');
 				
 				tempProfilePath = "/displayProfile?fileName=" + fileName;
+				pureFilePath = fileName;
 			}
     		
     		//저장된 ProfilePath가 있으면 이미 교체
@@ -106,6 +108,7 @@
 			if(isProfilepathExists == 'true') {
 				defaultProfilePath = "/displayProfile?fileName=${userVO.profilepath}";
 				$('#img_profile_current').attr('src', defaultProfilePath);
+				$('#img_profile').attr('src', defaultProfilePath);
 				$('#img_profile').attr('data-changed', 'false');
 			}
     		
@@ -185,6 +188,9 @@
 			
 			var formInfoObj = $('#from_info');
 			
+			// 닫기 Aniamtion 이후 취소/확인에 따라 새로 추가했던 프로필 이미지를 기준으로
+			// 확인이면 새 이미지 제외 모두 삭제
+			// 취소이면 새 이미지만 삭제
 			function close(isConfirm) {
 				
 				// form 초기화
@@ -262,7 +268,7 @@
 						
 						// image가 변경된 적 있으면 기본 image 변경
 						if(isImageChanged == 'true') {
-							data.profilepath = $('#img_profile').attr('src');
+							data.profilepath = pureFilePath;
 						}
 						
 						

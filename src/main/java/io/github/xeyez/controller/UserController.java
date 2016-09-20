@@ -1,6 +1,7 @@
 package io.github.xeyez.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -96,7 +97,7 @@ public class UserController {
 			if(!errors.hasErrors()) {
 				
 				// Update
-				//userService.updateInfo(vo);
+				userService.updateInfo(vo);
 				
 				
 				paramMap.put("result", "SUCCESS");

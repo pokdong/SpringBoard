@@ -104,24 +104,24 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		
 		logger.info(vo.toString());
 		
-		String id = vo.getUserid();
 		//String pw = vo.getUserpw();
 		String pw = passwordEncoder.encode(vo.getUserpw().toLowerCase());
-		String username = vo.getUsername();
+		String username = vo.getUsername().trim();
 		
-		if(id == null || id.isEmpty())
-			throw new NullPointerException("ID is null or empty.");
-		else if(pw == null || pw.isEmpty())
+		if(pw == null || pw.isEmpty())
 			throw new NullPointerException("Password is null or empty.");
 		else if(username == null || username.isEmpty())
 			throw new NullPointerException("Username is null or empty.");
 		
-		if(id.contains("admin"))
-			throw new UnavailableIDException("\"admin\"은 포함될 수 없습니다.");
-		if(id.contains("manager"))
-			throw new UnavailableIDException("\"manager\"는 포함될 수 없습니다.");
-		else if (!id.matches("[0-9|a-z|A-Z]*"))
-			throw new UnavailableIDException("영문 대소문자 및 숫자 외에 다른 문자는 포함될 수 없습니다.");
+		/*if(!vo.getRole().equals("ADMIN") && !vo.getRole().equals("MANAGER")) {
+			if(username.contains("admin"))
+				throw new UnavailableIDException("\"admin\"은 포함될 수 없습니다.");
+			if(username.contains("manager"))
+				throw new UnavailableIDException("\"manager\"는 포함될 수 없습니다.");
+		}*/
+		
+		/*if (!username.matches("[0-9|a-z|A-Z]*"))
+			throw new UnavailableIDException("영문 대소문자 및 숫자 외에 다른 문자는 포함될 수 없습니다.");*/
 		
 		vo.setUserpw(pw); // 암호화된 Password 삽입
 		dao.updateUser(vo);

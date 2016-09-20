@@ -55,14 +55,17 @@ In-depth study for Spring framework
  - [X] 글 쓰기, 수정 및 댓글 작성시 로그인된 ID 사용.
 
 ### 0.5.3
- - [ ] 회원 정보 수정 (Profile Image, 닉네임, 비밀번호)
- - [ ] 목록 화면에 ID 대신 닉네임 표시
+ - [X] 회원 정보 수정 (Profile Image, 닉네임, 비밀번호) (AJAX 이용)
+ - [X] Upload form 하나로 통합. 만약 IE 10 이하면 해당 form을 숨기지 않고, Click만 지원.
+ - [X] 로그인, 로그아웃 Form 입력 검증 방법을 AJAX로 변경. (Page 변경없이 현재 Page만 사용.)
 
 ## TBA
 - Spring Security 심화
  - [ ] 익명 게시글 쓰기/수정 권한 부여
  - [ ] 비밀글
  - [ ] ID/비밀번호 찾기
+ - [ ] 목록 화면에 ID / 이전 작성자 대신 현재 닉네임 표시
+   - (만약, 닉네임을 변경하면 이전 작성글까지 변경되어야 하므로 DB 설계 생각 필요.)
 
 - AJAX
  - [ ] 추천/비추천

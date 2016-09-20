@@ -61,7 +61,7 @@ public class UserController {
 			else
 				entity = new ResponseEntity<>("SUCCESS", HttpStatus.OK);
 		} catch (Exception e) {
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
 		return entity;

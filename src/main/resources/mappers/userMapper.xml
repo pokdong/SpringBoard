@@ -23,7 +23,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateUser">
 	<![CDATA[
 		UPDATE TBL_USER
-		SET USERPW = #{userpw}, USERNAME = #{username}, ROLE = #{role}
+		SET USERPW = #{userpw}, USERNAME = #{username}, PROFILEPATH = #{profilepath}
+		WHERE USERID = #{userid}
+	]]>
+	</update>
+	
+	<update id="changeRole">
+	<![CDATA[
+		UPDATE TBL_USER
+		SET ROLE = #{role}
 		WHERE USERID = #{userid}
 	]]>
 	</update>
@@ -43,11 +51,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 	</update>
 
-	<select id="userExists" resultType="int">
+	<select id="userIdExists" resultType="int">
 	<![CDATA[
 		SELECT COUNT(*) 
 		FROM TBL_USER 
 		WHERE USERID = #{userid}
+	]]>
+	</select>
+	
+	<select id="userNameExists" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) 
+		FROM TBL_USER 
+		WHERE USERNAME = #{username} AND USERID != #{userid}
 	]]>
 	</select>
 

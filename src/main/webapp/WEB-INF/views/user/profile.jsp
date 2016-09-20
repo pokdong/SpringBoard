@@ -72,6 +72,7 @@
     	div .profileArea2 {
     		width: 80%;
 			height: 160px;
+			line-height: 160px;
 			margin: auto;
 			text-align: center;
     	}
@@ -86,6 +87,22 @@
     		if(isUnavailableBrowser) {
     			$('.fileDrop').html('사진을 변경하려면<br>클릭하세요.');
     		}
+    		
+    		
+    		function changeProfileImage(fileName) {
+				$('#img_profile').attr('src', "/displayProfile?fileName=" + fileName);
+				$('#img_profile').attr('data-changed', 'true');
+			}
+			
+    		var defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
+    		
+    		//저장된 ProfilePath가 있으면 이미 교체
+    		var isProfilepathExists = '${userVO.profilepath != null}';
+			if(isProfilepathExists == 'true') {
+				defaultProfilePath = "/displayProfile?fileName=${userVO.profilepath}";
+				$('#img_profile_current').attr('src', defaultProfilePath);
+				$('#img_profile').attr('data-changed', 'false');
+			}
     		
     		
     		var formObj = $("form[role='form']");
@@ -104,11 +121,11 @@
 				var userpw = formObj.find('input[name=userpw]').val();
 
 				$.ajax({
-					type : "DELETE",
+					type : "POST",
 					url : '/user/confirmPassword',
 					headers : {
 						"Content-Type" : "application/json",
-						"X-HTTP-Method-Override" : "DELETE"
+						"X-HTTP-Method-Override" : "POST"
 					},
 					data : JSON.stringify({
 						userid : userid,
@@ -159,21 +176,143 @@
 				
 			});
 			
-			$('#btn_modify_cancel').on('click', function() {
-				
-				
+			/* $('#btn_modify_cancel').on('click', function() {
 				div_modify.slideUp('fast', function() {
 					div_main.slideDown('fast', function() {
 						
 					});
 				});
+			}); */
+			
+			function closeAnimation() {
+				div_modify.slideUp('fast', function() {
+					div_main.slideDown('fast');
+				});
+			}
+			
+			
+			var username_error = $('#username_error');
+			var userpw_error = $('#userpw_error');
+			var confirm_error = $('#confirm_error');
+			var userpw_new_error = $('#userpw_new_error');
+			
+			$('#div_modify_buttons').on('click', 'button', function(event) {
+				username_error.text('');
+    			userpw_error.text('');
+    			confirm_error.text('');
+    			userpw_new_error.text('');
+				
+				var id = event.target.id
+				
+				var formObj = $('#from_info');
+				
+				var username = formObj.find('input[name=username]').val();
+				var userpw = formObj.find('input[name=userpw]').val();
+				var confirm = formObj.find('input[name=confirm]').val();
+				var userpw_new = formObj.find('input[name=userpw_new]').val();
+				
+				var isImageChanged = $('#img_profile').attr('data-changed');
+				
+				switch (id) {
+					case 'btn_modify_cancel':
+						$('#img_profile').attr('src', defaultProfilePath);
+						$('#img_profile').attr('data-changed', 'false');
+						
+						closeAnimation();
+						break;
+
+					case 'btn_modify_confirm':
+						
+						var data = {
+								username : username,
+								userpw : userpw,
+								confirm : confirm,
+								userpw_new : userpw_new,
+								profilepath : null
+							};
+						
+						// image가 변경된 적 있으면 기본 image 변경
+						if(isImageChanged == 'true') {
+							defaultProfilePath = $('#img_profile').attr('src');
+							
+							//field 변경 (전송 목적)
+							data.profilepath = defaultProfilePath;
+						}
+						
+						
+						$.ajax({
+							type : "PATCH",
+							url : "/user/profile",
+							headers : {
+								"Content-Type" : "application/json",
+								"X-HTTP-Method-Override" : "PATCH"
+							},
+							data : JSON.stringify(data),
+							dataType : "text",
+							success : function(response) {
+								
+								var obj = JSON.parse(response);
+								
+								if(obj.result == 'SUCCESS') {
+									//alert('ok!');
+									
+									// Image 교체된 적이 있다면 교체
+									if(isImageChanged == 'true') {
+										$('#img_profile_current').attr('src', defaultProfilePath);
+										$('#img_profile').attr('data-changed', 'false');
+									}
+									
+									// Username 교체
+									$('#span_username').text(username);
+									formObj.find('input[name=username]').val(username);
+									
+									// 나머지 form 초기화
+									formObj.find('input[name=userpw]').val('');
+									formObj.find('input[name=confirm]').val('');
+									formObj.find('input[name=userpw_new]').val('');
+									
+									
+									closeAnimation();
+								}
+								else if(obj.result == 'ERROR') {
+									
+									$.each(obj, function(key, value) {
+										switch (key) {
+											case 'username':
+												username_error.text(value);
+												break;
+												
+											case 'userpw':
+												userpw_error.text(value);
+												break;
+												
+											case 'confirm':
+												confirm_error.text(value);
+												break;
+												
+											case 'userpw_new':
+												userpw_new_error.text(value);
+												break;
+										}
+									});
+								}
+								
+							},
+							error : function(request, status, error) {
+								alert("code : " + request.status + "\n"
+										+ "message : " + request.responseText + "\n" 
+										+ "error : " + error);
+							}
+						});
+						
+						break;
+				}
+				
+				
 			});
 			
 			
 			
-			function changeProfileImage(fileName) {
-				$('#img_profile').attr('src', "/displayProfile?fileName=" + fileName);
-			}
 			
 			
 			$('.fileDrop_profile').on('dragenter dragover', function(event) {
@@ -270,13 +409,15 @@
 <div id="div_main">
 	<div class="form-group">
 		<div class="profileArea2">
-			<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+			<img id="img_profile_current" src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
 		</div>
 		
 		
 		<div class="textArea bold">
-			${userVO.userid}<br>
-			(${userVO.username})
+			${userVO.userid}
+			<div>
+				(<span id="span_username">${userVO.username}</span>)
+			</div>
 		</div>
 		
 		<div class="textArea">
@@ -312,13 +453,16 @@
 </c:if>
 </div>
 
-<div id="div_modify" >
-	
-	
+
+
+
+
+
+<div id="div_modify" hidden="true">
 	<div class="form-group">
 		<div class="fileDrop_profile" >
 			<div class="profileArea">
-				<img id="img_profile" src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+				<img id="img_profile" src="/resources/dist/img/user_160x160.jpg" class="img-circle" data-changed="false" />
 			</div>
 		
 			사진을 변경하려면<br>
@@ -336,7 +480,7 @@
 	
 	<form id="from_info" action="/user/profile" method="post">
 		<div class="form-group has-feedback">
-		    <input type="text" name="userid" class="form-control" placeholder="Nickname" value="${userVO.username}"/>
+		    <input type="text" name="username" class="form-control" maxlength="10" placeholder="Nickname" value="${userVO.username}"/>
 		    <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
 		    
 		    <div class="formError">
@@ -348,7 +492,7 @@
 		</div>
 		
 		<div class="form-group has-feedback">
-		    <input type="text" name="userpw" class="form-control" placeholder="Password" />
+		    <input type="password" name="userpw" maxlength="30" class="form-control" placeholder="Password" />
 		    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		    
 		    <div class="formError">
@@ -357,7 +501,7 @@
 		</div>
 		
 		<div class="form-group has-feedback">
-		    <input type="text" name="confirm" class="form-control" placeholder="Confirm Password" />
+		    <input type="password" name="confirm" maxlength="30" class="form-control" placeholder="Confirm Password" />
 		    <span class="glyphicon glyphicon-check form-control-feedback"></span>
 		    
 		    <div class="formError">
@@ -366,7 +510,7 @@
 		</div>
 		
 		<div class="form-group has-feedback">
-		    <input type="text" name="userpw_new" class="form-control" placeholder="New Password" />
+		    <input type="password" name="userpw_new" maxlength="30" class="form-control" placeholder="New Password" />
 		    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
 		    
 		    <div class="formError">
@@ -376,7 +520,7 @@
 	</form>
 	
 
-	<div align="right">
+	<div id="div_modify_buttons" align="right">
 		<button type="button" id="btn_modify_cancel" class="btn btn-warning">취소</button>
 		<button type="button" id="btn_modify_confirm" class="btn btn-danger">확인</button>
 	</div>

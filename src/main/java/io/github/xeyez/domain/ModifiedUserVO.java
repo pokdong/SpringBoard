@@ -10,6 +10,10 @@ public class ModifiedUserVO extends NewUserVO {
 	public void setUserpw_new(String userpw_new) {
 		this.userpw_new = userpw_new;
 	}
+	
+	public boolean isNewPasswordGreaterThanMinLength() {
+		return userpw_new.length() >= MIN_LENGHTH;
+	}
 
 	@Override
 	public String toString() {

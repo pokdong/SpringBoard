@@ -87,7 +87,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		if(id.contains("admin") || id.contains("manager"))
 			throw new UnavailableIDException(id);
 		
-		if(dao.userExists(id))
+		if(dao.userIdExists(id))
 			throw new DuplicateKeyException(id);
 		
 		
@@ -126,6 +126,11 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		vo.setUserpw(pw); // 암호화된 Password 삽입
 		dao.updateUser(vo);
 	}
+	
+	@Override
+	public void changeRole(String userid, String role) throws Exception {
+		dao.changeRole(userid, role);
+	}
 
 	@Transactional
 	@Override
@@ -152,11 +157,11 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 	}
 
 	@Override
-	public boolean userExists(String userid) throws Exception {
+	public boolean userIdExists(String userid) throws Exception {
 		/*if(userid == null || userid.isEmpty())
 			throw new NullPointerException("ID is null or empty.");*/
 		
-		return dao.userExists(userid);
+		return dao.userIdExists(userid);
 	}
 
 	@Override
@@ -187,4 +192,8 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		return auth.getName().equals(writer) || isAdmin;
 	}
 
+	@Override
+	public boolean userNameExists(String userid, String username) throws Exception {
+		return dao.userNameExists(userid, username);
+	}
 }

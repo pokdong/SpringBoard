@@ -2,11 +2,11 @@
 
 .fileDrop {
   width: 80%;
-  height: 100px;
+  height: 120px;
   border: 3px dashed gray;
   margin: auto;
   text-align: center;
-  line-height: 100px;
+  line-height: 38px;
   font-weight: bold;
 }
 
@@ -14,16 +14,4 @@
 	display: table;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-.fileForm {
-	width: 80%;
-	margin-top: 10px;
-	margin-bottom: auto;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-#fileSubmitBtn {
-	width: 100%;
 }

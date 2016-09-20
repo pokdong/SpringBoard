@@ -86,15 +86,14 @@
 <div class="box-footer"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
 
 	<div class="form-group">
+		<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
+		     <input name="attachFile" type="file">
+		</form>
+	
 		<div class="fileDrop" >
-			여기에 파일을 Drag & Drop 하세요.
-		</div>
-		
-		<div class="fileForm" >
-			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
-			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
-			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
-			</form>
+			파일을 추가하려면<br>
+			클릭하거나<br>
+			파일을 Drag & Drop 하세요.
 		</div>
 	</div>
 	
@@ -119,13 +118,7 @@
 
 <%@include file="../include/footer.jsp" %>
 
-<script>
-	// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
-	var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
-	if(isUnavailableBrowser) {
-		$('.fileDrop').attr('hidden', 'true');
-	}
-</script>
+<%@include file="attachment.jsp" %>
 
 <script>
 	var btn_confirm = $('#btn_confirm');
@@ -137,6 +130,23 @@
 	
 	// 확인
 	$("#btn_confirm").on("click", function() {
+		
+		// 가삭제한 기존 파일 진짜 삭제.
+		if(tempDeleteFilesArr.length > 0) {
+			$.post("/deleteAllFiles", {files:tempDeleteFilesArr}, function(request, status, error) {
+			});
+		}
+		
+		// 파일 추가 후 삭제한 경우를 대비해 reset 필요
+		formObj.find("input").each(function(index) {
+			var nameAttr = $(this).attr('name');
+			
+			if(nameAttr.includes('files')) {
+				$(this).remove();
+			}
+		});
+		
+		
 		var titleLength = trim(formObj.find("input[name=title]").val()).length;
 		if(titleLength <= 0) {
 			alert('제목을 입력하세요.');
@@ -148,6 +158,13 @@
 			alert('내용을 입력하세요.');
 			return;
 		}
+
+		//파일 첨부
+		var str ="";
+		$(".uploadedList .mailbox-attachment-info").each(function(index){
+			 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("data-src") +"'> ";
+		});
+		formObj.append(str);
 		
 		formObj.submit();
 	});
@@ -233,7 +250,48 @@
 	});
 </script>
 
-<%@include file="attachment.jsp" %>
+
+
+<script id="templateAttach_modify" type="text/x-handlebars-template">
+<li>
+  <span class="mailbox-attachment-icon has-img">
+	<img src="{{imgsrc}}" alt="Attachment">
+  </span>
+
+  <div class="mailbox-attachment-info" data-src="{{fullName}}">
+	{{#if isImage}}
+		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img">{{fileName}}</a>
+	{{else}}
+		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	{{/if}}
+
+	<span class="btn btn-default btn-xs pull-right delbtn" data-deltype="modify">
+		<i class="fa fa-fw fa-remove"></i>
+	</span>
+  </div>
+</li>
+</script>
+
+<script>
+	/* 첨부파일 출력, 불러오기, Load */
+	
+	var bno = ${boardVO.bno};
+	var template_modify = Handlebars.compile($("#templateAttach_modify").html());
+	
+	$.getJSON("/board/getAttach/"+bno, function(list){
+		
+		$(list).each(function(){
+			
+			var fileInfo = getFileInfo(this);
+			console.log("fileInfo : " + fileInfo);
+			
+			var html = template_modify(fileInfo);
+			
+			 $(".uploadedList").append(html);
+			
+		});
+	});
+</script>
 
 <!-- 출력 후 삭제하면 이전 첨부된 파일이 실제 삭제됨. 이 때, 취소를 누를 때 추가 로직 필요.. -->
 <!-- 

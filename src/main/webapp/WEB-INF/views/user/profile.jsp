@@ -27,12 +27,20 @@
 
 	<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
     
-    <script src="/resources/xeyez/js/upload.js"></script>
+    <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- IE 10 이하 from 이용 파일 업로드 지원 -->
+	<script src="/resources/xeyez/js/jquery.form.js"></script>
+    
+    <script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+	<script src="/resources/xeyez/js/upload.js"></script>
+	<script src="/resources/xeyez/js/utils.js"></script>
     
     <style>
     	img {
-		    display: block;
-		    margin: auto;
+		    /* display: block;
+		    margin: auto; */
+		    width: 160px;
+		    vertical-align: middle;
 		}
 		
 		.textArea {
@@ -55,15 +63,28 @@
     		font-size: smaller;
     		color: red;
     	}
+    	
+    	div .profileArea {
+    		height: 160px;
+    		line-height: 160px;
+    	}
+    	
+    	div .profileArea2 {
+    		width: 80%;
+			height: 160px;
+			margin: auto;
+			text-align: center;
+    	}
     </style>
     
-    <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    
+    
     <script>
     	$(document).ready(function() {
-    		// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
+    		// 모바일이거나 IE10 이하면 Drag & Drop 지원하지 않음.
     		var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
     		if(isUnavailableBrowser) {
-    			$('.fileDrop').attr('hidden', 'true');
+    			$('.fileDrop').html('사진을 변경하려면<br>클릭하세요.');
     		}
     		
     		
@@ -83,11 +104,11 @@
 				var userpw = formObj.find('input[name=userpw]').val();
 
 				$.ajax({
-					type : "POST",
+					type : "DELETE",
 					url : '/user/confirmPassword',
 					headers : {
 						"Content-Type" : "application/json",
-						"X-HTTP-Method-Override" : "POST"
+						"X-HTTP-Method-Override" : "DELETE"
 					},
 					data : JSON.stringify({
 						userid : userid,
@@ -147,6 +168,93 @@
 					});
 				});
 			});
+			
+			
+			
+			function changeProfileImage(fileName) {
+				$('#img_profile').attr('src', "/displayProfile?fileName=" + fileName);
+			}
+			
+			
+			$('.fileDrop_profile').on('dragenter dragover', function(event) {
+				event.preventDefault();
+				$(this).css('background-color', '#17B3E4');
+			});
+			
+			$('.fileDrop_profile').on('drop', function(event) {
+				event.preventDefault();
+				$(this).css('background-color', 'white');
+				
+				var files = event.originalEvent.dataTransfer.files;
+				var file = files[0];
+				
+				var fileName = file.name;
+				
+				if(checkImageFile(fileName) == null)
+					return;
+				
+				// IE10부터 formData 지원
+				var formData = new FormData();
+				formData.append("file", file);
+				
+				$.ajax({
+					type : 'POST',
+					url : '/uploadProfile',
+					processData : false,
+					contentType : false,
+					data : formData,
+					dataType : "text",
+					success : function(fileName) {
+						//alert(fileName);
+						changeProfileImage(fileName);
+					},
+					error : function(request, status, error) {
+						alert("code : " + request.status + "\n"
+								+ "message : " + request.responseText + "\n" 
+								+ "error : " + error);
+					}
+				});
+				
+				
+			});
+			
+			$('.fileDrop_profile').on('click dragstart contextmenu selectstart', function(event) {
+				event.preventDefault();
+				$(':file').trigger('click');
+			});
+			
+			$(':file').change(function(e) {
+				if(this.files[0].size > 0) {
+
+					var fileName = this.files[0].name;
+					
+					if(checkImageFile(fileName) == null)
+						return;
+					
+					
+					var options = {
+		            		url: '/uploadProfile',
+		                    type: 'POST',
+		                    dataType : "text",
+		                    success : function (fileName){
+		                    	//alert(fileName);
+		                    	changeProfileImage(fileName);
+		                    },
+		    				error : function(request, status, error) {
+		    					alert("code : " + request.status + "\n"
+										+ "message : " + request.responseText + "\n" 
+										+ "error : " + error);
+		    				}
+		                };
+		                
+		            
+		            var func = $("#fileSubmitForm").ajaxForm(options).submit();
+		            
+		            $(":file").val("");
+		            
+		            $('.fileDrop_profile').css('background-color', 'white');
+				}
+			});
 		});
     </script>
     
@@ -161,7 +269,10 @@
 
 <div id="div_main">
 	<div class="form-group">
-		<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+		<div class="profileArea2">
+			<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+		</div>
+		
 		
 		<div class="textArea bold">
 			${userVO.userid}<br>
@@ -202,21 +313,22 @@
 </div>
 
 <div id="div_modify" >
-	<div id="div_imgArea">
-		<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
-	</div>
+	
 	
 	<div class="form-group">
-		<div class="fileDrop" >
-			여기에 파일을 Drag & Drop 하세요.
+		<div class="fileDrop_profile" >
+			<div class="profileArea">
+				<img id="img_profile" src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+			</div>
+		
+			사진을 변경하려면<br>
+			클릭하거나<br>
+			Drag & Drop 하세요.
 		</div>
 		
-		<div class="fileForm" >
-			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
-			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
-			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
-			</form>
-		</div>
+		<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
+		     <input name="attachFile" type="file" accept="image/*" >
+		</form>
 	</div>
 	
 	<div style="margin-top: 30px">
@@ -252,6 +364,15 @@
 	    		<span id="confirm_error"></span>
 	    	</div>
 		</div>
+		
+		<div class="form-group has-feedback">
+		    <input type="text" name="userpw_new" class="form-control" placeholder="New Password" />
+		    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+		    
+		    <div class="formError">
+	    		<span id="userpw_new_error"></span>
+	    	</div>
+		</div>
 	</form>
 	
 
@@ -266,5 +387,6 @@
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
+
   </body>
 </html>

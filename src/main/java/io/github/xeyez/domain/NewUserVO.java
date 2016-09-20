@@ -1,9 +1,9 @@
 package io.github.xeyez.domain;
 
 public class NewUserVO extends UserVO {
-	private String confirm;
+	protected String confirm;
 
-	private final int MIN_LENGHTH = 8;
+	protected final int MIN_LENGHTH = 8;
 	
 	public String getConfirm() {
 		return confirm;

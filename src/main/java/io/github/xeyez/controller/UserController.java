@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.github.xeyez.domain.ModifiedUserVO;
 import io.github.xeyez.domain.UserVO;
 import io.github.xeyez.security.CustomUserDetailsService;
 import io.github.xeyez.security.CustomUserDetailsServiceImpl;
@@ -42,6 +43,22 @@ public class UserController {
 		model.addAttribute(userVO);
 	}
 	
+	public ResponseEntity<String> profile(@RequestBody ModifiedUserVO vo) {
+		
+		logger.info(vo.getUserid() + " / " + vo.getUserpw() + "/" + vo.getUserpw_new());
+		
+		ResponseEntity<String> entity = null;
+
+		try {
+			entity = new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	// 로그인 ID 존재 여부 및 비밀번호 확인
 	// 회원 탈퇴 이전 비밀번호 확인
 	@ResponseBody
 	@RequestMapping("/confirmPassword")
@@ -68,7 +85,7 @@ public class UserController {
 	}
 	
 	// 회원 탈퇴 이전 비밀번호 확인 후 탈퇴.
-	@RequestMapping(value = "/withdrawal", method = RequestMethod.POST)
+	@RequestMapping(value = "/withdrawal", method = RequestMethod.DELETE)
 	public String withdrawal(UserVO vo) throws Exception {
 		logger.info("========= withdrawal : " + vo.getUserid());
 		

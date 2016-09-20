@@ -192,6 +192,55 @@ public class UploadController {
 		
 		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/deleteProfile", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteProfile(String fileName, boolean isConfirm, Authentication auth) throws Exception {
+		logger.info("fileName : " + fileName + " / isConfirm : " + isConfirm);
+		
+		if(fileName != null) {
+			if(!fileName.trim().isEmpty()) {
+				//new File(getProfileImagePath(fileName)).delete();
+				
+				String id = auth.getName();
+				
+				String dirPath = profilePath + File.separatorChar + id;
+				logger.info("dirPath : " + dirPath);
+				
+				File[] files = new File(dirPath).listFiles();
+				
+				String addedFileName = fileName.substring(fileName.lastIndexOf('/') + 1).replace('/', File.separatorChar);
+				logger.info(addedFileName);
+				
+				for(File file : files) {
+					boolean isTargetFile = addedFileName.equals(file.getName());
+					
+					// 확인이면 추가한 이미지 제외 모두 삭제
+					// 취소이면 추가한 이미지만 삭제
+					if(isConfirm) {
+						if(isTargetFile)
+							continue;
+						
+						file.delete();
+					}
+					else {
+						if(isTargetFile) {
+							
+							logger.info(isTargetFile + " / " + file.getName());
+							
+							file.delete();
+							break;
+						}
+					}
+					
+				}
+				
+			}
+		}
+		
+		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+	}
+	
 
 	private String getThumbnailPath(String fileName) {
 		return uploadPath + fileName.replaceFirst("s_", "").replace('/', File.separatorChar);

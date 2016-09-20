@@ -83,12 +83,6 @@ public class UploadFileUtils {
 		if(!dir.exists()) {
 			dir.mkdirs();
 		}
-		else {
-			// 이미 존재하는 Profile image 삭제
-			for(File targetFile : dir.listFiles()) {
-				targetFile.delete();
-			}
-		}
 		
 		FileCopyUtils.copy(mpf.getBytes(), file);
 		

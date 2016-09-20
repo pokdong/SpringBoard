@@ -89,12 +89,17 @@
     		}
     		
     		
+    		//var defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
+    		var defaultProfilePath = null;
+    		var tempProfilePath = null;
+    		
+    		
     		function changeProfileImage(fileName) {
 				$('#img_profile').attr('src', "/displayProfile?fileName=" + fileName);
 				$('#img_profile').attr('data-changed', 'true');
+				
+				tempProfilePath = "/displayProfile?fileName=" + fileName;
 			}
-			
-    		var defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
     		
     		//저장된 ProfilePath가 있으면 이미 교체
     		var isProfilepathExists = '${userVO.profilepath != null}';
@@ -176,17 +181,37 @@
 				
 			});
 			
-			/* $('#btn_modify_cancel').on('click', function() {
+			
+			
+			var formInfoObj = $('#from_info');
+			
+			function close(isConfirm) {
+				
+				// form 초기화
+				formInfoObj.find('input[name=userpw]').val('');
+				formInfoObj.find('input[name=confirm]').val('');
+				formInfoObj.find('input[name=userpw_new]').val('');
+				
 				div_modify.slideUp('fast', function() {
 					div_main.slideDown('fast', function() {
-						
+						$.ajax({
+							type : "POST",
+							url : "/deleteProfile",
+							data : {
+								fileName : tempProfilePath,
+								isConfirm : isConfirm
+							},
+							dataType : "text",
+							success : function(response) {
+								tempProfilePath = null;
+							},
+							error : function(request, status, error) {
+								alert("code : " + request.status + "\n"
+										+ "message : " + request.responseText + "\n" 
+										+ "error : " + error);
+							}
+						});
 					});
-				});
-			}); */
-			
-			function closeAnimation() {
-				div_modify.slideUp('fast', function() {
-					div_main.slideDown('fast');
 				});
 			}
 			
@@ -204,21 +229,25 @@
 				
 				var id = event.target.id
 				
-				var formObj = $('#from_info');
 				
-				var username = formObj.find('input[name=username]').val();
-				var userpw = formObj.find('input[name=userpw]').val();
-				var confirm = formObj.find('input[name=confirm]').val();
-				var userpw_new = formObj.find('input[name=userpw_new]').val();
+				
+				var username = formInfoObj.find('input[name=username]').val();
+				var userpw = formInfoObj.find('input[name=userpw]').val();
+				var confirm = formInfoObj.find('input[name=confirm]').val();
+				var userpw_new = formInfoObj.find('input[name=userpw_new]').val();
 				
 				var isImageChanged = $('#img_profile').attr('data-changed');
 				
 				switch (id) {
 					case 'btn_modify_cancel':
+						//DB에 저장된 Image가 없는 경우
+						if(defaultProfilePath == null)
+							defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
+						
 						$('#img_profile').attr('src', defaultProfilePath);
 						$('#img_profile').attr('data-changed', 'false');
 						
-						closeAnimation();
+						close(false);
 						break;
 
 					case 'btn_modify_confirm':
@@ -233,10 +262,7 @@
 						
 						// image가 변경된 적 있으면 기본 image 변경
 						if(isImageChanged == 'true') {
-							defaultProfilePath = $('#img_profile').attr('src');
-							
-							//field 변경 (전송 목적)
-							data.profilepath = defaultProfilePath;
+							data.profilepath = $('#img_profile').attr('src');
 						}
 						
 						
@@ -258,21 +284,17 @@
 									
 									// Image 교체된 적이 있다면 교체
 									if(isImageChanged == 'true') {
+										defaultProfilePath = $('#img_profile').attr('src');
+										
 										$('#img_profile_current').attr('src', defaultProfilePath);
 										$('#img_profile').attr('data-changed', 'false');
 									}
 									
 									// Username 교체
 									$('#span_username').text(username);
-									formObj.find('input[name=username]').val(username);
+									formInfoObj.find('input[name=username]').val(username);
 									
-									// 나머지 form 초기화
-									formObj.find('input[name=userpw]').val('');
-									formObj.find('input[name=confirm]').val('');
-									formObj.find('input[name=userpw_new]').val('');
-									
-									
-									closeAnimation();
+									close(true);
 								}
 								else if(obj.result == 'ERROR') {
 									

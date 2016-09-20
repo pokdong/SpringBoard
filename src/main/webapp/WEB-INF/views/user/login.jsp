@@ -57,7 +57,7 @@
 	</div>
 </c:if>
 
-<form action="<c:url value='/user/login_processing'/>" method="post">
+<form id="form_login" action="<c:url value='/user/login_processing'/>" method="post">
 	<input type="hidden" name="returl" value="${returl}">
 
   <div class="form-group has-feedback">
@@ -66,14 +66,11 @@
   </div>
   
   <div class="form-group has-feedback">
-    <input type="password" name="password" class="form-control" placeholder="Password"/>
+    <input type="password" name="userpw" class="form-control" placeholder="Password"/>
     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
     
-    <c:if test="${param.error == 'true'}">
-		<div class="formError">
-	    	아이디와 암호가 일치하지 않습니다.
-	    </div>
-  	</c:if>
+	<div class="formError">
+    </div>
   </div>
   
   <div class="row">
@@ -85,7 +82,7 @@
       </div>                        
     </div><!-- /.col -->
     <div class="col-xs-4">
-      <button type="submit" class="btn btn-primary btn-block btn-flat">로그인</button>
+      <button type="button" id="btn_check" class="btn btn-primary btn-block btn-flat">로그인</button>
     </div><!-- /.col -->
   </div>
 </form>
@@ -105,11 +102,52 @@
     <script src="/resources/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <script>
       $(function () {
-        $('input').iCheck({
-          checkboxClass: 'icheckbox_square-blue',
-          radioClass: 'iradio_square-blue',
-          increaseArea: '20%' // optional
-        });
+	        $('input').iCheck({
+	          checkboxClass: 'icheckbox_square-blue',
+	          radioClass: 'iradio_square-blue',
+	          increaseArea: '20%' // optional
+	        });
+	        
+	        // 사용자 유무, 비밀번호를 AJAX로 검증 후 전송
+	        // 뒤로 가기 페이지 없애기 위함.
+	        $('#btn_check').on('click', function() {
+				var formErrorObj = $('.formError');
+				
+				var formObj = $('#form_login');
+				
+				var userid = formObj.find('input[name=userid]').val();
+				var userpw = formObj.find('input[name=userpw]').val();
+				
+				$.ajax({
+					type : "POST",
+					url : "/user/confirmPassword",
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					data : JSON.stringify({
+						userid : userid,
+						userpw : userpw
+					}),
+					dataType : "text",
+					success : function(response) {
+						
+						switch (response) {
+							case 'SUCCESS':
+								formErrorObj.text('');
+								formObj.submit();
+								break;
+								
+							case 'FAIL':
+								formErrorObj.text('비밀번호가 일치하지 않습니다.');
+								break;
+						}
+					},
+					error : function(request, status, error) {
+						formErrorObj.text('존재하지 않는 ID입니다.');
+					}
+				});
+			});
       });
     </script>
   </body>

@@ -60,7 +60,7 @@
 			login-processing-url="/user/login_processing"
 			
 			username-parameter="userid"
-			password-parameter="password"
+			password-parameter="userpw"
 		/>
 		<sec:logout 
 			logout-url="/user/logout"

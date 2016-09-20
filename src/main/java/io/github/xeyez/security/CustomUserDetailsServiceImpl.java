@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.xeyez.domain.ModifiedUserVO;
 import io.github.xeyez.domain.UserVO;
 import io.github.xeyez.persistence.UserDAO;
 
@@ -100,12 +101,12 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
 	@Transactional
 	@Override
-	public void updateInfo(UserVO vo) throws Exception {
+	public void updateInfo(ModifiedUserVO vo) throws Exception {
 		
 		logger.info(vo.toString());
 		
 		//String pw = vo.getUserpw();
-		String pw = passwordEncoder.encode(vo.getUserpw().toLowerCase());
+		String pw = passwordEncoder.encode(vo.getUserpw_new().toLowerCase());
 		String username = vo.getUsername().trim();
 		
 		if(pw == null || pw.isEmpty())

@@ -1,7 +1,6 @@
 package io.github.xeyez.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -52,8 +51,9 @@ public class UserController {
 	public void profile(Model model, Authentication auth) throws Exception {
 		logger.info("=========== profile / " + auth.getName());
 		
-		UserVO userVO = userService.getUser(auth.getName());
-		model.addAttribute(userVO);
+		if(auth != null && auth.isAuthenticated()) {
+			model.addAttribute("authUser", userService.getUser(auth.getName()));
+		}
 	}
 	
 	@ResponseBody

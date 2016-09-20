@@ -32,11 +32,11 @@ public class BoardController {
 	private BoardService service;
 	
 	@Inject
-	private CustomUserDetailsService userDetailsService;
+	private CustomUserDetailsService userService;
 	
 	// parameter에 pageMaker의 존재 이유 : pageCount를 사용하기 위함. 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public void list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
+	public void list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> show listPage");
 		
 		logger.info(">>>>>>>>>> cri : " + cri.toString());
@@ -46,11 +46,21 @@ public class BoardController {
 		pageMaker.calcPaging(cri, postCount);
 		
 		logger.info("pageMaker : " + pageMaker.toString());
+		
+		//임시
+		if(auth != null && auth.isAuthenticated()) {
+			model.addAttribute("authUser",  userService.getUser(auth.getName()));
+		}
 	}
 	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public void writeGET(BoardVO board, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
+	public void writeGET(BoardVO board, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth) throws Exception {
 		logger.info("............. write get");
+		
+		//임시
+		if(auth != null && auth.isAuthenticated()) {
+			model.addAttribute("authUser",  userService.getUser(auth.getName()));
+		}
 	}
 	
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
@@ -66,11 +76,12 @@ public class BoardController {
 		
 		rttr.addFlashAttribute("result", "SUCCESS");
 		
+		
 		return "redirect:/board/list";
 	}
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
-	public void read(@RequestParam("bno") long bno, @RequestParam("reply") boolean isMoveToReply, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
+	public void read(@RequestParam("bno") long bno, @RequestParam("reply") boolean isMoveToReply, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> read");
 		
 		BoardVO vo = service.read(bno);
@@ -81,6 +92,12 @@ public class BoardController {
 		
 		model.addAttribute(vo);
 		model.addAttribute("reply", isMoveToReply);
+		
+		
+		//임시
+		if(auth != null && auth.isAuthenticated()) {
+			model.addAttribute("authUser",  userService.getUser(auth.getName()));
+		}
 	}
 	
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
@@ -89,7 +106,7 @@ public class BoardController {
 		logger.info("writer : " + writer + " / id : " + auth.getName());
 		
 		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
-		if(!userDetailsService.hasAuthority(writer, auth)) {
+		if(!userService.hasAuthority(writer, auth)) {
 			return "redirect:/user/accessdenied";
 		}
 		
@@ -105,11 +122,17 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
-	public void modifyGET(@RequestParam("bno") int bno, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model) throws Exception {
+	public void modifyGET(@RequestParam("bno") int bno, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth) throws Exception {
 		logger.info(">>>>>>>>>>>>>>> modifyGET");
 		logger.info(pageMaker.toString());
 		
 		model.addAttribute(service.read(bno));
+		
+		
+		//임시
+		if(auth != null && auth.isAuthenticated()) {
+			model.addAttribute("authUser",  userService.getUser(auth.getName()));
+		}
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)

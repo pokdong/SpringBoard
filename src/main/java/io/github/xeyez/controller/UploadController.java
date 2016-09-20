@@ -200,7 +200,6 @@ public class UploadController {
 		
 		if(fileName != null) {
 			if(!fileName.trim().isEmpty()) {
-				//new File(getProfileImagePath(fileName)).delete();
 				
 				String id = auth.getName();
 				

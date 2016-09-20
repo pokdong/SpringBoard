@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set value="/resources/dist/img/user_160x160.jpg" var="defaultImgURI" />
+<c:set value="/displayProfile?fileName=${authUser.profilepath}" var="authUserImgURL" />
    
 <sec:authorize access="isAuthenticated()" var="isAuthenticated">
 	<sec:authentication property="name" var="userid"/>
@@ -269,15 +271,28 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="/resources/dist/img/user_160x160.jpg" class="user-image" alt="User Image"/>
-                  <span class="hidden-xs">${userid}</span>
+                	<c:if test="${authUser.profilepath == null}">
+                		<img src="${defaultImgURI}" class="user-image" alt="User Image"/>
+                	</c:if>
+                	<c:if test="${authUser.profilepath != null}">
+                		<img src="${authUserImgURL}" class="user-image" alt="User Image"/>
+                	</c:if>
+                  
+                  <span class="hidden-xs">${authUser.userid}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="/resources/dist/img/user_160x160.jpg" class="img-circle" alt="User Image" />
+                  
+                  	<c:if test="${authUser.profilepath == null}">
+                		<img src="${defaultImgURI}" class="img-circle" alt="User Image"/>
+                	</c:if>
+                	<c:if test="${authUser.profilepath != null}">
+                		<img src="${authUserImgURL}" class="img-" alt="User Image"/>
+                	</c:if>
+                	
                     <p>
-                      ${userid}
+                      ${authUser.userid}
                       <!-- <small>Member since Nov. 2012</small> -->
                     </p>
                   </li>

@@ -104,9 +104,9 @@
 			}
     		
     		//저장된 ProfilePath가 있으면 이미 교체
-    		var isProfilepathExists = '${userVO.profilepath != null}';
+    		var isProfilepathExists = '${authUser.profilepath != null}';
 			if(isProfilepathExists == 'true') {
-				defaultProfilePath = "/displayProfile?fileName=${userVO.profilepath}";
+				defaultProfilePath = "/displayProfile?fileName=${authUser.profilepath}";
 				$('#img_profile_current').attr('src', defaultProfilePath);
 				$('#img_profile').attr('src', defaultProfilePath);
 				$('#img_profile').attr('data-changed', 'false');
@@ -385,19 +385,22 @@
 				
 			});
 			
-			$('.fileDrop_profile').on('click dragstart contextmenu selectstart', function(event) {
+			
+			$('.fileDrop_profile').on('mousedown', function(event) {
 				event.preventDefault();
+				
 				$(':file').trigger('click');
 			});
 			
-			$(':file').change(function(e) {
+			$(':file').change(function(event) {
+				event.preventDefault();
+				
 				if(this.files[0].size > 0) {
 
 					var fileName = this.files[0].name;
 					
 					if(checkImageFile(fileName) == null)
 						return;
-					
 					
 					var options = {
 		            		url: '/uploadProfile',
@@ -442,16 +445,20 @@
 		
 		
 		<div class="textArea bold">
-			${userVO.userid}
+			${authUser.userid}
 			<div>
-				(<span id="span_username">${userVO.username}</span>)
+				(<span id="span_username">${authUser.username}</span>)
 			</div>
 		</div>
 		
 		<div class="textArea">
-			${userVO.regdate}
+			${authUser.regdate}
 		</div>
 		
+	</div>
+	
+	<div class="form-group">
+		<a href='/user/logout' class="btn btn-flat btn-warning form-control">로그 아웃</a>
 	</div>
 	
 	<div class="form-group">
@@ -466,7 +473,7 @@
 			<span id="passwordError" class="error" hidden="true"></span>
 		
 			<form role="form" method="post">
-				<input type='hidden' name='userid' value="${userVO.userid}">
+				<input type='hidden' name='userid' value="${authUser.userid}">
 				
 				<div class="has-feedback">
 					<input type="password" name="userpw" class="form-control" placeholder="Password">
@@ -487,6 +494,10 @@
 
 
 <div id="div_modify" hidden="true">
+	<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
+	     <input name="attachFile" type="file" accept="image/*" >
+	</form>
+
 	<div class="form-group">
 		<div class="fileDrop_profile" >
 			<div class="profileArea">
@@ -497,18 +508,16 @@
 			클릭하거나<br>
 			Drag & Drop 하세요.
 		</div>
-		
-		<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
-		     <input name="attachFile" type="file" accept="image/*" >
-		</form>
 	</div>
+	
+	
 	
 	<div style="margin-top: 30px">
 	</div>
 	
 	<form id="from_info" action="/user/profile" method="post">
 		<div class="form-group has-feedback">
-		    <input type="text" name="username" class="form-control" maxlength="10" placeholder="Nickname" value="${userVO.username}"/>
+		    <input type="text" name="username" class="form-control" maxlength="10" placeholder="Nickname" value="${authUser.username}"/>
 		    <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
 		    
 		    <div class="formError">

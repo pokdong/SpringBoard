@@ -76,7 +76,7 @@
 	
 	
 	// 클릭시 추가
-	$('.fileDrop').on('click dragstart contextmenu selectstart', function(event) {
+	$('.fileDrop').on('mousedown', function(event) {
 		event.preventDefault();
 		$(':file').trigger('click');
 	});

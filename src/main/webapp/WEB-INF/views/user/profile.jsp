@@ -27,12 +27,20 @@
 
 	<link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
     
-    <script src="/resources/xeyez/js/upload.js"></script>
+    <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- IE 10 이하 from 이용 파일 업로드 지원 -->
+	<script src="/resources/xeyez/js/jquery.form.js"></script>
+    
+    <script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+	<script src="/resources/xeyez/js/upload.js"></script>
+	<script src="/resources/xeyez/js/utils.js"></script>
     
     <style>
     	img {
-		    display: block;
-		    margin: auto;
+		    /* display: block;
+		    margin: auto; */
+		    width: 160px;
+		    vertical-align: middle;
 		}
 		
 		.textArea {
@@ -55,16 +63,54 @@
     		font-size: smaller;
     		color: red;
     	}
+    	
+    	div .profileArea {
+    		height: 160px;
+    		line-height: 160px;
+    	}
+    	
+    	div .profileArea2 {
+    		width: 80%;
+			height: 160px;
+			line-height: 160px;
+			margin: auto;
+			text-align: center;
+    	}
     </style>
     
-    <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    
+    
     <script>
     	$(document).ready(function() {
-    		// 모바일이거나 IE10 이하면 Drag & Drop 영역 숨김
+    		// 모바일이거나 IE10 이하면 Drag & Drop 지원하지 않음.
     		var isUnavailableBrowser = isMobile() || (IEVersionCheck() < 10);
     		if(isUnavailableBrowser) {
-    			$('.fileDrop').attr('hidden', 'true');
+    			$('.fileDrop').html('사진을 변경하려면<br>클릭하세요.');
     		}
+    		
+    		
+    		//var defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
+    		var defaultProfilePath = null;
+    		var tempProfilePath = null;
+    		var pureFilePath = null;
+    		
+    		
+    		function changeProfileImage(fileName) {
+				$('#img_profile').attr('src', "/displayProfile?fileName=" + fileName);
+				$('#img_profile').attr('data-changed', 'true');
+				
+				tempProfilePath = "/displayProfile?fileName=" + fileName;
+				pureFilePath = fileName;
+			}
+    		
+    		//저장된 ProfilePath가 있으면 이미 교체
+    		var isProfilepathExists = '${authUser.profilepath != null}';
+			if(isProfilepathExists == 'true') {
+				defaultProfilePath = "/displayProfile?fileName=${authUser.profilepath}";
+				$('#img_profile_current').attr('src', defaultProfilePath);
+				$('#img_profile').attr('src', defaultProfilePath);
+				$('#img_profile').attr('data-changed', 'false');
+			}
     		
     		
     		var formObj = $("form[role='form']");
@@ -138,14 +184,246 @@
 				
 			});
 			
-			$('#btn_modify_cancel').on('click', function() {
+			
+			
+			var formInfoObj = $('#from_info');
+			
+			// 닫기 Aniamtion 이후 취소/확인에 따라 새로 추가했던 프로필 이미지를 기준으로
+			// 확인이면 새 이미지 제외 모두 삭제
+			// 취소이면 새 이미지만 삭제
+			function close(isConfirm) {
 				
+				// form 초기화
+				formInfoObj.find('input[name=userpw]').val('');
+				formInfoObj.find('input[name=confirm]').val('');
+				formInfoObj.find('input[name=userpw_new]').val('');
 				
 				div_modify.slideUp('fast', function() {
 					div_main.slideDown('fast', function() {
-						
+						$.ajax({
+							type : "POST",
+							url : "/deleteProfile",
+							data : {
+								fileName : tempProfilePath,
+								isConfirm : isConfirm
+							},
+							dataType : "text",
+							success : function(response) {
+								tempProfilePath = null;
+							},
+							error : function(request, status, error) {
+								alert("code : " + request.status + "\n"
+										+ "message : " + request.responseText + "\n" 
+										+ "error : " + error);
+							}
+						});
 					});
 				});
+			}
+			
+			
+			var username_error = $('#username_error');
+			var userpw_error = $('#userpw_error');
+			var confirm_error = $('#confirm_error');
+			var userpw_new_error = $('#userpw_new_error');
+			
+			$('#div_modify_buttons').on('click', 'button', function(event) {
+				username_error.text('');
+    			userpw_error.text('');
+    			confirm_error.text('');
+    			userpw_new_error.text('');
+				
+				var id = event.target.id
+				
+				
+				
+				var username = formInfoObj.find('input[name=username]').val();
+				var userpw = formInfoObj.find('input[name=userpw]').val();
+				var confirm = formInfoObj.find('input[name=confirm]').val();
+				var userpw_new = formInfoObj.find('input[name=userpw_new]').val();
+				
+				var isImageChanged = $('#img_profile').attr('data-changed');
+				
+				switch (id) {
+					case 'btn_modify_cancel':
+						//DB에 저장된 Image가 없는 경우
+						if(defaultProfilePath == null)
+							defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
+						
+						$('#img_profile').attr('src', defaultProfilePath);
+						$('#img_profile').attr('data-changed', 'false');
+						
+						close(false);
+						break;
+
+					case 'btn_modify_confirm':
+						
+						var data = {
+								username : username,
+								userpw : userpw,
+								confirm : confirm,
+								userpw_new : userpw_new,
+								profilepath : null
+							};
+						
+						// image가 변경된 적 있으면 기본 image 변경
+						if(isImageChanged == 'true') {
+							data.profilepath = pureFilePath;
+						}
+						
+						
+						$.ajax({
+							type : "PATCH",
+							url : "/user/profile",
+							headers : {
+								"Content-Type" : "application/json",
+								"X-HTTP-Method-Override" : "PATCH"
+							},
+							data : JSON.stringify(data),
+							dataType : "text",
+							success : function(response) {
+								
+								var obj = JSON.parse(response);
+								
+								if(obj.result == 'SUCCESS') {
+									//alert('ok!');
+									
+									// Image 교체된 적이 있다면 교체
+									if(isImageChanged == 'true') {
+										defaultProfilePath = $('#img_profile').attr('src');
+										
+										$('#img_profile_current').attr('src', defaultProfilePath);
+										$('#img_profile').attr('data-changed', 'false');
+									}
+									
+									// Username 교체
+									$('#span_username').text(username);
+									formInfoObj.find('input[name=username]').val(username);
+									
+									close(true);
+								}
+								else if(obj.result == 'ERROR') {
+									
+									$.each(obj, function(key, value) {
+										switch (key) {
+											case 'username':
+												username_error.text(value);
+												break;
+												
+											case 'userpw':
+												userpw_error.text(value);
+												break;
+												
+											case 'confirm':
+												confirm_error.text(value);
+												break;
+												
+											case 'userpw_new':
+												userpw_new_error.text(value);
+												break;
+										}
+									});
+								}
+								
+							},
+							error : function(request, status, error) {
+								alert("code : " + request.status + "\n"
+										+ "message : " + request.responseText + "\n" 
+										+ "error : " + error);
+							}
+						});
+						
+						break;
+				}
+				
+				
+			});
+			
+			
+			
+			
+			
+			$('.fileDrop_profile').on('dragenter dragover', function(event) {
+				event.preventDefault();
+				$(this).css('background-color', '#17B3E4');
+			});
+			
+			$('.fileDrop_profile').on('drop', function(event) {
+				event.preventDefault();
+				$(this).css('background-color', 'white');
+				
+				var files = event.originalEvent.dataTransfer.files;
+				var file = files[0];
+				
+				var fileName = file.name;
+				
+				if(checkImageFile(fileName) == null)
+					return;
+				
+				// IE10부터 formData 지원
+				var formData = new FormData();
+				formData.append("file", file);
+				
+				$.ajax({
+					type : 'POST',
+					url : '/uploadProfile',
+					processData : false,
+					contentType : false,
+					data : formData,
+					dataType : "text",
+					success : function(fileName) {
+						//alert(fileName);
+						changeProfileImage(fileName);
+					},
+					error : function(request, status, error) {
+						alert("code : " + request.status + "\n"
+								+ "message : " + request.responseText + "\n" 
+								+ "error : " + error);
+					}
+				});
+				
+				
+			});
+			
+			
+			$('.fileDrop_profile').on('mousedown', function(event) {
+				event.preventDefault();
+				
+				$(':file').trigger('click');
+			});
+			
+			$(':file').change(function(event) {
+				event.preventDefault();
+				
+				if(this.files[0].size > 0) {
+
+					var fileName = this.files[0].name;
+					
+					if(checkImageFile(fileName) == null)
+						return;
+					
+					var options = {
+		            		url: '/uploadProfile',
+		                    type: 'POST',
+		                    dataType : "text",
+		                    success : function (fileName){
+		                    	//alert(fileName);
+		                    	changeProfileImage(fileName);
+		                    },
+		    				error : function(request, status, error) {
+		    					alert("code : " + request.status + "\n"
+										+ "message : " + request.responseText + "\n" 
+										+ "error : " + error);
+		    				}
+		                };
+		                
+		            
+		            var func = $("#fileSubmitForm").ajaxForm(options).submit();
+		            
+		            $(":file").val("");
+		            
+		            $('.fileDrop_profile').css('background-color', 'white');
+				}
 			});
 		});
     </script>
@@ -161,17 +439,26 @@
 
 <div id="div_main">
 	<div class="form-group">
-		<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+		<div class="profileArea2">
+			<img id="img_profile_current" src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+		</div>
+		
 		
 		<div class="textArea bold">
-			${userVO.userid}<br>
-			(${userVO.username})
+			${authUser.userid}
+			<div>
+				(<span id="span_username">${authUser.username}</span>)
+			</div>
 		</div>
 		
 		<div class="textArea">
-			${userVO.regdate}
+			${authUser.regdate}
 		</div>
 		
+	</div>
+	
+	<div class="form-group">
+		<a href='/user/logout' class="btn btn-flat btn-warning form-control">로그 아웃</a>
 	</div>
 	
 	<div class="form-group">
@@ -186,7 +473,7 @@
 			<span id="passwordError" class="error" hidden="true"></span>
 		
 			<form role="form" method="post">
-				<input type='hidden' name='userid' value="${userVO.userid}">
+				<input type='hidden' name='userid' value="${authUser.userid}">
 				
 				<div class="has-feedback">
 					<input type="password" name="userpw" class="form-control" placeholder="Password">
@@ -201,30 +488,36 @@
 </c:if>
 </div>
 
-<div id="div_modify" >
-	<div id="div_imgArea">
-		<img src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+
+
+
+
+
+<div id="div_modify" hidden="true">
+	<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
+	     <input name="attachFile" type="file" accept="image/*" >
+	</form>
+
+	<div class="form-group">
+		<div class="fileDrop_profile" >
+			<div class="profileArea">
+				<img id="img_profile" src="/resources/dist/img/user_160x160.jpg" class="img-circle" data-changed="false" />
+			</div>
+		
+			사진을 변경하려면<br>
+			클릭하거나<br>
+			Drag & Drop 하세요.
+		</div>
 	</div>
 	
-	<div class="form-group">
-		<div class="fileDrop" >
-			여기에 파일을 Drag & Drop 하세요.
-		</div>
-		
-		<div class="fileForm" >
-			<form id="fileSubmitForm" enctype="multipart/form-data" method="post" >
-			     <input name="attachFile" id="attachFile" type="file" style="margin-bottom: 1px">
-			     <button type="button" id="fileSubmitBtn" class="btn bg-yellow">추가</button>
-			</form>
-		</div>
-	</div>
+	
 	
 	<div style="margin-top: 30px">
 	</div>
 	
 	<form id="from_info" action="/user/profile" method="post">
 		<div class="form-group has-feedback">
-		    <input type="text" name="userid" class="form-control" placeholder="Nickname" value="${userVO.username}"/>
+		    <input type="text" name="username" class="form-control" maxlength="10" placeholder="Nickname" value="${authUser.username}"/>
 		    <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
 		    
 		    <div class="formError">
@@ -236,7 +529,7 @@
 		</div>
 		
 		<div class="form-group has-feedback">
-		    <input type="text" name="userpw" class="form-control" placeholder="Password" />
+		    <input type="password" name="userpw" maxlength="30" class="form-control" placeholder="Password" />
 		    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		    
 		    <div class="formError">
@@ -245,17 +538,26 @@
 		</div>
 		
 		<div class="form-group has-feedback">
-		    <input type="text" name="confirm" class="form-control" placeholder="Confirm Password" />
+		    <input type="password" name="confirm" maxlength="30" class="form-control" placeholder="Confirm Password" />
 		    <span class="glyphicon glyphicon-check form-control-feedback"></span>
 		    
 		    <div class="formError">
 	    		<span id="confirm_error"></span>
 	    	</div>
 		</div>
+		
+		<div class="form-group has-feedback">
+		    <input type="password" name="userpw_new" maxlength="30" class="form-control" placeholder="New Password" />
+		    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+		    
+		    <div class="formError">
+	    		<span id="userpw_new_error"></span>
+	    	</div>
+		</div>
 	</form>
 	
 
-	<div align="right">
+	<div id="div_modify_buttons" align="right">
 		<button type="button" id="btn_modify_cancel" class="btn btn-warning">취소</button>
 		<button type="button" id="btn_modify_confirm" class="btn btn-danger">확인</button>
 	</div>
@@ -266,5 +568,6 @@
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
+
   </body>
 </html>

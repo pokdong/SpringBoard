@@ -41,6 +41,15 @@ public class UserDAOImpl implements UserDAO {
 	public void updateUser(UserVO userVO) {
 		session.update(namespace + ".updateUser", userVO);
 	}
+	
+	@Override
+	public void changeRole(String userid, String role) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userid", userid);
+		paramMap.put("role", role);
+		
+		session.update(namespace + ".changeRole", paramMap);
+	}
 
 	@Override
 	public void deleteUser(String userid) {
@@ -57,9 +66,18 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public boolean userExists(String userid) {
-		int count = session.selectOne(namespace + ".userExists", userid); 
+	public boolean userIdExists(String userid) {
+		int count = session.selectOne(namespace + ".useridExists", userid); 
 		return count > 0;
 	}
 
+	@Override
+	public boolean userNameExists(String userid, String username) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userid", userid);
+		paramMap.put("username", username);
+		
+		int count = session.selectOne(namespace + ".userNameExists", paramMap); 
+		return count > 0;
+	}
 }

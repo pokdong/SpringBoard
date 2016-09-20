@@ -43,7 +43,7 @@ public class SignUpController {
 		try {
 			logger.info(newUser.toString());
 			
-			if(userService.userExists(newUser.getUserid()))
+			if(userService.userIdExists(newUser.getUserid()))
 				errors.rejectValue("userid", "duplicate");
 			
 			new NewUserValidator().validate(newUser, errors);

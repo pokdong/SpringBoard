@@ -70,7 +70,7 @@ public class ReplyController {
 	}
 	
 	@RequestMapping(value = "/{rno}", method = {RequestMethod.PUT, RequestMethod.PATCH})
-	public ResponseEntity<String> modify(@PathVariable("rno") int rno, @RequestBody ReplyVO vo, Authentication auth) {
+	public ResponseEntity<String> modify(@PathVariable("rno") int rno, @RequestBody ReplyVO vo, Authentication auth) throws Exception {
 		logger.info("replyer : " + vo.getReplyer() + " / id : " + auth.getName());
 		
 		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)
@@ -95,7 +95,7 @@ public class ReplyController {
 	}
 	
 	@RequestMapping(value = "/{rno}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> remove(@PathVariable("rno") int rno, @RequestBody String replyer, Authentication auth) {
+	public ResponseEntity<String> remove(@PathVariable("rno") int rno, @RequestBody String replyer, Authentication auth) throws Exception {
 		logger.info("replyer : " + replyer + " / id : " + auth.getName());
 		
 		// 로그인한 id와 작성자가가 같은 지 비교 (단, 예외로 admin은 허용)

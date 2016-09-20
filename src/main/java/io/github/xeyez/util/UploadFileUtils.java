@@ -65,7 +65,7 @@ public class UploadFileUtils {
 		
 		String hiddenPath = dir.getParentFile().getParent();
 		if(getMediaType(file.getName()) != null) {
-			uploadedFileName = makeThumbnail(hiddenPath, file);
+			uploadedFileName = makeThumbnail(hiddenPath, file, 100);
 		}
 		else {
 			uploadedFileName = file.getAbsolutePath().replace(hiddenPath, "");
@@ -74,9 +74,32 @@ public class UploadFileUtils {
 		return uploadedFileName.replace(File.separatorChar, '/');
 	}
 	
-	private static String makeThumbnail(String hiddenPath, File file) throws Exception {
+	public static String uploadProfile(String uploadPath, MultipartFile mpf) throws Exception {
+		String fileName = UUID.randomUUID().toString() + "_" + mpf.getOriginalFilename();
+		
+		File file = new File(uploadPath, fileName);
+		
+		File dir = new File(uploadPath);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		FileCopyUtils.copy(mpf.getBytes(), file);
+		
+		String uploadedFileName = null;
+		String hiddenPath = dir.getParent(); // C:/springboard/profile
+		
+		uploadedFileName = makeThumbnail(hiddenPath, file, 160);
+		
+		// 원본 파일 삭제
+		file.delete();
+		
+		return uploadedFileName.replace(File.separatorChar, '/');
+	}
+	
+	private static String makeThumbnail(String hiddenPath, File file, int hightPixel) throws Exception {
 		BufferedImage srcImg = ImageIO.read(file);
-		BufferedImage destImg = Scalr.resize(srcImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
+		BufferedImage destImg = Scalr.resize(srcImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, hightPixel);
 		
 		StringBuilder sb_thumbnailFileName = new StringBuilder();
 		sb_thumbnailFileName.append(file.getParent());

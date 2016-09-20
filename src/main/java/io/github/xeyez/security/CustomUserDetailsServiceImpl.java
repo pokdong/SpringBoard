@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.xeyez.domain.ModifiedUserVO;
 import io.github.xeyez.domain.UserVO;
 import io.github.xeyez.persistence.UserDAO;
 
@@ -87,7 +88,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		if(id.contains("admin") || id.contains("manager"))
 			throw new UnavailableIDException(id);
 		
-		if(dao.userExists(id))
+		if(dao.userIdExists(id))
 			throw new DuplicateKeyException(id);
 		
 		
@@ -100,31 +101,36 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
 	@Transactional
 	@Override
-	public void updateInfo(UserVO vo) throws Exception {
+	public void updateInfo(ModifiedUserVO vo) throws Exception {
 		
 		logger.info(vo.toString());
 		
-		String id = vo.getUserid();
 		//String pw = vo.getUserpw();
-		String pw = passwordEncoder.encode(vo.getUserpw().toLowerCase());
-		String username = vo.getUsername();
+		String pw = passwordEncoder.encode(vo.getUserpw_new().toLowerCase());
+		String username = vo.getUsername().trim();
 		
-		if(id == null || id.isEmpty())
-			throw new NullPointerException("ID is null or empty.");
-		else if(pw == null || pw.isEmpty())
+		if(pw == null || pw.isEmpty())
 			throw new NullPointerException("Password is null or empty.");
 		else if(username == null || username.isEmpty())
 			throw new NullPointerException("Username is null or empty.");
 		
-		if(id.contains("admin"))
-			throw new UnavailableIDException("\"admin\"은 포함될 수 없습니다.");
-		if(id.contains("manager"))
-			throw new UnavailableIDException("\"manager\"는 포함될 수 없습니다.");
-		else if (!id.matches("[0-9|a-z|A-Z]*"))
-			throw new UnavailableIDException("영문 대소문자 및 숫자 외에 다른 문자는 포함될 수 없습니다.");
+		/*if(!vo.getRole().equals("ADMIN") && !vo.getRole().equals("MANAGER")) {
+			if(username.contains("admin"))
+				throw new UnavailableIDException("\"admin\"은 포함될 수 없습니다.");
+			if(username.contains("manager"))
+				throw new UnavailableIDException("\"manager\"는 포함될 수 없습니다.");
+		}*/
+		
+		/*if (!username.matches("[0-9|a-z|A-Z]*"))
+			throw new UnavailableIDException("영문 대소문자 및 숫자 외에 다른 문자는 포함될 수 없습니다.");*/
 		
 		vo.setUserpw(pw); // 암호화된 Password 삽입
 		dao.updateUser(vo);
+	}
+	
+	@Override
+	public void changeRole(String userid, String role) throws Exception {
+		dao.changeRole(userid, role);
 	}
 
 	@Transactional
@@ -152,11 +158,11 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 	}
 
 	@Override
-	public boolean userExists(String userid) throws Exception {
+	public boolean userIdExists(String userid) throws Exception {
 		/*if(userid == null || userid.isEmpty())
 			throw new NullPointerException("ID is null or empty.");*/
 		
-		return dao.userExists(userid);
+		return dao.userIdExists(userid);
 	}
 
 	@Override
@@ -187,4 +193,8 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		return auth.getName().equals(writer) || isAdmin;
 	}
 
+	@Override
+	public boolean userNameExists(String userid, String username) throws Exception {
+		return dao.userNameExists(userid, username);
+	}
 }

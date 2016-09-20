@@ -1,6 +1,6 @@
 function checkImageFile(fullName) {
 		return fullName.match(/jpg|jpeg|gif|png/i);
-	}
+}
 
 function getFileInfo(fullName) {
 	var fileName, imgsrc, getLink;
@@ -24,6 +24,13 @@ function getFileInfo(fullName) {
 	fileName = fileLink.substr(fileLink.indexOf("_") + 1);
 	
 	return  {fileName:fileName, imgsrc:imgsrc, getLink:getLink, fullName:fullName, isImage:isImage};
+}
+
+function getProfileImageURL(fileName) {
+	if(checkImageFile(fileName) == null)
+		return null;
+	
+	return '/profile?img=' + fileName;
 }
 
 function isMobile() {

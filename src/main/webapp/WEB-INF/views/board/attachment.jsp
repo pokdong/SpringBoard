@@ -39,7 +39,7 @@
 
 	$('.fileDrop').on('dragenter dragover', function(event) {
 		event.preventDefault();
-		$(this).css('background-color', '#F39C12');
+		$(this).css('background-color', '#17B3E4');
 	});
 	
 	$('.fileDrop').on('drop', function(event) {
@@ -76,7 +76,7 @@
 	
 	
 	// 클릭시 추가
-	$('.fileDrop').on('click dragstart contextmenu selectstart', function(event) {
+	$('.fileDrop').on('mousedown', function(event) {
 		event.preventDefault();
 		$(':file').trigger('click');
 	});

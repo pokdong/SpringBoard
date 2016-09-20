@@ -33,6 +33,10 @@ public class SignUpController {
 	
 	@Inject
 	private MessageSource messageSource;
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public void signup() {
+	}
 	
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> signUpAjax(@RequestBody NewUserVO newUser, Errors errors) throws Exception {

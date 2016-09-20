@@ -39,7 +39,10 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public void updateUser(UserVO userVO) {
-		session.update(namespace + ".updateUser", userVO);
+		if(userVO.getProfilepath() == null || userVO.getProfilepath().trim().isEmpty())
+			session.update(namespace + ".updateUser", userVO);
+		else
+			session.update(namespace + ".updateUserWithProfile", userVO);
 	}
 	
 	@Override

@@ -55,7 +55,7 @@
 	
 	<div class="form-group">
 		<label>작성자</label>
-		<input type="text" name="writer" class="form-control" value="${userid}" readonly="readonly" onfocus="this.blur()">
+		<input type="text" name="writer" class="form-control" value="${authUser.userid}" readonly="readonly" onfocus="this.blur()">
 	</div>
 	
 </form>

@@ -67,7 +67,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public boolean userIdExists(String userid) {
-		int count = session.selectOne(namespace + ".useridExists", userid); 
+		int count = session.selectOne(namespace + ".userIdExists", userid); 
 		return count > 0;
 	}
 

@@ -5,6 +5,8 @@ In-depth study for Spring framework
 
 ## 0.1
 - [X] 기본 CRUD
+ -  [X] Conncetion Pool 적용 (c3p0 사용)
+ -  [X] myBatis 적용
 - [X] 일괄 Exception 처리
 
 ### 0.1.1

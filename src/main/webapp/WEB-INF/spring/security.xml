@@ -71,6 +71,10 @@
 		/>
 		
 		<sec:remember-me user-service-ref="customUserDetailsService" key="remembermeKey" token-validity-seconds="604800" />
+		
+		<sec:session-management session-authentication-error-url="user/login" invalid-session-url="user/login">
+		    <sec:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" expired-url="user/login" />
+		</sec:session-management> 
 	</sec:http>
 	
 </beans>

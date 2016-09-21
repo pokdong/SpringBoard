@@ -49,6 +49,7 @@ In-depth study for Spring framework
  - [X] Profile
  - [X] 회원탈퇴
  - [X] 접근 권한 제어 (글 쓰기, 수정, Profile)
+  - ADMIN, MANAGER, USER 권한으로 분리.
 
 ### 0.5.2
  - [X] 로그인된 사용자에 한하여 댓글 작성,수정,삭제 허용
@@ -63,6 +64,7 @@ In-depth study for Spring framework
  - [X] Upload form 하나로 통합. 만약 IE 10 이하면 해당 form을 숨기지 않고, Click만 지원.
  - [X] 로그인, 로그아웃 Form 입력 검증 방법을 AJAX로 변경. (Page 변경없이 현재 Page만 사용.
  - [X] 같은 ID로 동시 로그인 방지
+ - [X] ADMIN 권한일 때, 모든 글/댓글 수정 가능. 또한 Profile 화면에서 회원탈퇴 불가.  (회원탈퇴 버튼 숨김)
 
 ## TBA
 - Spring Security 심화

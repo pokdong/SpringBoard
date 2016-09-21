@@ -1,6 +1,8 @@
 # SpringBoard
 In-depth study for Spring framework
 
+- Sample : http://xeyez.mooo.com:8080/board/list
+
 ## 0.1
 - [X] 기본 CRUD
 - [X] 일괄 Exception 처리

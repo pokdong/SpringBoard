@@ -108,15 +108,16 @@
 	          increaseArea: '20%' // optional
 	        });
 	        
+	        var formObj = $('#form_login');
+	        var userpwObj = formObj.find('input[name=userpw]');
+	        
 	        // 사용자 유무, 비밀번호를 AJAX로 검증 후 전송
 	        // 뒤로 가기 페이지 없애기 위함.
 	        $('#btn_check').on('click', function() {
 				var formErrorObj = $('.formError');
 				
-				var formObj = $('#form_login');
-				
 				var userid = formObj.find('input[name=userid]').val();
-				var userpw = formObj.find('input[name=userpw]').val();
+				var userpw = userpwObj.val();
 				
 				$.ajax({
 					type : "POST",
@@ -144,9 +145,20 @@
 						}
 					},
 					error : function(request, status, error) {
-						formErrorObj.text('존재하지 않는 ID입니다.');
+						if(request.responseText == 'EMPTY')
+							formErrorObj.text('공백은 허용되지 않습니다.');
+						else
+							formErrorObj.text('존재하지 않는 ID입니다.');
 					}
 				});
+			});
+	        
+	        //enter 동작하도록 설정
+	        userpwObj.on('keyup', function(event) {
+				event.preventDefault();
+				if(event.keyCode == 13) {
+					$('#btn_check').trigger('click');
+				}
 			});
       });
     </script>

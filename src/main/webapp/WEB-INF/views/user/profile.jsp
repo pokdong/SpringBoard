@@ -37,8 +37,6 @@
     
     <style>
     	img {
-		    /* display: block;
-		    margin: auto; */
 		    width: 160px;
 		    vertical-align: middle;
 		}
@@ -89,6 +87,8 @@
     		}
     		
     		
+    		var maxUploadSize = 10485760;
+    		
     		//var defaultProfilePath = '/resources/dist/img/user_160x160.jpg';
     		var defaultProfilePath = null;
     		var tempProfilePath = null;
@@ -114,6 +114,9 @@
     		
     		
     		var formObj = $("form[role='form']");
+    		var userpwObj = formObj.find('input[name=userpw]');
+    		
+    		var passwordErrorObj =  $('#passwordError');
     		
     		$('#btn_withdrawal').on('click', function(e) {
 				$('#div_withdrawal').toggle('fast', function() {
@@ -126,7 +129,7 @@
 				e.preventDefault();
 				
 				var userid = formObj.find('input[name=userid]').val();
-				var userpw = formObj.find('input[name=userpw]').val();
+				var userpw = userpwObj.val();
 
 				$.ajax({
 					type : "POST",
@@ -151,17 +154,38 @@
 								break;
 								
 							case 'FAIL':
-								var html = $('#passwordError').html('암호가 일치하지 않습니다.');
-								html.ready(function() {
-									$('#passwordError').slideDown('fast');
+								passwordErrorObj.slideUp('fast', function() {
+									passwordErrorObj.html('암호가 일치하지 않습니다.');
+									
+									passwordErrorObj.slideDown('fast');
 								});
 								break;
+						}
+					},
+					error : function(request, status, error) {
+						if(request.responseText == 'EMPTY') {
+							passwordErrorObj.slideUp('fast', function() {
+								passwordErrorObj.html('공백은 허용되지 않습니다.');
+								
+								passwordErrorObj.slideDown('fast');
+							});
 						}
 					}
 				});
 				
 				formObj.find('input[name=userpw]').val('');
 				
+			});
+			
+			//enter 눌렀을 때 submit 방지.
+			formObj.on('keydown', function(event) {
+				if(event.keyCode == 13) {
+					$(this).attr('onsubmit', 'return false;');
+					$('#btn_withdrawal_pwConfirm').trigger('click');
+				}
+				else {
+					$(this).removeAttr('onsubmit');
+				}
 			});
 			
 			
@@ -355,6 +379,11 @@
 				var files = event.originalEvent.dataTransfer.files;
 				var file = files[0];
 				
+				if(file.size >= maxUploadSize) {
+					alert('10MB를 초과할 수 없습니다');
+					return;
+				}
+				
 				var fileName = file.name;
 				
 				if(checkImageFile(fileName) == null)
@@ -395,7 +424,14 @@
 			$(':file').change(function(event) {
 				event.preventDefault();
 				
-				if(this.files[0].size > 0) {
+				var fileSize = this.files[0].size;
+				
+				if(fileSize >= maxUploadSize) {
+					alert('10MB를 초과할 수 없습니다');
+					return;
+				}
+				
+				if(fileSize > 0) {
 
 					var fileName = this.files[0].name;
 					

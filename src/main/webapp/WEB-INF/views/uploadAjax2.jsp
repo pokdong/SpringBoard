@@ -100,6 +100,8 @@
 
 <script>
 	$(document).ready(function() {
+		var maxUploadSize = 10485760;
+		
 		//IE10 이하면 Drag&Drop 지원하지 않음.
 		if(isSupportedIE()) {
 			$('.fileDrop').html('파일을 추가하려면<br>클릭하세요.');
@@ -113,9 +115,15 @@
 		
 		$('.fileDrop').on('drop', function(event) {
 			event.preventDefault();
+			$(this).css('background-color', 'white');
 			
 			var files = event.originalEvent.dataTransfer.files;
 			var file = files[0];
+			
+			if(file.size >= maxUploadSize) {
+				alert('10MB를 초과할 수 없습니다');
+				return;
+			}
 			
 			//console.log(file);
 			
@@ -139,21 +147,26 @@
 							+ "error : " + error);
 				}
 			});
-			
-			$(this).css('background-color', 'white');
 		});
 
 		
 		
 		
 		
-		$('.fileDrop').on('click dragstart contextmenu selectstart', function(event) {
+		$('.fileDrop').on('mousedown', function(event) {
 			event.preventDefault();
 			$(':file').trigger('click');
 		});
 		
 		$(':file').change(function(e) {
-			if(this.files[0].size > 0) {
+			var fileSize = this.files[0].size;
+			
+			if(fileSize >= maxUploadSize) {
+				alert('10MB를 초과할 수 없습니다');
+				return;
+			}
+			
+			if(fileSize > 0) {
 				var options = {
 	            		url: '/uploadAjax',
 	                    type: 'POST',

@@ -1,3 +1,5 @@
+var maxUploadSize = 10485760;
+
 function checkImageFile(fullName) {
 		return fullName.match(/jpg|jpeg|gif|png/i);
 }

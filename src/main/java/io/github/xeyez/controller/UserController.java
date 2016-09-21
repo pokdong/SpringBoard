@@ -74,11 +74,11 @@ public class UserController {
 			if(userService.userNameExists(vo.getUserid(), username))
 				errors.rejectValue("username", "duplicate");
 			
-			new ModifiedUserValidator().validate(vo, errors);
-
 			if(!isMatchesPassword(vo)) {
 				errors.rejectValue("confirm", "notCorrect");
 			}
+			
+			new ModifiedUserValidator().validate(vo, errors);
 			
 			//admin, manager 권한 제외하고 닉네임을 admin 혹은 manager로 지정할 때
 			for(GrantedAuthority gAuth : auth.getAuthorities()) {

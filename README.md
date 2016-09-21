@@ -57,7 +57,8 @@ In-depth study for Spring framework
 ### 0.5.3
  - [X] 회원 정보 수정 (Profile Image, 닉네임, 비밀번호) (AJAX 이용)
  - [X] Upload form 하나로 통합. 만약 IE 10 이하면 해당 form을 숨기지 않고, Click만 지원.
- - [X] 로그인, 로그아웃 Form 입력 검증 방법을 AJAX로 변경. (Page 변경없이 현재 Page만 사용.)
+ - [X] 로그인, 로그아웃 Form 입력 검증 방법을 AJAX로 변경. (Page 변경없이 현재 Page만 사용.
+ - [X] 같은 ID로 동시 로그인 방지
 
 ## TBA
 - Spring Security 심화

@@ -46,6 +46,7 @@ In-depth study for Spring framework
  - [X] Log-out
  - [X] 자동 Log-in (Remeber me)
  - [X] 회원가입 (Sign-in)
+  - [X] 비밀번호 암호화 (bcrypt)
  - [X] Profile
  - [X] 회원탈퇴
  - [X] 접근 권한 제어 (글 쓰기, 수정, Profile)

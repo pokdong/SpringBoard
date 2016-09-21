@@ -27,6 +27,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		
 		logger.info("####### FAIL : " + loginPath);
 		
+		
 		request.getRequestDispatcher(loginPath).forward(request, response);
 	}
 }

@@ -1,8 +1,12 @@
 # SpringBoard
 In-depth study for Spring framework
 
+- Sample : http://xeyez.mooo.com:8080/board/list
+
 ## 0.1
 - [X] 기본 CRUD
+ -  [X] Conncetion Pool 적용 (c3p0 사용)
+ -  [X] myBatis 적용
 - [X] 일괄 Exception 처리
 
 ### 0.1.1
@@ -35,18 +39,20 @@ In-depth study for Spring framework
  - [X] 첨부된 파일 클릭시 Image일 경우 Lightbox 적용하여 바로 보기
 
 ## 0.5
+- Spring Security
+
 ### 0.5.1
-- Spring Security 적용
  - [X] Log-in
  - [X] Log-out
  - [X] 자동 Log-in (Remeber me)
  - [X] 회원가입 (Sign-in)
+  - [X] 비밀번호 암호화 (bcrypt)
  - [X] Profile
  - [X] 회원탈퇴
  - [X] 접근 권한 제어 (글 쓰기, 수정, Profile)
+  - ADMIN, MANAGER, USER 권한으로 분리.
 
 ### 0.5.2
-- Spring Security 심화
  - [X] 로그인된 사용자에 한하여 댓글 작성,수정,삭제 허용
    - [X] URL로 임의 접근시 메인화면으로 차단 및 Redirect
  - [X] 게시글 쓰기, 수정, 삭제 URL로 임의 접근시 차단 및 Redirect
@@ -59,6 +65,7 @@ In-depth study for Spring framework
  - [X] Upload form 하나로 통합. 만약 IE 10 이하면 해당 form을 숨기지 않고, Click만 지원.
  - [X] 로그인, 로그아웃 Form 입력 검증 방법을 AJAX로 변경. (Page 변경없이 현재 Page만 사용.
  - [X] 같은 ID로 동시 로그인 방지
+ - [X] ADMIN 권한일 때, 모든 글/댓글 수정 가능. 또한 Profile 화면에서 회원탈퇴 불가.  (회원탈퇴 버튼 숨김)
 
 ## TBA
 - Spring Security 심화

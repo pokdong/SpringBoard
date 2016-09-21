@@ -44,9 +44,15 @@
 	
 	$('.fileDrop').on('drop', function(event) {
 		event.preventDefault();
+		$(this).css('background-color', 'white');
 		
 		var files = event.originalEvent.dataTransfer.files;
 		var file = files[0];
+		
+		if(file.size >= maxUploadSize) {
+			alert('10MB를 초과할 수 없습니다');
+			return;
+		}
 		
 		//console.log(file);
 		
@@ -70,8 +76,6 @@
 						+ "error : " + error);
 			}
 		});
-		
-		$(this).css('background-color', 'white');
 	});
 	
 	
@@ -82,7 +86,14 @@
 	});
 	
 	$(':file').change(function(e) {
-		if(this.files[0].size > 0) {
+		var fileSize = this.files[0].size;
+		
+		if(fileSize >= maxUploadSize) {
+			alert('10MB를 초과할 수 없습니다');
+			return;
+		}
+		
+		if(fileSize > 0) {
 			var options = {
             		url: '/uploadAjax',
                     type: 'POST',

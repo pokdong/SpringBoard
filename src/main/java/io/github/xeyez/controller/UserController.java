@@ -140,6 +140,12 @@ public class UserController {
 		ResponseEntity<String> entity = null;
 
 		try {
+			String id = vo.getUserid();
+			String pw = vo.getUserpw();
+			
+			if((id == null || id.trim().isEmpty()) || (pw == null || pw.trim().isEmpty()))
+				throw new Exception("EMPTY");
+			
 			if(!isMatchesPassword(vo))
 				entity = new ResponseEntity<>("FAIL", HttpStatus.OK);
 			else

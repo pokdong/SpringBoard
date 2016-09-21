@@ -39,8 +39,9 @@ In-depth study for Spring framework
  - [X] 첨부된 파일 클릭시 Image일 경우 Lightbox 적용하여 바로 보기
 
 ## 0.5
+- Spring Security
+
 ### 0.5.1
-- Spring Security 적용
  - [X] Log-in
  - [X] Log-out
  - [X] 자동 Log-in (Remeber me)
@@ -50,7 +51,6 @@ In-depth study for Spring framework
  - [X] 접근 권한 제어 (글 쓰기, 수정, Profile)
 
 ### 0.5.2
-- Spring Security 심화
  - [X] 로그인된 사용자에 한하여 댓글 작성,수정,삭제 허용
    - [X] URL로 임의 접근시 메인화면으로 차단 및 Redirect
  - [X] 게시글 쓰기, 수정, 삭제 URL로 임의 접근시 차단 및 Redirect

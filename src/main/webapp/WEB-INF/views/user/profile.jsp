@@ -211,6 +211,7 @@
 			
 			
 			var formInfoObj = $('#from_info');
+			var userpw_newObj = formInfoObj.find('input[name=userpw_new]');
 			
 			// 닫기 Aniamtion 이후 취소/확인에 따라 새로 추가했던 프로필 이미지를 기준으로
 			// 확인이면 새 이미지 제외 모두 삭제
@@ -220,7 +221,7 @@
 				// form 초기화
 				formInfoObj.find('input[name=userpw]').val('');
 				formInfoObj.find('input[name=confirm]').val('');
-				formInfoObj.find('input[name=userpw_new]').val('');
+				userpw_newObj.val('');
 				
 				div_modify.slideUp('fast', function() {
 					div_main.slideDown('fast', function() {
@@ -363,7 +364,12 @@
 				
 			});
 			
-			
+			//enter 동작하도록 설정.
+			userpw_newObj.on('keydown', function(event) {
+				if(event.keyCode == 13) {
+					$('#btn_modify_confirm').trigger('click');
+				}
+			});
 			
 			
 			

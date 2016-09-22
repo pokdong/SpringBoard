@@ -51,6 +51,12 @@
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
 
+<c:if test="${message == 'SIGNUP_ADMIN_SUCCESS'}">
+	<div class="message">
+		관리자(admin)님 환영합니다! 로그인 하세요.
+	</div>
+</c:if>
+
 <c:if test="${message == 'SIGNUP_SUCCESS'}">
 	<div class="message">
 		회원가입이 완료되었습니다. 로그인 하세요.

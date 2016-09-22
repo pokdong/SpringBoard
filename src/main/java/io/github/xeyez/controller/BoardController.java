@@ -1,6 +1,9 @@
 package io.github.xeyez.controller;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -41,8 +44,13 @@ public class BoardController {
 	
 	// parameter에 pageMaker의 존재 이유 : pageCount를 사용하기 위함. 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public void list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth) throws Exception {
-		logger.info(">>>>>>>>>>>>>>> show listPage");
+	public void list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth, Locale locale) throws Exception {
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		String formattedDate = dateFormat.format(date);
+		
+		logger.info(formattedDate);
+		logger.info(">>>>>>>>>>>>>>> show list");
 		
 		logger.info(">>>>>>>>>> cri : " + cri.toString());
 		model.addAttribute("list", service.list(cri));

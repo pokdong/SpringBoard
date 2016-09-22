@@ -30,7 +30,7 @@ public class NewUserValidator implements Validator {
 		}
 		
 		String userid = newUser.getUserid();
-		if(userid.contains("admin") || userid.contains("manager"))
+		if(newUser.isAdminExists() && userid.contains("admin"))
 			errors.rejectValue("userid", "unavailable");
 	}
 

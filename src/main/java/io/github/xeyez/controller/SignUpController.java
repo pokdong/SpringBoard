@@ -40,6 +40,9 @@ public class SignUpController {
 	
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> signUpAjax(@RequestBody NewUserVO newUser, Errors errors) throws Exception {
+		logger.info("isAdminExists? " + newUser.isAdminExists());
+		logger.info("isControlbyAdmin? " + newUser.isControlbyAdmin());
+		
 		ResponseEntity<Map<String, String>> entity = null;
 		
 		Map<String, String> paramMap = new HashMap<>();
@@ -54,6 +57,11 @@ public class SignUpController {
 			
 			
 			if(!errors.hasErrors()) {
+				//관리자 페이지에서 사용자를 생성한 경우
+				if(newUser.isControlbyAdmin()) {
+					userService.signUp(newUser);
+				}
+				
 				paramMap.put("result", "SUCCESS");
 				
 				entity = new ResponseEntity<>(paramMap, HttpStatus.OK);
@@ -89,8 +97,13 @@ public class SignUpController {
 	public String submit(NewUserVO newUser, RedirectAttributes rttr) {
 		try {
 			userService.signUp(newUser);
+
+			//DB가 아닌 View에서 전달된 Data로 판단.
+			if(!newUser.isAdminExists())
+				rttr.addFlashAttribute("message", "SIGNUP_ADMIN_SUCCESS");
+			else
+				rttr.addFlashAttribute("message", "SIGNUP_SUCCESS");
 			
-			rttr.addFlashAttribute("message", "SIGNUP_SUCCESS");
 			return "redirect:/user/login";
 		} catch (Exception e) {
 			e.printStackTrace();

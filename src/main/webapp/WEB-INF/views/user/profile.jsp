@@ -503,6 +503,12 @@
 		<a href='/user/logout' class="btn btn-flat btn-warning form-control">로그 아웃</a>
 	</div>
 	
+<c:if test="${isAdmin}">
+	<div class="form-group">
+		<button type="button" class="btn btn-flat bg-green form-control" onclick="self.location='/admin'">관리</button>
+	</div>
+</c:if>
+	
 	<div class="form-group">
 		<button type="button" id="btn_modify" class="btn btn-flat btn-info form-control">회원정보 수정</button>
 	</div>

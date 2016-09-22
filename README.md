@@ -67,6 +67,12 @@ In-depth study for Spring framework
  - [X] 같은 ID로 동시 로그인 방지
  - [X] ADMIN 권한일 때, 모든 글/댓글 수정 가능. 또한 Profile 화면에서 회원탈퇴 불가.  (회원탈퇴 버튼 숨김)
 
+### 0.5.4
+ - Admin page
+ - admin이 가입되어 있지 않을 때 최초 1회 admin 생성 유도. (/admin 접속)
+   - 이후 /admin 접속시에는 관리자 페이지로 유도.
+ - [X] 관리자 페이지에서 임의 회원 생성.
+
 ## TBA
 - Spring Security 심화
  - [ ] 익명 게시글 쓰기/수정 권한 부여

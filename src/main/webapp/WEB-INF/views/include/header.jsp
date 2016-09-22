@@ -376,11 +376,13 @@
                 <!-- <li><a href="advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li> -->
               </ul>
             </li>
-            
-            <li class="header">Admin</li>
-            <li><a href="/admin"><i class="fa fa-circle-o text-red"></i> <span>Home</span></a></li>
-            <!-- <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li> -->
+
+			<c:if test="${isAdmin}">
+				<li class="header">Admin</li>
+	            <li><a href="/admin"><i class="fa fa-circle-o text-red"></i> <span>Home</span></a></li>
+	            <!-- <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
+	            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li> -->
+			</c:if>
           </ul>
         </section>
         <!-- /.sidebar -->

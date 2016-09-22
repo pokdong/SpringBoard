@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.xeyez.domain.ModifiedUserVO;
+import io.github.xeyez.domain.NewUserVO;
 import io.github.xeyez.domain.UserVO;
 import io.github.xeyez.persistence.UserDAO;
 
@@ -67,7 +68,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
 	@Transactional
 	@Override
-	public void signUp(UserVO vo) throws Exception {
+	public void signUp(NewUserVO vo) throws Exception {
 		
 		logger.info(vo.toString());
 		
@@ -85,7 +86,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		else if(pw == null || pw.isEmpty())
 			throw new NullPointerException("Password is null or empty.");
 		
-		if(id.contains("admin") || id.contains("manager"))
+		if(vo.isAdminExists() && id.contains("admin"))
 			throw new UnavailableIDException(id);
 		
 		if(dao.userIdExists(id))
@@ -94,7 +95,8 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		
 		vo.setUsername(id); // default : id
 		vo.setUserpw(pw); // 암호화된 Password 삽입
-		vo.setRole("USER"); // 기본 ROLE
+		if(!vo.isAdminExists())
+			vo.setRole("ADMIN"); // 첫 ADMIN 가입시. 이외는 Default "USER" (DB에서 설정)
 		
 		dao.createUser(vo);
 	}
@@ -117,8 +119,6 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		/*if(!vo.getRole().equals("ADMIN") && !vo.getRole().equals("MANAGER")) {
 			if(username.contains("admin"))
 				throw new UnavailableIDException("\"admin\"은 포함될 수 없습니다.");
-			if(username.contains("manager"))
-				throw new UnavailableIDException("\"manager\"는 포함될 수 없습니다.");
 		}*/
 		
 		/*if (!username.matches("[0-9|a-z|A-Z]*"))

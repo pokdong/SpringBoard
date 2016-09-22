@@ -5,6 +5,12 @@ public class NewUserVO extends UserVO {
 
 	protected final int MIN_LENGHTH = 8;
 	
+	//admin 페이지에서 처음 admin 가입시 이용.
+	private boolean adminExists = false;
+	
+	//관리자에 의해 사용자가 생성/삭제/수정 되는가?
+	private boolean controlbyAdmin = false;
+	
 	public String getConfirm() {
 		return confirm;
 	}
@@ -19,6 +25,22 @@ public class NewUserVO extends UserVO {
 	
 	public boolean isPasswordGreaterThanMinLength() {
 		return isPasswordAndConfirmSame() && (userpw.length() >= MIN_LENGHTH);
+	}
+	
+	public boolean isAdminExists() {
+		return adminExists;
+	}
+
+	public void setAdminExists(boolean adminExists) {
+		this.adminExists = adminExists;
+	}
+
+	public boolean isControlbyAdmin() {
+		return controlbyAdmin;
+	}
+
+	public void setControlbyAdmin(boolean controlbyAdmin) {
+		this.controlbyAdmin = controlbyAdmin;
 	}
 
 	@Override

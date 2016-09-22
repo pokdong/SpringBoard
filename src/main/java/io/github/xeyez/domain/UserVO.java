@@ -11,16 +11,6 @@ public class UserVO {
 	protected String profilepath;
 	protected Date regdate;
 	
-	public UserVO() {
-	}
-	
-	public UserVO(String userid, String userpw, String username) {
-		this.userid = userid;
-		this.userpw = userpw;
-		this.username = username;
-		this.role = "USER";
-	}
-	
 	public String getUserid() {
 		return userid;
 	}
@@ -46,7 +36,7 @@ public class UserVO {
 		return role;
 	}
 	public void setRole(String role) {
-		this.role = role;
+		this.role = role.toUpperCase();
 	}
 
 	public long getUpoint() {

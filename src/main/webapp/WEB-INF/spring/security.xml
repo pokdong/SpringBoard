@@ -53,6 +53,8 @@
 		<sec:intercept-url pattern="/board/remove" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/user/profile" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/user/withdrawal" access="isAuthenticated()" method="POST" />
+		
+		<sec:intercept-url pattern="/admin_config" access="hasRole('ADMIN')" />
 
 		<sec:form-login
 			authentication-success-handler-ref="customAuthenticationSuccessHandler"

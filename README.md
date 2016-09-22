@@ -1,7 +1,7 @@
 # SpringBoard
 In-depth study for Spring framework
 
-- Sample : http://xeyez.mooo.com:8080/board/list
+- Sample : http://xeyez.mooo.com:8080
 
 ## 0.1
 - [X] 기본 CRUD

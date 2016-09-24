@@ -5,7 +5,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_SAFE_UPDATES = 0;
 
 create table tbl_board (
-    bno bigint not null auto_increment,
+	bno bigint not null auto_increment,
     title varchar(200) not null,
     content text not null,
     writer varchar(50) not null,
@@ -64,7 +64,7 @@ CREATE TABLE tbl_user (
 	userid VARCHAR(50) NOT NULL,
     userpw VARCHAR(50) NOT NULL,
     username VARCHAR(100) NOT NULL,
-    role varchar(50) default 'USER',
+    role varchar(50) NOT Null default 'USER',
     upoint bigint NOT NULL DEFAULT 0,    
     profilepath varchar(100),
     regdate timestamp default now(),

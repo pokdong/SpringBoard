@@ -6,7 +6,7 @@ public class NewUserVO extends UserVO {
 	protected final int MIN_LENGHTH = 8;
 	
 	//admin 페이지에서 처음 admin 가입시 이용.
-	private boolean adminExists = false;
+	private boolean adminExists = true;
 	
 	//관리자에 의해 사용자가 생성/삭제/수정 되는가?
 	private boolean controlbyAdmin = false;

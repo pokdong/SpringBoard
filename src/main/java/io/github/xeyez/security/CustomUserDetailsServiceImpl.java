@@ -95,8 +95,9 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		
 		vo.setUsername(id); // default : id
 		vo.setUserpw(pw); // 암호화된 Password 삽입
-		if(!vo.isAdminExists())
-			vo.setRole("ADMIN"); // 첫 ADMIN 가입시. 이외는 Default "USER" (DB에서 설정)
+		
+		// 첫 ADMIN 가입시. 이외는 Default "USER"
+		vo.setRole(!vo.isAdminExists() ? "ADMIN" : "USER");
 		
 		dao.createUser(vo);
 	}

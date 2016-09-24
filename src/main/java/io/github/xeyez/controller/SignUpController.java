@@ -50,8 +50,17 @@ public class SignUpController {
 		try {
 			logger.info(newUser.toString());
 			
-			if(userService.userIdExists(newUser.getUserid()))
-				errors.rejectValue("userid", "duplicate");
+			String id = newUser.getUserid();
+
+			//회원탈퇴했던 ID인가?
+			if(!userService.isWithdrawal(id)) {
+				if(userService.userIdExists(id))
+					errors.rejectValue("userid", "duplicate");
+			}
+			else {
+				//재가입 방지
+				errors.rejectValue("userid", "withdrawal");
+			}
 			
 			new NewUserValidator().validate(newUser, errors);
 			

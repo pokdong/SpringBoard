@@ -80,12 +80,13 @@ public class UserController {
 			
 			new ModifiedUserValidator().validate(vo, errors);
 			
-			//admin, manager 권한 제외하고 닉네임을 admin 혹은 manager로 지정할 때
+			//admin 권한 제외하고 닉네임을 admin으로 지정할 때
+			logger.info("auth????????????? : " + auth.getAuthorities().contains("ADMIN"));
 			for(GrantedAuthority gAuth : auth.getAuthorities()) {
-				if(!gAuth.getAuthority().equals("ADMIN") && !gAuth.getAuthority().equals("MANAGER")) {
+				if(!gAuth.getAuthority().equals("ADMIN")) {
 					logger.info("gAuth : " + gAuth.getAuthority());
 					
-					if(username.contains("admin") || username.contains("manager")) {
+					if(username.contains("admin")) {
 						errors.rejectValue("userid", "unavailable");
 						break;
 					}

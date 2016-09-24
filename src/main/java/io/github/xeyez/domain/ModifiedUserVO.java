@@ -19,6 +19,7 @@ public class ModifiedUserVO extends NewUserVO {
 	public String toString() {
 		return "ModifiedUserVO [userpw_new=" + userpw_new + ", confirm=" + confirm + ", MIN_LENGHTH=" + MIN_LENGHTH
 				+ ", userid=" + userid + ", userpw=" + userpw + ", username=" + username + ", role=" + role
-				+ ", upoint=" + upoint + ", profilepath=" + profilepath + ", regdate=" + regdate + "]";
+				+ ", upoint=" + upoint + ", profilepath=" + profilepath + ", regdate=" + regdate + ", deative="
+				+ deactive + ", deactivedate=" + deactivedate + ", withdrawal=" + withdrawal + "]";
 	}
 }

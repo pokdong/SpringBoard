@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.SearchCriteria;
 import io.github.xeyez.persistence.BoardDAO;
+import io.github.xeyez.persistence.UserDAOImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
@@ -27,8 +27,10 @@ public class DAOTest {
 	
 	private Logger logger = LoggerFactory.getLogger(DAOTest.class);
 	
-	@Inject
 	private BoardDAO dao;
+	
+	@Inject
+	private UserDAOImpl userDao;
 	
 	public void testConn() throws Exception {
 		try (Connection conn = ds.getConnection()){
@@ -82,12 +84,11 @@ public class DAOTest {
 	}
 	
 	
-	@Value("${attach.uploadPath}")
-	private String uploadPath;
-	
-	
 	@Test
 	public void test() throws Exception {
-		logger.info(uploadPath);
+		//logger.info(uploadPath);
+		
+		logger.info("deactive");
+		userDao.deactiveUser(false, "user", null);
 	}
 }

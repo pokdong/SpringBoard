@@ -51,6 +51,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 	</delete>
 	
+	<update id="withdrawal">
+	<![CDATA[
+		UPDATE TBL_USER
+		SET WITHDRAWAL = 1
+		WHERE USERID = #{userid}
+	]]>
+	</update>
+	
 	<update id="changePassword">
 	<![CDATA[
 		UPDATE TBL_USER
@@ -71,7 +79,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<![CDATA[
 		SELECT COUNT(*) 
 		FROM TBL_USER 
-		WHERE USERNAME = #{username} AND USERID != #{userid}
+		WHERE LOWER(USERNAME) = LOWER(#{username}) AND USERID != #{userid}
+	]]>
+	</select>
+	
+	<update id="deactiveUser">
+	    UPDATE TBL_USER
+		<if test="isDeactive">
+		    SET WITHDRAWAL = 1, DEACTIVEDATE = #{deactiveDate}
+		    </if>
+		<if test="!isDeactive">
+		    SET WITHDRAWAL = 0
+	    </if>
+		WHERE USERID = #{userid}
+	</update>
+	
+	<select id="isWithdrawal" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) 
+		FROM TBL_USER 
+		WHERE USERID = #{userid} AND WITHDRAWAL = 1;
 	]]>
 	</select>
 

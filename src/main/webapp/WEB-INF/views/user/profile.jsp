@@ -51,11 +51,6 @@
 			font-size: large;
 		}
 		
-		.error {
-			color: red;
-			font-weight: bold;
-		}
-		
     	div .formError {
     		text-align: right;
     		font-size: smaller;
@@ -73,6 +68,14 @@
 			line-height: 160px;
 			margin: auto;
 			text-align: center;
+    	}
+    	
+    	.caution {
+    		color: red;
+			font-weight: bold;
+    		text-align: center;
+    		margin-top: 20px;
+    		margin-bottom: 10px;
     	}
     </style>
     
@@ -518,8 +521,8 @@
 		<button type="button" id="btn_withdrawal" class="btn btn-flat btn-danger form-control">회원 탈퇴</button>
 		
 		<div id="div_withdrawal" style="margin-top: 10px;" hidden="true">
-			<span id="passwordError" class="error" hidden="true"></span>
-		
+			<div class="caution">※ 탈퇴한 ID는 재가입할 수 없습니다!! ※</div>
+			
 			<form role="form" method="post">
 				<input type='hidden' name='userid' value="${authUser.userid}">
 				
@@ -528,6 +531,8 @@
 					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 				</div>
 			</form>
+			
+			<div id="passwordError" class="formError" hidden="true"></div>
 			
 			<button type="button" id="btn_withdrawal_pwConfirm" class="btn btn-danger pull-right" style="margin-top: 5px">확인</button>
 		</div>

@@ -4,8 +4,8 @@ use book_ex;
 SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_SAFE_UPDATES = 0;
 
-create table tbl_board (d
-	bno bigint not null auto_increment,
+create table tbl_board (
+    bno bigint not null auto_increment,
     title varchar(200) not null,
     content text not null,
     writer varchar(50) not null,

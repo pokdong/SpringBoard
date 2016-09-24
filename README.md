@@ -1,7 +1,14 @@
 # SpringBoard
 In-depth study for Spring framework
 
+- Environment
+ - Java 8
+ - Tomcat 8.0
+ - MySQL 5.7
+ - Spring 4.3.2
+
 - Sample : http://xeyez.mooo.com:8080
+
 
 ## 0.1
 - [X] 기본 CRUD

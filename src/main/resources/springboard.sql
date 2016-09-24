@@ -4,13 +4,13 @@ use book_ex;
 SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_SAFE_UPDATES = 0;
 
-create table tbl_board (
+create table tbl_board (d
 	bno bigint not null auto_increment,
     title varchar(200) not null,
     content text not null,
     writer varchar(50) not null,
     regdate timestamp not null default now(),
-    updatedate timestamp not null default now(),
+    updatedate timestamp not null,
     modcnt bigint not null default 0,
     viewcnt bigint not null default 0,
     goodcnt bigint not null default 0,
@@ -36,7 +36,7 @@ create table tbl_reply (
     replytext varchar(1000) not null,
     replyer varchar(50) not null,
     regdate timestamp not null default now(),
-    updatedate timestamp not null default now(),
+    updatedate timestamp not null,
     modcnt bigint not null default 0,
     goodcnt bigint not null default 0,
     badcnt bigint not null default 0,

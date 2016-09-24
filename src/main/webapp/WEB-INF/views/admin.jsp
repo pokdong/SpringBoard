@@ -147,7 +147,7 @@
 
 <c:if test="${!adminExists}">
 	<form id="from_info" action="/user/signup" method="post">
-		<input type="hidden" value="${adminExists}" >
+		<input type="hidden" name="adminExists" value="false" >
 		
 	  <div class="form-group has-feedback">
 	    <input type="text" name="userid" class="form-control" placeholder="USER ID" value="admin" readonly="readonly" onfocus="this.blur()" />

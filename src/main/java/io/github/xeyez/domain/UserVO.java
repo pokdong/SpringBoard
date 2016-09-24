@@ -1,6 +1,6 @@
 package io.github.xeyez.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class UserVO {
 	protected String userid;
@@ -11,11 +11,15 @@ public class UserVO {
 	protected String profilepath;
 	protected Date regdate;
 	
+	protected boolean deactive;
+	protected Date deactivedate;
+	protected boolean withdrawal;
+	
 	public String getUserid() {
 		return userid;
 	}
 	public void setUserid(String userid) {
-		this.userid = userid;
+		this.userid = userid.toLowerCase();
 	}
 	
 	public String getUserpw() {
@@ -59,10 +63,34 @@ public class UserVO {
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
-
+	
+	
+	public boolean isDeactive() {
+		return deactive;
+	}
+	public void setDeactive(int deative) {
+		this.deactive = (deative == 1);
+	}
+	
+	public Date getDeactivedate() {
+		return deactivedate;
+	}
+	public void setDeactivedate(Date deactivedate) {
+		this.deactivedate = deactivedate;
+	}
+	
+	public boolean isWithdrawal() {
+		return withdrawal;
+	}
+	public void setWithdrawal(int withdrawal) {
+		this.withdrawal = (withdrawal == 1);
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "UserVO [userid=" + userid + ", userpw=" + userpw + ", username=" + username + ", role=" + role
-				+ ", upoint=" + upoint + ", profilepath=" + profilepath + ", regdate=" + regdate + "]";
+				+ ", upoint=" + upoint + ", profilepath=" + profilepath + ", regdate=" + regdate + ", deactive="
+				+ deactive + ", deactivedate=" + deactivedate + ", withdrawal=" + withdrawal + "]";
 	}
 }

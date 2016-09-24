@@ -64,9 +64,12 @@ CREATE TABLE tbl_user (
 	userid VARCHAR(50) NOT NULL,
     userpw VARCHAR(50) NOT NULL,
     username VARCHAR(100) NOT NULL,
-    role varchar(50) NOT Null default 'USER',
+    role varchar(50) NOT NULL default 'USER',
     upoint bigint NOT NULL DEFAULT 0,    
     profilepath varchar(100),
-    regdate timestamp default now(),
+    regdate timestamp default now(),    
+    deactive tinyint NOT NULL default 0,
+    deactivedate datetime NOT NULL default '1970-01-01 00:00:01',
+    withdrawal tinyint NOT NULL default 0,    
     PRIMARY KEY(userid)
 );

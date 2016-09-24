@@ -1,5 +1,6 @@
 package io.github.xeyez.persistence;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +59,11 @@ public class UserDAOImpl implements UserDAO {
 	public void deleteUser(String userid) {
 		session.delete(namespace + ".deleteUser", userid);
 	}
+	
+	@Override
+	public void withdrawal(String userid) throws Exception {
+		session.update(namespace + ".withdrawal", userid);
+	}
 
 	@Override
 	public void changePassword(String userid, String userpw) {
@@ -81,6 +87,22 @@ public class UserDAOImpl implements UserDAO {
 		paramMap.put("username", username);
 		
 		int count = session.selectOne(namespace + ".userNameExists", paramMap); 
+		return count > 0;
+	}
+
+	@Override
+	public void deactiveUser(boolean isDeactive, String userid, Date deactiveDate) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("isDeactive", isDeactive);
+		paramMap.put("userid", userid);
+		paramMap.put("deactiveDate", deactiveDate);
+		
+		session.update(namespace + ".deactiveUser", paramMap);
+	}
+
+	@Override
+	public boolean isWithdrawal(String userid) throws Exception {
+		int count = session.selectOne(namespace + ".isWithdrawal", userid);
 		return count > 0;
 	}
 }

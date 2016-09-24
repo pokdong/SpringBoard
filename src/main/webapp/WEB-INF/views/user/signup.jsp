@@ -111,6 +111,8 @@
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
 <form id="from_info" action="/user/signup" method="post">
+	<input type="hidden" name="adminExists" value="true" >
+
   <div class="form-group has-feedback">
     <input type="text" name="userid" class="form-control" placeholder="USER ID" />
     <span class="glyphicon glyphicon-user form-control-feedback"></span>

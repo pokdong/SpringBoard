@@ -1,6 +1,7 @@
 package io.github.xeyez.security;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,7 +26,11 @@ import io.github.xeyez.persistence.UserDAO;
 
 @Service
 public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
-
+	
+	public enum Role {
+		ADMIN, MANAGER, USER;
+	}
+	
 	private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsServiceImpl.class);
 
 	private PasswordEncoder passwordEncoder;
@@ -86,7 +91,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		else if(pw == null || pw.isEmpty())
 			throw new NullPointerException("Password is null or empty.");
 		
-		if(vo.isAdminExists() && id.contains("admin"))
+		if(vo.isAdminExists() && id.toLowerCase().contains("admin"))
 			throw new UnavailableIDException(id);
 		
 		if(dao.userIdExists(id))
@@ -95,8 +100,9 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		
 		vo.setUsername(id); // default : id
 		vo.setUserpw(pw); // 암호화된 Password 삽입
-		if(!vo.isAdminExists())
-			vo.setRole("ADMIN"); // 첫 ADMIN 가입시. 이외는 Default "USER" (DB에서 설정)
+		
+		// 첫 ADMIN 가입시. 이외는 Default "USER"
+		vo.setRole(!vo.isAdminExists() ? Role.ADMIN.name() : Role.USER.name());
 		
 		dao.createUser(vo);
 	}
@@ -129,8 +135,8 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 	}
 	
 	@Override
-	public void changeRole(String userid, String role) throws Exception {
-		dao.changeRole(userid, role);
+	public void changeRole(String userid, Role role) throws Exception {
+		dao.changeRole(userid, role.name());
 	}
 
 	@Transactional
@@ -139,7 +145,9 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		if(userid == null || userid.isEmpty())
 			throw new NullPointerException("ID is null or empty.");
 		
-		dao.deleteUser(userid);
+		//삭제 하지 않고, 탈퇴시켜 같은 ID로 가입시키지 못하게 함.
+		//dao.deleteUser(userid);
+		dao.withdrawal(userid);
 	}
 
 	@Transactional
@@ -196,5 +204,15 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 	@Override
 	public boolean userNameExists(String userid, String username) throws Exception {
 		return dao.userNameExists(userid, username);
+	}
+
+	@Override
+	public void deactive(boolean isDeactive, String userid, Date deactiveDate) {
+		dao.deactiveUser(isDeactive, userid, deactiveDate);
+	}
+
+	@Override
+	public boolean isWithdrawal(String userid) throws Exception {
+		return dao.isWithdrawal(userid);
 	}
 }

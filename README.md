@@ -7,7 +7,8 @@ In-depth study for Spring framework
  - MySQL 5.7
  - Spring 4.3.2
 
-- 실제 구동중인 Application : http://xeyez.mooo.com:8080
+- 실제 구동중인 Application
+ - http://xeyez.mooo.com:8080
 
 
 ## 0.1

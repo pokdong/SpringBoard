@@ -62,6 +62,8 @@ public class BoardServiceImpl implements BoardService {
 				dao.replaceAttach(fullName, bno);
 			}
 		}
+		
+		dao.updateFilescnt(vo.getBno());
 	}
 
 	@Transactional

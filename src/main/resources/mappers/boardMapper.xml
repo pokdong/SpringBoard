@@ -6,7 +6,7 @@
 <mapper namespace="${mybatis.board}">
 	<insert id="create">
 		<![CDATA[
-			INSERT INTO TBL_BOARD (TITLE, CONTENT, WRITER)
+			INSERT INTO tbl_board (TITLE, CONTENT, WRITER)
 			VALUES (#{title}, #{content}, #{writer})
 		]]>
 	</insert>
@@ -14,14 +14,14 @@
 	<select id="read" resultType="BoardVO">
 		<![CDATA[
 			SELECT *
-			FROM TBL_BOARD
+			FROM tbl_board
 			WHERE BNO = #{bno}
 		]]>
 	</select>
 	
 	<update id="update" >
 		<![CDATA[
-			UPDATE TBL_BOARD
+			UPDATE tbl_board
 			SET TITLE = #{title}, CONTENT = #{content}, updatedate = now(), modcnt = modcnt + 1
 			WHERE BNO = #{bno}
 		]]>
@@ -29,7 +29,7 @@
 	
 	<delete id="delete" >
 		<![CDATA[
-			DELETE FROM TBL_BOARD
+			DELETE FROM tbl_board
 			WHERE BNO = #{bno}
 		]]>
 	</delete>
@@ -73,7 +73,7 @@
 	<select id="list" resultType="BoardVO" >
 		<![CDATA[
 			SELECT *
-			FROM TBL_BOARD
+			FROM tbl_board
 			WHERE BNO > 0
 		]]>
 		
@@ -88,7 +88,7 @@
 	<select id="count" resultType="long" >
 		<![CDATA[
 			SELECT COUNT(BNO)
-			FROM TBL_BOARD
+			FROM tbl_board
 			WHERE BNO > 0
 		]]>
 		
@@ -97,7 +97,7 @@
 	
 	<update id="updateReplyCount">
 		<![CDATA[
-			UPDATE TBL_BOARD
+			UPDATE tbl_board
 			SET REPLYCNT = REPLYCNT + #{amount}
 			WHERE BNO = #{bno}
 		]]>
@@ -105,7 +105,7 @@
 	
 	<update id="updateViewCount">
 		<![CDATA[
-			UPDATE TBL_BOARD
+			UPDATE tbl_board
 			SET VIEWCNT = VIEWCNT + 1
 			WHERE BNO = #{bno}
 		]]>
@@ -113,7 +113,7 @@
 	
 	<insert id="addAttach">
 		<![CDATA[
-			INSERT INTO TBL_ATTACH (FULLNAME, BNO)
+			INSERT INTO tbl_attach (FULLNAME, BNO)
 			VALUES (#{fullName}, LAST_INSERT_ID())
 		]]>
 	</insert>
@@ -121,7 +121,7 @@
 	<select id="getAttach" resultType="string" >
 		<![CDATA[
 			SELECT FULLNAME
-			FROM TBL_ATTACH
+			FROM tbl_attach
 			WHERE BNO = #{bno}
 			ORDER BY REGDATE
 		]]>
@@ -129,24 +129,24 @@
 	
 	<delete id="deleteAllAttach">
 		<![CDATA[
-			DELETE FROM TBL_ATTACH
+			DELETE FROM tbl_attach
 			WHERE BNO = #{bno}
 		]]>
 	</delete>
 	
 	<insert id="replaceAttach">
 		<![CDATA[
-			INSERT INTO TBL_ATTACH (FULLNAME, BNO)
+			INSERT INTO tbl_attach (FULLNAME, BNO)
 			VALUES (#{fullName}, #{bno})
 		]]>
 	</insert>
 	
 	<update id="updateFilescnt">
 		<![CDATA[
-			UPDATE TBL_BOARD
+			UPDATE tbl_board
 			SET FILESCNT = 
 				(SELECT COUNT(bno)
-				FROM TBL_ATTACH
+				FROM tbl_attach
 				WHERE BNO = #{bno})
 			WHERE BNO = #{bno}
 		]]>

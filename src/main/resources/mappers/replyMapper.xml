@@ -7,14 +7,14 @@
 
 	<insert id="create">
 		<![CDATA[
-			INSERT INTO TBL_REPLY (BNO, REPLYTEXT, REPLYER)
+			INSERT INTO tbl_reply (BNO, REPLYTEXT, REPLYER)
 			VALUES (#{bno}, #{replytext}, #{replyer})
 		]]>
 	</insert>
 	
 	<update id="update" >
 		<![CDATA[
-			UPDATE TBL_REPLY
+			UPDATE tbl_reply
 			SET REPLYTEXT = #{replytext}, updatedate = now(), modcnt = modcnt + 1
 			WHERE RNO = #{rno}
 		]]>
@@ -22,7 +22,7 @@
 	
 	<delete id="delete" >
 		<![CDATA[
-			DELETE FROM TBL_REPLY
+			DELETE FROM tbl_reply
 			WHERE RNO = #{rno}
 		]]>
 	</delete>
@@ -30,7 +30,7 @@
 	<select id="listAll" resultType="ReplyVO" >
 		<![CDATA[
 			SELECT *
-			FROM TBL_REPLY
+			FROM tbl_reply
 			WHERE BNO = #{bno}
 			ORDER BY RNO DESC
 		]]>
@@ -39,7 +39,7 @@
 	<select id="list" resultType="ReplyVO" >
 		<![CDATA[
 			SELECT *
-			FROM TBL_REPLY
+			FROM tbl_reply
 			WHERE BNO = #{bno}
 			ORDER BY RNO DESC
 			limit #{cri.postStart}, #{cri.postCount}
@@ -49,7 +49,7 @@
 	<select id="count" resultType="long" >
 		<![CDATA[
 			SELECT COUNT(RNO)
-			FROM TBL_REPLY
+			FROM tbl_reply
 			WHERE BNO = #{bno};
 		]]>
 	</select>
@@ -57,7 +57,7 @@
 	<select id="recentRno" resultType="long">
 		<![CDATA[
 			SELECT RNO
-			FROM TBL_REPLY
+			FROM tbl_reply
 			WHERE BNO = #{bno} AND REPLYER = #{replyer} AND REPLYTEXT = #{replytext}
 			ORDER BY RNO DESC
 			LIMIT 1;
@@ -67,7 +67,7 @@
 	<select id="getBno" resultType="long">
 		<![CDATA[
 			SELECT BNO
-			FROM TBL_REPLY
+			FROM tbl_reply
 			WHERE RNO = #{rno};
 		]]>
 	</select>

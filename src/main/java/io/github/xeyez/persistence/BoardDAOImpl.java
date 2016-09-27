@@ -91,7 +91,12 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public void updateFilescnt() {
-		session.update(namespace + ".updateFilescnt");
+	public void updateFilescnt_forCreate() {
+		session.update(namespace + ".updateFilescnt_forCreate");
+	}
+	
+	@Override
+	public void updateFilescnt_forUpdate(long bno) {
+		session.update(namespace + ".updateFilescnt_forUpdate", bno);
 	}
 }

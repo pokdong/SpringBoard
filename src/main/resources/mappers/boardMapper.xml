@@ -147,8 +147,8 @@
 			SET FILESCNT = 
 				(SELECT COUNT(bno)
 				FROM tbl_attach
-				WHERE BNO = #{bno})
-			WHERE BNO = #{bno}
+				WHERE BNO = LAST_INSERT_ID())
+			WHERE BNO = LAST_INSERT_ID()
 		]]>
 	</update>
 	

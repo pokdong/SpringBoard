@@ -30,5 +30,5 @@ public interface BoardDAO {
 	
 	void replaceAttach(String fullName, long bno) throws Exception;
 
-	void updateFilescnt(long bno);
+	void updateFilescnt();
 }

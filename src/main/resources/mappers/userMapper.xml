@@ -8,21 +8,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getUser" resultType="UserVO">
 	<![CDATA[
 		SELECT * 
-		FROM TBL_USER 
+		FROM tbl_user 
 		WHERE USERID = #{userid}
 	]]>
 	</select>
 	
 	<insert id="createUser">
 	<![CDATA[
-		INSERT INTO TBL_USER (USERID, USERPW, USERNAME, ROLE)
+		INSERT INTO tbl_user (USERID, USERPW, USERNAME, ROLE)
 		VALUES (#{userid}, #{userpw}, #{username}, #{role})
 	]]>
 	</insert>
 	
 	<update id="updateUser">
 	<![CDATA[
-		UPDATE TBL_USER
+		UPDATE tbl_user
 		SET USERPW = #{userpw}, USERNAME = #{username}
 		WHERE USERID = #{userid}
 	]]>
@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateUserWithProfile">
 	<![CDATA[
-		UPDATE TBL_USER
+		UPDATE tbl_user
 		SET USERPW = #{userpw}, USERNAME = #{username}, PROFILEPATH = #{profilepath}
 		WHERE USERID = #{userid}
 	]]>
@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="changeRole">
 	<![CDATA[
-		UPDATE TBL_USER
+		UPDATE tbl_user
 		SET ROLE = #{role}
 		WHERE USERID = #{userid}
 	]]>
@@ -46,14 +46,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<delete id="deleteUser">
 	<![CDATA[
-		DELETE FROM TBL_USER
+		DELETE FROM tbl_user
 		WHERE USERID = #{userid}
 	]]>
 	</delete>
 	
 	<update id="withdrawal">
 	<![CDATA[
-		UPDATE TBL_USER
+		UPDATE tbl_user
 		SET WITHDRAWAL = 1
 		WHERE USERID = #{userid}
 	]]>
@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="changePassword">
 	<![CDATA[
-		UPDATE TBL_USER
+		UPDATE tbl_user
 		SET USERPW = #{userpw}
 		WHERE USERID = #{userid}
 	]]>
@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="userIdExists" resultType="int">
 	<![CDATA[
 		SELECT COUNT(*) 
-		FROM TBL_USER 
+		FROM tbl_user 
 		WHERE USERID = #{userid}
 	]]>
 	</select>
@@ -78,13 +78,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="userNameExists" resultType="int">
 	<![CDATA[
 		SELECT COUNT(*) 
-		FROM TBL_USER 
+		FROM tbl_user 
 		WHERE LOWER(USERNAME) = LOWER(#{username}) AND USERID != #{userid}
 	]]>
 	</select>
 	
 	<update id="deactiveUser">
-	    UPDATE TBL_USER
+	    UPDATE tbl_user
 		<if test="isDeactive">
 		    SET WITHDRAWAL = 1, DEACTIVEDATE = #{deactiveDate}
 		    </if>
@@ -97,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="isWithdrawal" resultType="int">
 	<![CDATA[
 		SELECT COUNT(*) 
-		FROM TBL_USER 
+		FROM tbl_user 
 		WHERE USERID = #{userid} AND WITHDRAWAL = 1;
 	]]>
 	</select>

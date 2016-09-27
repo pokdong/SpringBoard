@@ -35,7 +35,31 @@
     
     <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     
+    
 <c:if test="${adminExists}">
+	<c:if test="${isAdmin}">
+		<jsp:forward page="/admin_config"/> 
+	</c:if>
+	
+	<c:if test="${!isAdmin}">
+		<!-- 로그인하지 않은 상태에서 접근시 -->
+		<sec:authorize access="!isAuthenticated()">
+			<script>
+				self.location = '/user/login?returl=' + window.location.href;
+			</script>
+		</sec:authorize>
+		
+		<!-- 로그인했지만 admin이 아닐 시 -->
+		<sec:authorize access="isAuthenticated()">
+			<script>
+				alert('권한이 없습니다.');
+				self.location = '/board/list';
+			</script>
+		</sec:authorize>
+	</c:if>
+</c:if>
+
+<c:if test="${!adminExists}">
     <script>
     	$(document).ready(function() {
     		
@@ -67,7 +91,8 @@
 					data : JSON.stringify({
 						userid : userid,
 						userpw : userpw,
-						confirm : confirm
+						confirm : confirm,
+						adminExists : false
 					}),
 					success : function(response) {
 						var obj = JSON.parse(response);
@@ -79,10 +104,6 @@
 							
 							$.each(obj, function(key, value) {
 								switch (key) {
-									case 'userid':
-										userid_error.text(value);
-										break;
-										
 									case 'userpw':
 										userpw_error.text(value);
 										break;
@@ -111,28 +132,7 @@
 
 
   
-<c:if test="${adminExists}">
-	<c:if test="${isAdmin}">
-		<jsp:forward page="/admin_config"/> 
-	</c:if>
-	
-	<c:if test="${!isAdmin}">
-		<!-- 로그인하지 않은 상태에서 접근시 -->
-		<sec:authorize access="!isAuthenticated()">
-			<script>
-				self.location = '/user/login?returl=' + window.location.href;
-			</script>
-		</sec:authorize>
-		
-		<!-- 로그인했지만 admin이 아닐 시 -->
-		<sec:authorize access="isAuthenticated()">
-			<script>
-				alert('권한이 없습니다.');
-				self.location = '/board/list';
-			</script>
-		</sec:authorize>
-	</c:if>
-</c:if>
+
   
   
   
@@ -153,9 +153,7 @@
 	    <input type="text" name="userid" class="form-control" placeholder="USER ID" value="admin" readonly="readonly" onfocus="this.blur()" />
 	    <span class="glyphicon glyphicon-user form-control-feedback"></span>
 	    
-	    <div class="formError">
-	    	<span id="userid_error"></span>
-	    </div>
+	    
 	  </div>
 	  
 	  <div class="form-group has-feedback">

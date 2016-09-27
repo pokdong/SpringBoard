@@ -141,7 +141,7 @@
 		]]>
 	</insert>
 	
-	<update id="updateFilescnt">
+	<update id="updateFilescnt_forCreate">
 		<![CDATA[
 			UPDATE tbl_board
 			SET FILESCNT = 
@@ -149,6 +149,17 @@
 				FROM tbl_attach
 				WHERE BNO = LAST_INSERT_ID())
 			WHERE BNO = LAST_INSERT_ID()
+		]]>
+	</update>
+	
+	<update id="updateFilescnt_forUpdate">
+		<![CDATA[
+			UPDATE tbl_board
+			SET FILESCNT = 
+				(SELECT COUNT(bno)
+				FROM tbl_attach
+				WHERE BNO = #{bno})
+			WHERE BNO = #{bno}
 		]]>
 	</update>
 	

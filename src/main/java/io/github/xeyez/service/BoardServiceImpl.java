@@ -39,7 +39,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		
 		
-		dao.updateFilescnt();
+		dao.updateFilescnt_forCreate();
 	}
 
 	@Transactional(isolation=Isolation.READ_COMMITTED)
@@ -65,7 +65,7 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		
-		dao.updateFilescnt();
+		dao.updateFilescnt_forUpdate(vo.getBno());
 	}
 
 	@Transactional

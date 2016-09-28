@@ -44,12 +44,19 @@ public class BoardController {
 	
 	// parameter에 pageMaker의 존재 이유 : pageCount를 사용하기 위함. 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public void list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth, Locale locale) throws Exception {
+	public String list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("pageMaker") PageMaker pageMaker, Model model, Authentication auth, Locale locale) throws Exception {
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		String formattedDate = dateFormat.format(date);
 		
 		logger.info(formattedDate);
+		
+		// admin 생성이 안되어 있는 경우 생성 유도
+		if(!userService.userIdExists("admin")) {
+			return "redirect:/admin";
+		}
+		
+		
 		logger.info(">>>>>>>>>>>>>>> show list");
 		
 		logger.info(">>>>>>>>>> cri : " + cri.toString());
@@ -64,6 +71,8 @@ public class BoardController {
 		if(auth != null && auth.isAuthenticated()) {
 			model.addAttribute("authUser",  userService.getUser(auth.getName()));
 		}
+		
+		return "/board/list";
 	}
 	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)

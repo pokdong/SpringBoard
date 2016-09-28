@@ -74,7 +74,16 @@
 		
 		<sec:remember-me user-service-ref="customUserDetailsService" key="remembermeKey" token-validity-seconds="604800" />
 		
-		<sec:session-management session-authentication-error-url="/user/login" invalid-session-url="/user/login">
+		<!--
+			invalid-session-url : Session이 끊겼을 때 이동 URL
+			expired-url : 중복 로그인 발생시 이동 URL
+			session-authentication-error-url : Error 발생시 이동 URL (unauthorized 402)
+			session-fixation-protection
+				migrateSession : 기존 세션값들을 새로 생성된 세션에 복사. (기본값)
+				none - 원래 세션 유지.
+				newSession - 기존 셋값들을 복사하지 않은 새 세션 생성. (설정시 Remember me 기능 Error!)
+		 -->
+		<sec:session-management session-authentication-error-url="/user/login" invalid-session-url="/board/list">
 		    <sec:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" expired-url="/user/login" />
 		</sec:session-management> 
 	</sec:http>

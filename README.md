@@ -85,6 +85,7 @@ In-depth study for Spring framework
  - Admin page (/admin)
   - [X] admin이 가입되어 있지 않을 때 최초 1회 admin 생성 유도.
    - 이후 접속시에는 관리자 페이지로 유도.
+   - /board/list 접속시에도 적용.
   - [X] 관리자 페이지에서 임의 회원 생성.
   - [X] 회원탈퇴시 회원 "삭제"가 아니라 "재가입" 방지로 변경.
 

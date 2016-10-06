@@ -5,7 +5,7 @@ import java.util.Date;
 import io.github.xeyez.domain.UserVO;
 
 public interface UserDAO {
-
+	
 	UserVO getUser(String userid) throws Exception;
 	
 	void createUser(UserVO userVO) throws Exception;

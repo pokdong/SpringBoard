@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@include file="../include/header.jsp" %>
 
 <sec:authorize access="isAuthenticated()" var="isAuthenticated">
 	<sec:authentication property="name" var="userid"/>
@@ -12,8 +11,6 @@
 	<c:redirect url="/user/accessdenied"/>
 </c:if>
 
-
-<%@include file="../include/header.jsp" %>
 
 <link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
 <link rel="stylesheet" href="/resources/xeyez/css/attachment.css">

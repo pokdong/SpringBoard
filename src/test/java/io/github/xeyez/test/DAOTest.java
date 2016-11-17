@@ -1,6 +1,7 @@
 package io.github.xeyez.test;
 
 import java.sql.Connection;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,17 +11,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import io.github.xeyez.domain.BoardVO;
 import io.github.xeyez.domain.SearchCriteria;
+import io.github.xeyez.domain.UserVO;
 import io.github.xeyez.persistence.BoardDAO;
 import io.github.xeyez.persistence.UserDAOImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
+@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class DAOTest {
 
 	private DataSource ds;
@@ -86,9 +87,9 @@ public class DAOTest {
 	
 	@Test
 	public void test() throws Exception {
-		//logger.info(uploadPath);
+		//userDao.getUsers().forEach(System.out::println);
 		
-		logger.info("deactive");
-		userDao.deactiveUser(false, "user", null);
+		int[] arr = {1, 3, 5, 7, 9};
+		Arrays.stream(arr).mapToObj(v -> (int)v).collect(Collect)
 	}
 }

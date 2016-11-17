@@ -2,12 +2,12 @@ package io.github.xeyez.persistence;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +16,6 @@ import io.github.xeyez.domain.UserVO;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
-	private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
-	
 	@Inject
 	private SqlSession session;
 		
@@ -26,11 +24,12 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public UserVO getUser(String userid) throws Exception {
-		
-		logger.info("-----------------------getUSER");
-		
 		return session.selectOne(namespace + ".getUser", userid);
-		
+	}
+	
+	@Override
+	public List<UserVO> getUsers() throws Exception {
+		return session.selectList(namespace + ".getUsers");
 	}
 
 	@Override

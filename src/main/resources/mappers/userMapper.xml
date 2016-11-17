@@ -13,6 +13,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 	</select>
 	
+	<select id="getUsers" resultType="UserVO">
+	<![CDATA[
+		SELECT * 
+		FROM tbl_user
+	]]>
+	</select>
+	
 	<insert id="createUser">
 	<![CDATA[
 		INSERT INTO tbl_user (USERID, USERPW, USERNAME, ROLE)

@@ -33,10 +33,8 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsServiceImpl.class);
 
+	@Inject
 	private PasswordEncoder passwordEncoder;
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
-	}
 
 	// 회원탈퇴할 때 암호화된 문자열 비교시 사용
 	public PasswordEncoder getPasswordEncoder() {
@@ -121,14 +119,6 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 			throw new NullPointerException("Password is null or empty.");
 		else if(username == null || username.isEmpty())
 			throw new NullPointerException("Username is null or empty.");
-		
-		/*if(!vo.getRole().equals("ADMIN") && !vo.getRole().equals("MANAGER")) {
-			if(username.contains("admin"))
-				throw new UnavailableIDException("\"admin\"은 포함될 수 없습니다.");
-		}*/
-		
-		/*if (!username.matches("[0-9|a-z|A-Z]*"))
-			throw new UnavailableIDException("영문 대소문자 및 숫자 외에 다른 문자는 포함될 수 없습니다.");*/
 		
 		vo.setUserpw(pw); // 암호화된 Password 삽입
 		dao.updateUser(vo);

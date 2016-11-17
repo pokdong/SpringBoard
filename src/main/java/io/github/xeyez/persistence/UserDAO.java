@@ -1,12 +1,15 @@
 package io.github.xeyez.persistence;
 
 import java.util.Date;
+import java.util.List;
 
 import io.github.xeyez.domain.UserVO;
 
 public interface UserDAO {
 	
 	UserVO getUser(String userid) throws Exception;
+	
+	List<UserVO> getUsers() throws Exception;
 	
 	void createUser(UserVO userVO) throws Exception;
 	

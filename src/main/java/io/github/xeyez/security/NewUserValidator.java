@@ -32,6 +32,8 @@ public class NewUserValidator implements Validator {
 		String userid = newUser.getUserid();
 		if(newUser.isAdminExists() && userid.contains("admin"))
 			errors.rejectValue("userid", "unavailable");
+		else if(userid.matches(".*[^0-9|^a-z|^A-Z].*"))
+			errors.rejectValue("userid", "specialletters");
 	}
 
 }

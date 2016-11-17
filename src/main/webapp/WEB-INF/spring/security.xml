@@ -7,15 +7,10 @@
 
 
 	<!-- bCrypt 비밀번호 암호화 -->
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	
-	<bean id="authProvider" class="io.github.xeyez.security.CustomAuthenticationProvider">
-		<property name="passwordEncoder" ref="passwordEncoder" />
-	</bean>
-	
-	<bean id="customUserDetailsService" class="io.github.xeyez.security.CustomUserDetailsServiceImpl">
-		<property name="passwordEncoder" ref="passwordEncoder" />
-	</bean>
+	<bean id="authProvider" class="io.github.xeyez.security.CustomAuthenticationProvider"/>
+	<bean id="customUserDetailsService" class="io.github.xeyez.security.CustomUserDetailsServiceImpl"/>
 	
 	<sec:authentication-manager>
 		<sec:authentication-provider ref="authProvider" />

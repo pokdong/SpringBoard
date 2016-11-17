@@ -24,11 +24,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	@Inject
 	private CustomUserDetailsService userDetailsService;
 
+	@Inject
 	private PasswordEncoder passwordEncoder;
-	
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
-	}
 
 	@Override
 	public Authentication authenticate(Authentication auth) throws AuthenticationException {
@@ -43,9 +40,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		logger.info("id from login :" + userid);
 		logger.info("password from login :" + userpw.toLowerCase());
 		logger.info("possword from DB : " + principal.getPassword());
-		
-		/*if (!userpw.equals(principal.getPassword()))
-			throw new BadCredentialsException("Wrong password.");*/
 				
 		// 첫 번째 parameter가 평문(로그인시 전달), 두 번째 Parameter가 암호문(DB에서 전달)
 		if(!passwordEncoder.matches(userpw.toLowerCase(), principal.getPassword())) {

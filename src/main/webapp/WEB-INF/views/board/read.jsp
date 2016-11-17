@@ -93,7 +93,11 @@
 <script id="templateAttach_read" type="text/x-handlebars-template">
 <li>
   <span class="mailbox-attachment-icon has-img">
-	<img src="{{imgsrc}}" alt="Attachment">
+	{{#if isImage}}
+		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img"><img src="{{imgsrc}}" alt="Attachment"></a>
+	{{else}}
+		<a href="{{getLink}}"><img src="{{imgsrc}}" alt="Attachment"></a>
+	{{/if}}
   </span>
 
   <div class="mailbox-attachment-info" data-src="{{fullName}}">

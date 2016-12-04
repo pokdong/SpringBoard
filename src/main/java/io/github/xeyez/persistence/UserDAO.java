@@ -6,7 +6,7 @@ import java.util.List;
 import io.github.xeyez.domain.UserVO;
 
 public interface UserDAO {
-
+	
 	UserVO getUser(String userid) throws Exception;
 	
 	List<UserVO> getUsers() throws Exception;

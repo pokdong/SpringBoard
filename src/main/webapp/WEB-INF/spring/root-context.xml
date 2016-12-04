@@ -25,9 +25,9 @@
 		<property name="user" value="${jdbc.user}" />
 		<property name="password" value="${jdbc.password}" />
 		
-		<property name="testConnectionOnCheckin" value="true" />
-		<property name="testConnectionOnCheckout" value="false" />
-		<property name="preferredTestQuery" value="select 1;" />
+		<property name="preferredTestQuery" value="SELECT 1"></property>
+		<property name="maxIdleTime" value="280" />
+		<property name="idleConnectionTestPeriod" value="260"></property>
 	</bean>
 
 	<!-- MyBatis -->

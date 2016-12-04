@@ -24,6 +24,10 @@
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.user}" />
 		<property name="password" value="${jdbc.password}" />
+		
+		<property name="testConnectionOnCheckin" value="true" />
+		<property name="testConnectionOnCheckout" value="false" />
+		<property name="preferredTestQuery" value="select 1;" />
 	</bean>
 
 	<!-- MyBatis -->

@@ -10,6 +10,7 @@ In-depth study for Spring framework
 ## 실제 구동중인 Application
  - URL
   - http://xeyez.mooo.com:8080
+  - guest ID/PW : guest/guest1234
  - Server Spec.
   - Odroid U3 (http://www.hardkernel.com/main/products/prdt_info.php?g_code=g138745696275)
     - CPU : Samsung Exynos4412 Prime Cortex-A9 Quad Core 1.7Ghz with 1MB L2 cache

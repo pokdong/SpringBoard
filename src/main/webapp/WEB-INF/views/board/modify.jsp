@@ -98,7 +98,7 @@
 	</ul>
 
 	<div align="right">
-		<button type="submit" id="btn_confirm" class="btn btn-primary">확인</button>
+		<button type="submit" id="btn_confirm" class="btn btn-success">확인</button>
 		<button type="submit" class="btn btn-warning">취소</button>
 	</div>
 </div>

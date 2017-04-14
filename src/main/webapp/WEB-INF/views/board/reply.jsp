@@ -30,7 +30,7 @@
 			
 			<div class="box-footer">
 				<button type="button" id="btn_replyUpdate" class="btn bg-green">갱신</button>
-				<button type="submit" id="btn_replyAdd" class="btn btn-primary pull-right" >등록</button>
+				<button type="submit" id="btn_replyAdd" class="btn btn-success pull-right" >등록</button>
 			</div>
 			
 		</div>

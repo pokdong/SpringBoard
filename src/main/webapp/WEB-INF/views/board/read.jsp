@@ -67,7 +67,7 @@
 				<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
 			</c:if>
 		</sec:authorize>
-		<button type="submit" id="btn_list" class="btn btn-primary">목록으로</button>
+		<button type="submit" id="btn_list" class="btn btn-success">목록으로</button>
 	</div>
 </div>
 

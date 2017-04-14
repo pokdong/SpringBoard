@@ -26,7 +26,7 @@
 			var userpw_error = $('#userpw_error');
 			var confirm_error = $('#confirm_error');
     		
-    		$('.btn-primary').on('click', function() {
+    		$('.btn-success').on('click', function() {
     			userid_error.text('');
     			userpw_error.text('');
     			confirm_error.text('');
@@ -153,7 +153,7 @@
    	</div>
    
    	<div class="col-xs-4">
-    	<button type="button" class="btn btn-primary btn-block btn-flat">가입</button>
+    	<button type="button" class="btn btn-success btn-block btn-flat">가입</button>
    	</div>
 </div>
 

@@ -1,5 +1,7 @@
 package io.github.xeyez.controller;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;

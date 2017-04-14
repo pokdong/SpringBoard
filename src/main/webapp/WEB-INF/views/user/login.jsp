@@ -88,7 +88,7 @@
       </div>                        
     </div><!-- /.col -->
     <div class="col-xs-4">
-      <button type="button" id="btn_check" class="btn btn-primary btn-block btn-flat">로그인</button>
+      <button type="button" id="btn_check" class="btn btn-success btn-block btn-flat">로그인</button>
     </div><!-- /.col -->
   </div>
 </form>

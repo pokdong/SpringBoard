@@ -5,7 +5,7 @@
           <b>Supported by <a href="http://almsaeedstudio.com" target="_blank">Almsaeed Studio</a></b>
         </div>
         
-        <strong>2016 Joohyuk Lee <a href="https://github.com/xeyez/SpringBoard" target="_blank">Github</a></strong>
+        <strong>Since 2016, Joohyuk Lee <a href="https://github.com/xeyez/SpringBoard" target="_blank">Github</a></strong>
       </footer>
       
       <!-- Control Sidebar -->      

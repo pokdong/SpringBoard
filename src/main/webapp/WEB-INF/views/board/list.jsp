@@ -14,7 +14,7 @@
 		            	<h3 class="box-title">LIST</h3>
 		            	
 		            	<div style="position: relative; float: right;">
-							<button class="btn btn-primary" id='newBtn' style="font-weight: bold;">글쓰기</button>
+							<button class="btn btn-success" id='newBtn' style="font-weight: bold;">글쓰기</button>
 						</div>
 		            </div>
 		            
@@ -46,7 +46,7 @@
 		</td>
 		<td>${boardVO.writer}</td>
 		<td><fmt:formatDate value="${boardVO.regdate}" pattern="yyyy-MM-dd HH:mm" /></td>
-		<td><span class="badge bg-red">${boardVO.viewcnt }</span></td>
+		<td><span class="badge bg-green">${boardVO.viewcnt }</span></td>
 	</tr>
 </c:forEach>
 	
@@ -95,7 +95,7 @@
 		</select>
 	
 		<input type="text" name='keyword' id="keywordInput" maxlength="20" value='${cri.keyword }'>
-		<button class="btn btn-primary" id='searchBtn'>검색</button>
+		<button class="btn btn-success" id='searchBtn'>검색</button>
 	</div>
 	
 </div>

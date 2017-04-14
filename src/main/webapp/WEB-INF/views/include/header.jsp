@@ -364,20 +364,18 @@
           
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="header"> </li>
+            <li class="header">Menu</li>
             
-            <!-- <li class="treeview active">
+            <li class="treeview active">
               <a href="#">
-                <i class="fa fa-edit"></i> <span>Dashboard</span>
+                <i class="fa fa-edit"></i> <span>Board</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li class="active"><a href="/board/list"><i class="fa fa-circle-o"></i> Board</a></li>
-                <li><a href="advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
+                <li class="active"><a href="/board/list"><i class="fa fa-circle-o"></i> Free board</a></li>
+                <!-- <li><a href="advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li> -->
               </ul>
-            </li> -->
-            
-            <li class="active"><a href="/board/list"><i class="fa fa-circle-o"></i> Board</a></li>
+            </li>
 
 			<c:if test="${isAdmin}">
 				<li class="header">Admin</li>

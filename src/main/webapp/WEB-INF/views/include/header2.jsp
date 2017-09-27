@@ -73,9 +73,8 @@
 	  <nav>
 	  	<div class="nav-wrapper">
 	      <a href="/" class="brand-logo">Spring Board</a>
-	      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 	      
-	      <ul class="right hide-on-med-and-down">
+	      <ul id="nav-buttons" class="right">
 	      
 	      	<sec:authorize access="!isAuthenticated()">
 		        <li><a href="/user/signup">Sign-up</a></li>
@@ -101,10 +100,6 @@
 	        </sec:authorize>
 	      </ul>
 	      
-	      <ul class="side-nav" id="mobile-demo">
-	        <li><a href="/user/signup">Sign-up</a></li>
-	        <li><a href="/user/login">Log-in</a></li>
-	      </ul>
 	    </div>
 	    
 	  </nav>

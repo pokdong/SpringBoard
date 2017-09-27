@@ -22,10 +22,15 @@ nav {
 	z-index: 1;
 }
 
+#button-github {
+	color : white;
+	margin-bottom: 10px;
+}
+
 .main-content {
 	position: relative;
 	margin-top: 80px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 .table-head {
@@ -50,14 +55,14 @@ nav {
 	position: fixed;
 	bottom: 0;
 	left:0;
-	margin-bottom: 40px;
+	margin-bottom: 60px;
 	width: 100%;
 	z-index: 1;
 	background-color: white;
 }
 
 .fixed-action-btn {
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 }
 
 .btn-delete-attach {

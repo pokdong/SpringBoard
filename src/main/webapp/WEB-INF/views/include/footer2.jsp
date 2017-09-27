@@ -5,10 +5,12 @@
 	<script src="/resources/lightbox2/js/lightbox.min.js"></script>
 	
 	<footer class="page-footer rx-row">
-      <div class="container rx-col12">
-        © 2014 Copyright Text
-        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-        </div>
+		<div class="center-align">
+			<a id="button-github" class="btn-flat" href="https://github.com/xeyez/SpringBoard">
+				<i class="fa fa-github fa-5x"></i>
+				<span>Github</span>
+			</a>
+		</div>
     </footer>
 
   </body>

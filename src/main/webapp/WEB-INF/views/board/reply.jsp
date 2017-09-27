@@ -8,40 +8,38 @@
 	}
 </style>
 
-<div id="repliesArea" class="row">
+
+<div id="replies-container" class="row">
 	
-	<div class="col-md-12">
+	<div class="col s12">
+		<span class="userid" id="newReplyWriter">${userid}</span>
 		
-		<div class="box box-success">
-			<div class="box-header">
-			</div>
-			
-			<div class="box-body">
-				<span class="userid" id="newReplyWriter">${userid}</span>
-				
-				<div class="pull-right">
-					<span id="replyTextCount"></span>
-					<span>/</span>
-					<span id="replyTextLimit"></span>
-				</div>
-				
-				<textarea class="form-control" id="newReplyText" rows="3" cols="1"  maxlength="300" style="resize: none;"></textarea>
-			</div>
-			
-			<div class="box-footer">
-				<button type="button" id="btn_replyUpdate" class="btn bg-green">갱신</button>
-				<button type="submit" id="btn_replyAdd" class="btn btn-success pull-right" >등록</button>
-			</div>
-			
+		<div class="pull-right">
+			<span id="replyTextCount"></span>
+			<span>/</span>
+			<span id="replyTextLimit"></span>
 		</div>
 		
-		<ul class="timeline">
-			<li class="time-label" id="repliesDiv">
-				<button type="button" id="btn_top" class="btn bg-green">▲ 맨 위로 가기</button>
-			</li>
-		</ul>
-		
+		<div class="input-field">
+			<textarea id="newReplyText" name="newReplyText" class="materialize-textarea" rows="3" cols="1"  maxlength="300" style="resize: none;"></textarea>
+			<label for="newReplyText">댓글</label>
+		</div>
 	</div>
+	
+	<div class="col s12">
+		<button type="button" id="btn_replyUpdate" class="btn blue">
+			<i class="material-icons">autorenew</i>
+		</button>
+		<button type="submit" id="btn_replyAdd" class="btn btn-success pull-right" >등록</button>
+	</div>
+	
+	<ul class="timeline col s12">
+		<li class="row" id="repliesDiv">
+			<button type="button" id="btn_top" class="btn red col s12">
+				<i class="material-icons">vertical_align_top</i>
+			</button>
+		</li>
+	</ul>
 </div>
 
 <!-- Modal -->
@@ -57,7 +55,7 @@
        		</div>
        	
       		<div class="modal-body" data-rno=''>
-        		<p><input type="text" id="replytext" class="form-control"></p>
+        		<p><input type="text" id="replytext"></p>
       		</div>
       		
       		<div class="modal-footer">
@@ -115,27 +113,25 @@
 <script id="template" type="text/x-handlebars-template">
     {{#each .}}
         <li class="replyLi" data-rno={{rno}} data-replyer={{replyer}}>
-            <i class="fa fa-comments bg-blue"></i>
-            <div class="timeline-item">
-                <span class="time">
-                    <i class="fa fa-clock-o"></i>{{prettifyDate updatedate}}
-                </span>
+            <div class="card">
+	            <span class="card-title blue-text">
+					<i class="fa fa-user"></i>
+					<span>{{replyer}}</span>
+				</span>
+	            <div class="card-content timeline-body">
+		            {{replytext}}
+	            </div>
+	            <div class="right-align">
+		            <i class="fa fa-clock-o"></i>
+		            <span>{{prettifyDate updatedate}}</span>
+	            </div>
 
-                <h3 class="timeline-header">
-                    <strong>{{replyer}}</strong>
-                </h3>
-
-                <div class="timeline-body">
-                    {{replytext}}
-                </div>
-
-				<div class="timeline-footer" align="right">
-					{{#hasAuthority replyer}}
-						<button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
-						<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
-					{{/hasAuthority}}
-				</div>
-
+				{{#hasAuthority replyer}}
+            	<div class="card-action right-align">
+					<button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
+					<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
+            	</div>
+				{{/hasAuthority}}
             </div>
         </li>
     {{/each}}
@@ -177,7 +173,7 @@
 		return hasAuth;
 	});
 	
-	function printData(replyArr, target, templateObject, replyInfo) {
+	function printReply(replyArr, target, templateObject, replyInfo) {
 		var template = Handlebars.compile(templateObject.html());
 		var html = template(replyArr);
 		
@@ -217,7 +213,7 @@
 					var targetReply = $('.replyLi[data-rno=' + replyInfo.rno + ']');
 					targetReply.slideUp(1200, function() {
 						
-						var offset = $('#repliesArea').offset();
+						var offset = $('#replies-container').offset();
 						$('html, body').animate({scrollTop: offset.top}, 500, function() {
 							
 							var removeObj = $(".replyLi").remove();
@@ -225,7 +221,7 @@
 								
 								target.before(html);
 								
-								/* var allReplies = $('#repliesArea .timeline');
+								/* var allReplies = $('#replies-container .timeline');
 								
 								allReplies.fadeOut(0, function () {
 									allReplies.fadeIn();
@@ -245,14 +241,14 @@
 				case replyAction.SHOW_WITH_REPLY:
 					var htmlObj = target.before(html);
 					htmlObj.ready(function() {
-						//repliesArea는 reply.jsp에 위치.
-						var offset = $('#repliesArea .timeline').offset();
+						//replies-container는 reply.jsp에 위치.
+						var offset = $('#replies-container .timeline').offset();
 						$('html, body').animate({scrollTop: offset.top}, 500);
 					});
 					break;
 					
 				case replyAction.UPDATE :
-					var offset = $('#repliesArea').offset();
+					var offset = $('#replies-container').offset();
 					$('html, body').animate({scrollTop: offset.top}, 250, function() {
 						
 						var removeObj = $(".replyLi").remove();
@@ -281,7 +277,7 @@
 			endPage = data.pageMaker.endPage;
 			replyPage++;
 			
-			printData(data.list, $("#repliesDiv"), $('#template'), replyInfo);
+			printReply(data.list, $("#repliesDiv"), $('#template'), replyInfo);
 		});
 	}
 	
@@ -290,7 +286,7 @@
 	$('#btn_top').on('click', function(e) {
 		e.preventDefault();
 		
-		var offset = $('#repliesArea').offset();
+		var offset = $('#replies-container').offset();
 		$('html, body').animate({scrollTop: offset.top}, 450);
 	});
 	
@@ -444,15 +440,18 @@
 	$('#btn_replyUpdate').on('click', function(e) {
 		e.preventDefault();
 		
+		console.log("is it worked?");
+		
 		replyPage = 1;
 		
 		var replyInfo = new ReplyInfo(replyAction.UPDATE, -1);
 		updatePage(bno, replyPage, replyInfo);
+		
 	});
 	
 	/* 
 	$('#btn_test').on('click', function() {
-		//$('#repliesArea .timeline').slideUp('fast');
+		//$('#replies-container .timeline').slideUp('fast');
 		
 		var targetReply = $('.replyLi[data-rno=' + 164 + ']');
 		var replyText = targetReply.find('.timeline-body').text().replace(/(^\s*)|(\s*$)/gi, "");

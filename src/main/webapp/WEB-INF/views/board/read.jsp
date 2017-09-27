@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@include file="../include/header.jsp" %>
+<%@include file="../include/header2.jsp" %>
 
 <link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
 <link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
 
 <script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
+<script src="/resources/lightbox2/js/lightbox.min.js"></script>
 <script src="/resources/xeyez/js/upload.js"></script>
 <script src="/resources/xeyez/js/utils.js"></script>
 
@@ -22,89 +23,63 @@
 	<input type='hidden' name='writer' value="${boardVO.writer}">
 </form>
 
-    <!-- Main content -->
-	<section class="content">
-    	<div class="row">
-    	
-	    	<!-- left column -->
-	    	<div class="col-md-12">
-	    		<!-- general form elements -->
-	  			<div class="box">
-		            <div class="box-header with-border">
-		            	<h3 class="box-title">READ</h3>
-		            </div>
-		            
-<!-- Content -->
-					<div class="box-body"> <!-- box-body : 전체 margin -->
-<div class="form-group"> <!-- form-group : 하단 여백 -->
-	<label>제목</label>
-	<input type="text" name="title" class="form-control" value="${boardVO.title}" readonly="readonly" onfocus="this.blur()"> <!-- form-control : 테두리 및 개행 -->
+
+<div class="row">
+	<form class="col s12">
+	
+		<div class="input-field col s12">
+          <input disabled type="text" name="title" value="${boardVO.title}" onfocus="this.blur()">
+          <label for="title">제목</label>
+        </div>
+        
+        <div class="input-field col s12">
+			<textarea disabled name="content" class="materialize-textarea" rows="10" cols="1" onfocus="this.blur()" style="resize: none;">${boardVO.content}</textarea>
+			<label for="content">내용</label>
+		</div>
+		
+		<div class="input-field col s12">
+			<input disabled type="text" name="writer" value="${boardVO.writer}" onfocus="this.blur()">
+			<label for="writer">작성자</label>
+		</div>
+	
+	</form>
 </div>
 
-<div class="form-group">
-	<label>내용</label>
-	<textarea name="content" class="form-control" rows="10" cols="1" readonly="readonly" onfocus="this.blur()" style="resize: none;">${boardVO.content}</textarea>
-</div>
-
-<div class="form-group">
-	<label>작성자</label>
-	<input type="text" name="writer" class="form-control" value="${boardVO.writer}" readonly="readonly" onfocus="this.blur()">
-</div>
-
-
-					</div>
-
-
-<div class="box-footer"> <!-- box-footer : 전체 여백 + 상단 테두리 -->
-
-	<ul class="mailbox-attachments clearfix uploadedList">
+<div>
+	<ul class="uploadedList center-align">
 	</ul>
 	
-	<div align="right">
+	<div class="right-align">
 		<sec:authorize access="isAuthenticated()">
 			<c:if test="${userid == boardVO.writer || isAdmin}">
 				<button type="submit" id="btn_modify" class="btn btn-warning">수정</button>
 				<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
 			</c:if>
 		</sec:authorize>
-		<button type="submit" id="btn_list" class="btn btn-success">목록으로</button>
+		<button type="submit" id="btn_list" class="btn blue">목록으로</button>
 	</div>
 </div>
 
-		            
-		        </div>
-	        </div>
-	        
-<!-- <button id="testbtn">test</button> -->
-
-      	</div>
-      	
 <%@include file="reply.jsp" %>
-      	
-   	</section>
-   	
-	</div>
     
-<%@include file="../include/footer.jsp" %>
-
-
+<%@include file="../include/footer2.jsp" %>
 
 
 <script id="templateAttach_read" type="text/x-handlebars-template">
 <li>
   <span class="mailbox-attachment-icon has-img">
 	{{#if isImage}}
-		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img"><img src="{{imgsrc}}" alt="Attachment"></a>
+		<a href="{{getLink}}" data-lightbox="img"><img src="{{imgsrc}}" alt="Attachment"></a>
 	{{else}}
-		<a href="{{getLink}}"><img src="{{imgsrc}}" alt="Attachment"></a>
+		<a href="{{getLink}}"><i class="fa fa-file"></i></a>
 	{{/if}}
   </span>
 
   <div class="mailbox-attachment-info" data-src="{{fullName}}">
 	{{#if isImage}}
-		<a href="{{getLink}}" class="mailbox-attachment-name" data-lightbox="img">{{fileName}}</a>
+		<a href="{{getLink}}" data-lightbox="img">{{fileName}}</a>
 	{{else}}
-		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+		<a href="{{getLink}}">{{fileName}}</a>
 	{{/if}}
   </div>
 </li>
@@ -122,12 +97,11 @@
 		$(list).each(function(){
 			
 			var fileInfo = getFileInfo(this);
-			console.log("fileInfo : " + fileInfo);
+			//console.log("fileInfo : " + fileInfo);
 			
 			var html = template(fileInfo);
 			
 			 $(".uploadedList").append(html);
-			
 		});
 	});
 </script>
@@ -135,7 +109,7 @@
 <script>
 	var formObj = $("form[role='form']");
 	
-	console.log(formObj);
+	//console.log(formObj);
 	
 	// 수정
 	$("#btn_modify").on("click", function() {
@@ -192,7 +166,7 @@
 	
 	function deleteAllFiles() {
 		var arr = [];
-		$(".uploadedList .mailbox-attachment-info").each(function(index){
+		$(".uploadedList").each(function(index){
 			 arr.push($(this).attr("data-src"));
 		});
 		
@@ -243,19 +217,6 @@
 		$('#testbtn').click(function(e) {
 			e.preventDefault();
 			
-			/* var arr = [];
-			$(".uploadedList .mailbox-attachment-info").each(function(index){
-				 arr.push($(this).attr("data-src"));
-			});
-			
-			console.log(arr);
-			
-			if(arr.length > 0){
-				$.post("/deleteAllFiles", {files:arr}, function(){
-					
-				});
-			} */
-			
 			//var replyCnt = ${boardVO.replycnt};
 			$.ajax({
 				type : "POST",
@@ -278,5 +239,3 @@
 	
 </script>
 
-
-<script src="/resources/lightbox2/js/lightbox.min.js"></script>

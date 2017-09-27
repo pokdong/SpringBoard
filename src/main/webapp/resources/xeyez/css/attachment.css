@@ -21,7 +21,16 @@
 }
 
 .uploadedList {
-	display: table;
+	/* display: table; */
+	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.uploadedList li {
+	display: inline-block;
+}
+
+.fa-file {
+	font-size: 100px;
 }

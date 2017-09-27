@@ -4,8 +4,12 @@ function checkImageFile(fullName) {
 		return fullName.match(/jpg|jpeg|gif|png/i);
 }
 
+function checkMusicFile(fullName) {
+	return fullName.match(/mp3|ogg|wav|wma/i);
+}
+
 function getFileInfo(fullName) {
-	var fileName, imgsrc, getLink;
+	var fileName, imgsrc, getLink, isImage;
 	var fileLink;
 	
 	if(checkImageFile(fullName)) {

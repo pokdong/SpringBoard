@@ -28,6 +28,12 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public void test(Locale locale, Model model) throws Exception {
+		logger.info("Welcome home! The client locale is {}.", locale);
+		model.addAttribute("recipient", "World");
+	}
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);

@@ -1,98 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
-<style>
-	.userid {
-		margin-bottom: 5px;
-		font-weight: bold;
-		font-size: large;
-	}
-</style>
+<div id="replies-container" class="row">
 
-<div id="repliesArea" class="row">
-	
-	<div class="col-md-12">
-		
-		<div class="box box-success">
-			<div class="box-header">
-			</div>
-			
-			<div class="box-body">
-				<span class="userid" id="newReplyWriter">${userid}</span>
-				
-				<div class="pull-right">
-					<span id="replyTextCount"></span>
-					<span>/</span>
-					<span id="replyTextLimit"></span>
-				</div>
-				
-				<textarea class="form-control" id="newReplyText" rows="3" cols="1"  maxlength="300" style="resize: none;"></textarea>
-			</div>
-			
-			<div class="box-footer">
-				<button type="button" id="btn_replyUpdate" class="btn bg-green">갱신</button>
-				<button type="submit" id="btn_replyAdd" class="btn btn-success pull-right" >등록</button>
-			</div>
-			
+	<div class="col s12">
+		<div class="userid blue-text">
+			<i class="fa fa-user"></i> <span id="newReplyWriter">${userid}</span>
 		</div>
-		
-		<ul class="timeline">
-			<li class="time-label" id="repliesDiv">
-				<button type="button" id="btn_top" class="btn bg-green">▲ 맨 위로 가기</button>
-			</li>
-		</ul>
-		
+
+
+		<div class="pull-right">
+			<span id="replyTextCount"></span> <span>/</span> <span
+				id="replyTextLimit"></span>
+		</div>
+
+		<div class="input-field">
+			<textarea id="newReplyText" name="newReplyText"
+				class="materialize-textarea" rows="3" cols="1" maxlength="300"
+				style="resize: none;"></textarea>
+			<label for="newReplyText">댓글</label>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<button type="button" id="btn_replyUpdate" class="btn blue">
+			<i class="material-icons">autorenew</i>
+		</button>
+		<button type="submit" id="btn_replyAdd"
+			class="btn btn-success pull-right">등록</button>
+	</div>
+
+	<ul class="timeline col s12">
+		<li class="row" id="repliesDiv">
+			<button type="button" id="btn_top" class="btn blue col s12">
+				<i class="material-icons">vertical_align_top</i>
+			</button>
+		</li>
+	</ul>
+</div>
+
+
+<div id="modal-modify" class="modal bottom-sheet">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h1 class="modal-title" hidden="true"></h1>
+			<h1 class="modal-title2" hidden="true"></h1>
+		</div>
+
+		<div class="modal-body" data-rno=''>
+			<input type="text" id="replytext">
+		</div>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn btn-info" id="btn_replyMod">수정</button>
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn blue">취소</button>
 	</div>
 </div>
 
-<!-- Modal -->
-<div id="modifyModal" class="modal modal-primary fade" role="dialog">
-  	<div class="modal-dialog">
-  
-    	<!-- Modal content-->
-    	<div class="modal-content">
-    		<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal">&times;</button>
-	        	<h1 class="modal-title" hidden="true"></h1>
-	        	<h1 class="modal-title2" hidden="true"></h1>
-       		</div>
-       	
-      		<div class="modal-body" data-rno=''>
-        		<p><input type="text" id="replytext" class="form-control"></p>
-      		</div>
-      		
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-info" id="btn_replyMod" data-dismiss="modal">수정</button>
-        		<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-      		</div>
-   		</div>
+<div id="modal-delete" class="modal bottom-sheet">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h1 class="modal-title" hidden="true"></h1>
+			<h1 class="modal-title2" hidden="true"></h1>
+		</div>
+
+		<div class="modal-body" data-rno=''>
+			<h5>삭제하시겠습니까?</h5>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn red" id="btn_replyDel">삭제</button>
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn blue">취소</button>
 	</div>
 </div>
 
-<!-- template 작성은 나중으로 -->
-<div id="deleteModal" class="modal modal-primary fade" role="dialog">
-  	<div class="modal-dialog">
-  
-    	<!-- Modal content-->
-    	<div class="modal-content">
-    		<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal">&times;</button>
-        		<h1 class="modal-title" hidden="true"></h1>
-        		<h1 class="modal-title2" hidden="true"></h1>
-       		</div>
-       	
-      		<div class="modal-body" data-rno=''>
-        		<p>삭제하시겠습니까?</p>
-      		</div>
-      		
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-danger" id="btn_replyDel" data-dismiss="modal">삭제</button>
-        		<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-      		</div>
-   		</div>
-	</div>
-</div>
-
-<!-- <button id="btn_test">test</button> -->
 
 
 
@@ -104,38 +86,35 @@
 		SHOW_WITH_REPLY : 3,
 		UPDATE : 4
 	};
-	
+
 	function ReplyInfo(replyAction, rno) {
 		this.action = replyAction;
 		this.rno = rno;
 	}
-	
 </script>
 
 <script id="template" type="text/x-handlebars-template">
     {{#each .}}
         <li class="replyLi" data-rno={{rno}} data-replyer={{replyer}}>
-            <i class="fa fa-comments bg-blue"></i>
-            <div class="timeline-item">
-                <span class="time">
-                    <i class="fa fa-clock-o"></i>{{prettifyDate updatedate}}
-                </span>
+            <div class="card">
+	            <span class="card-title blue-text">
+					<i class="fa fa-user"></i>
+					<span>{{replyer}}</span>
+				</span>
+	            <div class="card-content timeline-body">
+		            {{replytext}}
+	            </div>
+	            <div class="right-align">
+		            <i class="fa fa-clock-o"></i>
+		            <span>{{prettifyDate updatedate}}</span>
+	            </div>
 
-                <h3 class="timeline-header">
-                    <strong>{{replyer}}</strong>
-                </h3>
-
-                <div class="timeline-body">
-                    {{replytext}}
-                </div>
-
-				<div class="timeline-footer" align="right">
-					{{#hasAuthority replyer}}
-						<button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
-						<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
-					{{/hasAuthority}}
-				</div>
-
+				{{#hasAuthority replyer}}
+            	<div class="card-action right-align">
+					<button type="button" class="btn" id="btn_modifyDialog">수정</button>
+					<button type="button" class="btn red" id="btn_deleteDialog">삭제</button>
+            	</div>
+				{{/hasAuthority}}
             </div>
         </li>
     {{/each}}
@@ -177,7 +156,7 @@
 		return hasAuth;
 	});
 	
-	function printData(replyArr, target, templateObject, replyInfo) {
+	function printReply(replyArr, target, templateObject, replyInfo) {
 		var template = Handlebars.compile(templateObject.html());
 		var html = template(replyArr);
 		
@@ -217,7 +196,7 @@
 					var targetReply = $('.replyLi[data-rno=' + replyInfo.rno + ']');
 					targetReply.slideUp(1200, function() {
 						
-						var offset = $('#repliesArea').offset();
+						var offset = $('#replies-container').offset();
 						$('html, body').animate({scrollTop: offset.top}, 500, function() {
 							
 							var removeObj = $(".replyLi").remove();
@@ -225,7 +204,7 @@
 								
 								target.before(html);
 								
-								/* var allReplies = $('#repliesArea .timeline');
+								/* var allReplies = $('#replies-container .timeline');
 								
 								allReplies.fadeOut(0, function () {
 									allReplies.fadeIn();
@@ -245,14 +224,14 @@
 				case replyAction.SHOW_WITH_REPLY:
 					var htmlObj = target.before(html);
 					htmlObj.ready(function() {
-						//repliesArea는 reply.jsp에 위치.
-						var offset = $('#repliesArea .timeline').offset();
+						//replies-container는 reply.jsp에 위치.
+						var offset = $('#replies-container .timeline').offset();
 						$('html, body').animate({scrollTop: offset.top}, 500);
 					});
 					break;
 					
 				case replyAction.UPDATE :
-					var offset = $('#repliesArea').offset();
+					var offset = $('#replies-container').offset();
 					$('html, body').animate({scrollTop: offset.top}, 250, function() {
 						
 						var removeObj = $(".replyLi").remove();
@@ -281,7 +260,7 @@
 			endPage = data.pageMaker.endPage;
 			replyPage++;
 			
-			printData(data.list, $("#repliesDiv"), $('#template'), replyInfo);
+			printReply(data.list, $("#repliesDiv"), $('#template'), replyInfo);
 		});
 	}
 	
@@ -290,7 +269,7 @@
 	$('#btn_top').on('click', function(e) {
 		e.preventDefault();
 		
-		var offset = $('#repliesArea').offset();
+		var offset = $('#replies-container').offset();
 		$('html, body').animate({scrollTop: offset.top}, 450);
 	});
 	
@@ -343,7 +322,7 @@
 	});
 	
 	
-	
+	/* modal 열기 */
 	$(".timeline").on("click", ".replyLi button", function(event){
 		
 		var reply = $(this).parent().parent().parent();
@@ -360,17 +339,20 @@
 				
 				var replyText = trim(reply.find('.timeline-body').text());
 				$("#replytext").val(replyText);
+				
+				$("#modal-modify").modal('open');
 				break;
 				
 			case 'btn_deleteDialog':
 				$(".modal-title").html(rno);
 				$(".modal-title2").html(replyer);
+				
+				$("#modal-delete").modal('open');
 				break;
 		}
 	});
 	
 	$('#btn_replyMod').on('click', function(event) {
-		
 		var rno = $(".modal-title").html();
 		var replyer = $(".modal-title2").html();
 		var replyText = trim($('#replytext').val());
@@ -448,11 +430,12 @@
 		
 		var replyInfo = new ReplyInfo(replyAction.UPDATE, -1);
 		updatePage(bno, replyPage, replyInfo);
+		
 	});
 	
 	/* 
 	$('#btn_test').on('click', function() {
-		//$('#repliesArea .timeline').slideUp('fast');
+		//$('#replies-container .timeline').slideUp('fast');
 		
 		var targetReply = $('.replyLi[data-rno=' + 164 + ']');
 		var replyText = targetReply.find('.timeline-body').text().replace(/(^\s*)|(\s*$)/gi, "");

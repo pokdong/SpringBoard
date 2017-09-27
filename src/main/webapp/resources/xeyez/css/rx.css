@@ -1,0 +1,158 @@
+@media screen and (max-width: 767px) {
+
+    /* 가로 스크롤바 방지*/
+    main {
+        overflow-x:hidden;
+        overflow-y:auto;
+    }
+
+    .rx-row [class*=span] {
+        margin-bottom: 0px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+    main, footer {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .brand-logo {
+    	margin-left: 20px;
+    }
+    
+    .rx-row {
+        overflow: hidden;
+        width: 100%;
+    }
+    .rx-row [class*=span] {
+        float: left;
+        margin-left: 2%;
+    }
+    .rx-row [class*=span]:first-child {
+        margin-left: 0;
+    }
+    .rx-col1 {
+        width: 6.5%;
+        *width: 6%;
+    }
+    .rx-col2 {
+        width: 15%;
+        *width: 14.5%;
+    }
+    .rx-col3 {
+        width: 23.5%;
+        *width: 23%;
+    }
+    .rx-col4 {
+        width: 32%;
+        *width: 31.5%;
+    }
+    .rx-col5 {
+        width: 40.5%;
+        *width: 40%;
+    }
+    .rx-col6 {
+        width: 49%;
+        *width: 48.5%;
+    }
+    .rx-col7 {
+        width: 57.5%;
+        *width: 57%;
+    }
+    .rx-col8 {
+        width: 66%;
+        *width: 65.5%;
+    }
+    .rx-col9 {
+        width: 74.5%;
+        *width: 74%;
+    }
+    .rx-col10 {
+        width: 83%;
+        *width: 82.5%;
+    }
+    .rx-col11 {
+        width: 91.5%;
+        *width: 91%;
+    }
+    .rx-col12 {
+        width: 100%;
+        *width: 99.5%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    main {
+        width: 1200px;
+        margin: 0 auto;
+    }
+
+    /*.container {
+        width: 1200px;
+        margin: 0 auto;
+    }*/
+    
+    .brand-logo {
+    	margin-left: 20px;
+    }
+
+    .rx-row {
+        overflow: hidden;
+    }
+
+    .rx-col1, .rx-col2, .rx-col3, .rx-col4, .rx-col5,
+    .rx-col6, .rx-col7, .rx-col8, .rx-col9, .rx-col10,
+    .rx-col11, .rx-col12 {
+        float: left;
+    }
+
+    .rx-col1 {
+        width: 80px;
+    }
+
+    .rx-col2 {
+        width: 180px;
+    }
+
+    .rx-col3 {
+        width: 280px;
+    }
+
+    .rx-col4 {
+        /*width: 380px;*/
+        width: 33.33%;
+    }
+
+    .rx-col5 {
+        width: 480px;
+    }
+
+    .rx-col6 {
+        width: 50%;
+    }
+
+    .rx-col7 {
+        width: 680px;
+    }
+
+    .rx-col8 {
+        width: 780px;
+    }
+
+    .rx-col9 {
+        width: 880px;
+    }
+
+    .rx-col10 {
+        width: 980px;
+    }
+
+    .rx-col11 {
+        width: 1080px;
+    }
+
+    .rx-col12 {
+        width: 1180px;
+    }
+}

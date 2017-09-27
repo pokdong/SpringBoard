@@ -38,7 +38,7 @@ public class PageMaker {
 			endPage = totalPageCount;
 		
 		prev = startPage != 1;
-		next = (currentPageSet < totalPageSet) && endPage > 0;
+		next = (currentPageSet <= totalPageSet) && endPage > 0;
 	}
 	
 	public void setPageCount(int pageCount) {

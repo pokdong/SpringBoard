@@ -2,6 +2,8 @@
 		</section>
 	</main>
 	
+	<script src="/resources/lightbox2/js/lightbox.min.js"></script>
+	
 	<footer class="page-footer rx-row">
       <div class="container rx-col12">
         © 2014 Copyright Text

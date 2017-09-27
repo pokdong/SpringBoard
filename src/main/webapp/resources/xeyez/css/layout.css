@@ -59,3 +59,16 @@ nav {
 .fixed-action-btn {
 	margin-bottom: 20px;
 }
+
+.btn-delete-attach {
+	cursor: pointer;
+}
+
+#btn-profile {
+	width: 75px;
+}
+
+.profile-image {
+	width: 38px;
+	height: 38px;
+}

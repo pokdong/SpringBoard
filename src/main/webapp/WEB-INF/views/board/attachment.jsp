@@ -25,7 +25,7 @@
 		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
 	{{/if}}
 
-	<span class="btn btn-default btn-xs pull-right delbtn" data-deltype="write">
+	<span class="btn-delete-attach" data-deltype="write">
 		<i class="fa fa-fw fa-remove"></i>
 	</span>
   </div>
@@ -125,7 +125,7 @@
 	var tempDeleteFilesArr = [];
 	
 	//삭제
-	$('.uploadedList').on('click', '.delbtn', function() {
+	$('.uploadedList').on('click', '.btn-delete-attach', function() {
 		var that = $(this);
 		
 		//수정시 기존파일은 진짜 삭제가 되면 안되므로

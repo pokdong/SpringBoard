@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
 
 <script src="/resources/xeyez/js/handlebars4.0.5.js"></script>
-<script src="/resources/lightbox2/js/lightbox.min.js"></script>
 <script src="/resources/xeyez/js/upload.js"></script>
 <script src="/resources/xeyez/js/utils.js"></script>
 
@@ -52,8 +51,8 @@
 	<div class="right-align">
 		<sec:authorize access="isAuthenticated()">
 			<c:if test="${userid == boardVO.writer || isAdmin}">
-				<button type="submit" id="btn_modify" class="btn btn-warning">수정</button>
-				<button type="submit" id="btn_remove" class="btn btn-danger">삭제</button>
+				<button type="submit" id="btn_modify" class="btn">수정</button>
+				<button type="submit" id="btn_remove" class="btn red">삭제</button>
 			</c:if>
 		</sec:authorize>
 		<button type="submit" id="btn_list" class="btn blue">목록으로</button>
@@ -135,7 +134,7 @@
 			},
 			dataType : "text",
 			success : function(replyCnt) {
-				console.log("response : " + replyCnt);
+				//console.log("response : " + replyCnt);
 				
 				if(replyCnt > 0) {
 					alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
@@ -170,7 +169,7 @@
 			 arr.push($(this).attr("data-src"));
 		});
 		
-		console.log(arr);
+		//console.log(arr);
 		
 		if(arr.length > 0){
 			$.post("/deleteAllFiles", {files:arr}, function(){
@@ -238,4 +237,3 @@
 	});
 	
 </script>
-

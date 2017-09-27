@@ -49,6 +49,21 @@
 	  	$( document ).ready(function(){
 	  		$(".button-collapse").sideNav();
 	  		$('select').material_select();
+	  		$('.modal').modal({
+	  	      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+	  	      opacity: .5, // Opacity of modal background
+	  	      inDuration: 300, // Transition in duration
+	  	      outDuration: 200, // Transition out duration
+	  	      startingTop: '4%', // Starting top style attribute
+	  	      endingTop: '10%', // Ending top style attribute
+	  	      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+	  	        //alert("Ready");
+	  	        //console.log(modal, trigger);
+	  	      },
+	  	      complete: function() {
+	  	    	  
+	  	      } // Callback for Modal close
+	  	    });
 	  	});
   	</script>
   </head>
@@ -67,8 +82,22 @@
 		        <li><a href="/user/login">Log-in</a></li>
         	</sec:authorize>
 	        <sec:authorize access="isAuthenticated()">
-	        	<li><a href="/user/profile">Profile</a></li>
-		        <li><a href="/user/logout">Log-out</a></li>
+	        	<li>
+	        		<a id="btn-profile" class="waves-effect waves-teal btn-flat blue" href="/user/profile">
+	        			<c:if test="${authUser.profilepath == null}">
+	               			<img src="${defaultImgURI}" class="profile-image circle" alt="User Image"/>
+	                	</c:if>
+	                	<c:if test="${authUser.profilepath != null}">
+	                		<img src="${authUserImgURL}" class="profile-image circle" alt="User Image"/>
+	                	</c:if>
+	        		</a>
+	        	</li>
+		        <li>
+		        	<a href="/user/logout">
+		        		<i class="fa fa-sign-out"></i>
+		        		<span>${authUser.userid}</span>
+			        </a>
+		        </li>
 	        </sec:authorize>
 	      </ul>
 	      

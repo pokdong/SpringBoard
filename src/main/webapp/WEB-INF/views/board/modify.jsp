@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@include file="../include/header.jsp" %>
+<%@include file="../include/header2.jsp" %>
 
 <sec:authorize access="isAuthenticated()" var="isAuthenticated">
 	<sec:authentication property="name" var="userid"/>
@@ -20,20 +20,6 @@
 <script src="/resources/xeyez/js/utils.js"></script>
 
 
-    <!-- Main content -->
-	<section class="content">
-    	<div class="row">
-    	
-	    	<!-- left column -->
-	    	<div class="col-md-12">
-	    		<!-- general form elements -->
-	  			<div class="box">
-		            <div class="box-header with-border">
-		            	<h3 class="box-title">MODIFY</h3>
-		            </div>
-		            
-<!-- Content -->
-
 <form role="form" action="modify"  method="post">
 
 	<input type='hidden' name='bno' value="${boardVO.bno}">
@@ -45,37 +31,28 @@
 	<input type='hidden' name='keyword' value="${cri.keyword}">
  
 	<!-- totalPostCount 필요 -->
-
-	<div class="box-body"> <!-- box-body : 전체 margin -->
-		<div class="form-group"> <!-- form-group : 하단 여백 -->
-			<label>제목</label>
-			
-			
-			<div class="pull-right">
-				<span id="titleCount"></span>
-				<span>/</span>
-				<span id="titleLimit"></span>
-			</div>
-			
-			<input type="text" name="title" class="form-control" maxlength="30" value="${boardVO.title}" placeholder="Enter Title"> <!-- form-control : 테두리 및 개행 -->
+	<input type="hidden" name="writer" value="${boardVO.writer}">
+	
+	<div class="input-field">
+		<div class="pull-right">
+			<span id="titleCount"></span>
+			<span>/</span>
+			<span id="titleLimit"></span>
 		</div>
 		
-		<div class="form-group">
-			<label>내용</label>
-			
-			<div class="pull-right">
-				<span id="contentCount"></span>
-				<span>/</span>
-				<span id="contentLimit"></span>
-			</div>
-			
-			<textarea name="content" class="form-control" rows="10" cols="1" maxlength="2000" placeholder="Enter content" style="resize: none;">${boardVO.content}</textarea>
+		<input type="text" name="title" value="${boardVO.title}" maxlength="30">
+		<label for="title">제목</label>
+	</div>
+	
+	<div class="input-field">
+		<div class="pull-right">
+			<span id="contentCount"></span>
+			<span>/</span>
+			<span id="contentLimit"></span>
 		</div>
 		
-		<div class="form-group">
-			<label>작성자</label>
-			<input type="text" name="writer" class="form-control" value="${boardVO.writer}" readonly="readonly" onfocus="this.blur()">
-		</div>
+		<textarea name="content" class="materialize-textarea" rows="10" cols="1" maxlength="2000">${boardVO.content}</textarea>
+		<label for="content">내용</label>
 	</div>
 </form>
 
@@ -94,31 +71,22 @@
 		</div>
 	</div>
 	
-	<ul class="mailbox-attachments clearfix uploadedList">
+	<ul class="uploadedList">
 	</ul>
 
 	<div align="right">
-		<button type="submit" id="btn_confirm" class="btn btn-success">확인</button>
-		<button type="submit" class="btn btn-warning">취소</button>
+		<button type="submit" id="btn-confirm" class="btn">확인</button>
+		<button type="submit" id="btn-cancel" class="btn blue">취소</button>
 	</div>
 </div>
-
-		            
-		        </div>
-	        </div>
-        
-      	</div>
-   	</section>
-   	
-	</div>
     
-
-<%@include file="../include/footer.jsp" %>
 
 <%@include file="attachment.jsp" %>
 
+<%@include file="../include/footer2.jsp" %>
+
 <script>
-	var btn_confirm = $('#btn_confirm');
+	var btn_confirm = $('#btn-confirm');
 	
 	var formObj = $("form[role='form']");
 	var title = formObj.find("input[name=title]");
@@ -126,7 +94,7 @@
 	
 	
 	// 확인
-	$("#btn_confirm").on("click", function() {
+	btn_confirm.on("click", function() {
 		
 		// 가삭제한 기존 파일 진짜 삭제.
 		if(tempDeleteFilesArr.length > 0) {
@@ -167,7 +135,7 @@
 	});
 	
 	// 취소
-	$(".btn-warning").on("click", function() {
+	$("#btn-cancel").on("click", function() {
 		
 		var query = "/board/list?"
 			+ "page=${cri.page}"
@@ -266,7 +234,7 @@
 		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
 	{{/if}}
 
-	<span class="btn btn-default btn-xs pull-right delbtn" data-deltype="modify">
+	<span class="btn-delete-attach" data-deltype="modify">
 		<i class="fa fa-fw fa-remove"></i>
 	</span>
   </div>
@@ -319,5 +287,3 @@
 	});
 </script>
  -->
-
-<script src="/resources/lightbox2/js/lightbox.min.js"></script>

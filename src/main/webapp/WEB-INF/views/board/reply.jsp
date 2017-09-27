@@ -1,96 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<style>
-	.userid {
-		margin-bottom: 5px;
-		font-weight: bold;
-		font-size: large;
-	}
-</style>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
 <div id="replies-container" class="row">
-	
+
 	<div class="col s12">
-		<span class="userid" id="newReplyWriter">${userid}</span>
-		
-		<div class="pull-right">
-			<span id="replyTextCount"></span>
-			<span>/</span>
-			<span id="replyTextLimit"></span>
+		<div class="userid blue-text">
+			<i class="fa fa-user"></i> <span id="newReplyWriter">${userid}</span>
 		</div>
-		
+
+
+		<div class="pull-right">
+			<span id="replyTextCount"></span> <span>/</span> <span
+				id="replyTextLimit"></span>
+		</div>
+
 		<div class="input-field">
-			<textarea id="newReplyText" name="newReplyText" class="materialize-textarea" rows="3" cols="1"  maxlength="300" style="resize: none;"></textarea>
+			<textarea id="newReplyText" name="newReplyText"
+				class="materialize-textarea" rows="3" cols="1" maxlength="300"
+				style="resize: none;"></textarea>
 			<label for="newReplyText">댓글</label>
 		</div>
 	</div>
-	
+
 	<div class="col s12">
 		<button type="button" id="btn_replyUpdate" class="btn blue">
 			<i class="material-icons">autorenew</i>
 		</button>
-		<button type="submit" id="btn_replyAdd" class="btn btn-success pull-right" >등록</button>
+		<button type="submit" id="btn_replyAdd"
+			class="btn btn-success pull-right">등록</button>
 	</div>
-	
+
 	<ul class="timeline col s12">
 		<li class="row" id="repliesDiv">
-			<button type="button" id="btn_top" class="btn red col s12">
+			<button type="button" id="btn_top" class="btn blue col s12">
 				<i class="material-icons">vertical_align_top</i>
 			</button>
 		</li>
 	</ul>
 </div>
 
-<!-- Modal -->
-<div id="modifyModal" class="modal modal-primary fade" role="dialog">
-  	<div class="modal-dialog">
-  
-    	<!-- Modal content-->
-    	<div class="modal-content">
-    		<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal">&times;</button>
-	        	<h1 class="modal-title" hidden="true"></h1>
-	        	<h1 class="modal-title2" hidden="true"></h1>
-       		</div>
-       	
-      		<div class="modal-body" data-rno=''>
-        		<p><input type="text" id="replytext"></p>
-      		</div>
-      		
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-info" id="btn_replyMod" data-dismiss="modal">수정</button>
-        		<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-      		</div>
-   		</div>
+
+<div id="modal-modify" class="modal bottom-sheet">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h1 class="modal-title" hidden="true"></h1>
+			<h1 class="modal-title2" hidden="true"></h1>
+		</div>
+
+		<div class="modal-body" data-rno=''>
+			<input type="text" id="replytext">
+		</div>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn btn-info" id="btn_replyMod">수정</button>
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn blue">취소</button>
 	</div>
 </div>
 
-<!-- template 작성은 나중으로 -->
-<div id="deleteModal" class="modal modal-primary fade" role="dialog">
-  	<div class="modal-dialog">
-  
-    	<!-- Modal content-->
-    	<div class="modal-content">
-    		<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal">&times;</button>
-        		<h1 class="modal-title" hidden="true"></h1>
-        		<h1 class="modal-title2" hidden="true"></h1>
-       		</div>
-       	
-      		<div class="modal-body" data-rno=''>
-        		<p>삭제하시겠습니까?</p>
-      		</div>
-      		
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-danger" id="btn_replyDel" data-dismiss="modal">삭제</button>
-        		<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-      		</div>
-   		</div>
+<div id="modal-delete" class="modal bottom-sheet">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h1 class="modal-title" hidden="true"></h1>
+			<h1 class="modal-title2" hidden="true"></h1>
+		</div>
+
+		<div class="modal-body" data-rno=''>
+			<h5>삭제하시겠습니까?</h5>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn red" id="btn_replyDel">삭제</button>
+		<button type="button" class="modal-action modal-close waves-effect waves-green btn blue">취소</button>
 	</div>
 </div>
 
-<!-- <button id="btn_test">test</button> -->
 
 
 
@@ -102,12 +86,11 @@
 		SHOW_WITH_REPLY : 3,
 		UPDATE : 4
 	};
-	
+
 	function ReplyInfo(replyAction, rno) {
 		this.action = replyAction;
 		this.rno = rno;
 	}
-	
 </script>
 
 <script id="template" type="text/x-handlebars-template">
@@ -128,8 +111,8 @@
 
 				{{#hasAuthority replyer}}
             	<div class="card-action right-align">
-					<button type="button" class="btn btn-warning btn-xs" id="btn_modifyDialog" data-toggle="modal" data-target="#modifyModal">수정</button>
-					<button type="button" class="btn btn-danger btn-xs" id="btn_deleteDialog" data-toggle="modal" data-target="#deleteModal">삭제</button>
+					<button type="button" class="btn" id="btn_modifyDialog">수정</button>
+					<button type="button" class="btn red" id="btn_deleteDialog">삭제</button>
             	</div>
 				{{/hasAuthority}}
             </div>
@@ -339,7 +322,7 @@
 	});
 	
 	
-	
+	/* modal 열기 */
 	$(".timeline").on("click", ".replyLi button", function(event){
 		
 		var reply = $(this).parent().parent().parent();
@@ -356,17 +339,20 @@
 				
 				var replyText = trim(reply.find('.timeline-body').text());
 				$("#replytext").val(replyText);
+				
+				$("#modal-modify").modal('open');
 				break;
 				
 			case 'btn_deleteDialog':
 				$(".modal-title").html(rno);
 				$(".modal-title2").html(replyer);
+				
+				$("#modal-delete").modal('open');
 				break;
 		}
 	});
 	
 	$('#btn_replyMod').on('click', function(event) {
-		
 		var rno = $(".modal-title").html();
 		var replyer = $(".modal-title2").html();
 		var replyText = trim($('#replytext').val());
@@ -439,8 +425,6 @@
 	
 	$('#btn_replyUpdate').on('click', function(e) {
 		e.preventDefault();
-		
-		console.log("is it worked?");
 		
 		replyPage = 1;
 		

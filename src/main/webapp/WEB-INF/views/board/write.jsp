@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@include file="../include/header.jsp" %>
+<%@include file="../include/header2.jsp" %>
 
 <link rel="stylesheet" href="/resources/lightbox2/css/lightbox.min.css">
 <link rel="stylesheet" href="/resources/xeyez/css/attachment.css">
@@ -10,59 +10,40 @@
 <script src="/resources/xeyez/js/utils.js"></script>
 
 
-    <!-- Main content -->
-	<section class="content">
-    	<div class="row">
-    	
-	    	<!-- left column -->
-	    	<div class="col-md-12">
-	    		<!-- general form elements -->
-	  			<div class="box">
-		            <div class="box-header with-border">
-		            	<h3 class="box-title">WRITE</h3>
-		            </div>
-	
-					<div class="box-body"> <!-- box-body : 전체 margin -->
 <!-- Content -->
 <form role="form" action="write" method="post">
 
 	<input type='hidden' name='postCount' value="${cri.postCount}">
 	<input type='hidden' name='pageCount' value="${pageMaker.pageCount}">
+	<input type="hidden" name="writer" value="${authUser.userid}">
 	
-	<div class="form-group"> <!-- form-group : 하단 여백 -->
-		<label>제목</label>
-		
+	<div class="input-field">
 		<div class="pull-right">
 			<span id="titleCount"></span>
 			<span>/</span>
 			<span id="titleLimit"></span>
 		</div>
 		
-		<input type="text" name="title" class="form-control" maxlength="30" placeholder="Enter Title"> <!-- form-control : 테두리 및 개행 -->
+		<input type="text" name="title" maxlength="30">
+		<label for="title">제목</label>
 	</div>
 	
-	<div class="form-group">
-		<label>내용</label>
-		
+	<div class="input-field">
 		<div class="pull-right">
 			<span id="contentCount"></span>
 			<span>/</span>
 			<span id="contentLimit"></span>
 		</div>
 		
-		<textarea name="content" class="form-control" rows="10" cols="1" maxlength="2000" placeholder="Enter content" style="resize: none;"></textarea>
-	</div>
-	
-	<div class="form-group">
-		<label>작성자</label>
-		<input type="text" name="writer" class="form-control" value="${authUser.userid}" readonly="readonly" onfocus="this.blur()">
+		<textarea name="content" class="materialize-textarea" rows="10" cols="1" maxlength="2000"></textarea>
+		<label for="content">내용</label>
 	</div>
 	
 </form>
 
 <div class="box-footer" > <!-- box-footer : 전체 여백 + 상단 테두리 -->
 	
-	<div class="form-group">
+	<div>
 		<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
 		     <input name="attachFile" type="file">
 		</form>
@@ -84,17 +65,7 @@
 
 
 
-					</div>
-		            
-		        </div>
-	        </div>
-        
-      	</div>
-   	</section>
-   	
-	</div>
-
-<%@include file="../include/footer.jsp" %>
+<%@include file="../include/footer2.jsp" %>
 
 
 <%@include file="attachment.jsp" %>
@@ -220,5 +191,3 @@
 	});
 	
 </script>
-
-<script src="/resources/lightbox2/js/lightbox.min.js"></script>

@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+nav, .page-footer {
+	background-color: #2196f3;
+}
+
+nav {
+	position: fixed;
+	z-index: 1;
+}
+
+.page-footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+.main-content {
+	position: relative;
+	margin-top: 80px;
+}
+
+.table-head {
+	text-align: center;
+	border-bottom: 1px solid #d0d0d0;
+}
+
+.table-content .text-center {
+	text-align: center;
+}
+
+.bg-round {
+	border-radius: 5px;
+	background-color: #2196f3;
+	color: white;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.pagination-container {
+	text-align: center;
+	position: fixed;
+	bottom: 0;
+	left:0;
+	margin-bottom: 40px;
+	width: 100%;
+	z-index: 1;
+	background-color: white;
+}
+
+.fixed-action-btn {
+	margin-bottom: 20px;
+}

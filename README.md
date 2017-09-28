@@ -90,5 +90,5 @@ In-depth study for Spring framework
   - [X] 관리자 페이지에서 임의 회원 생성.
   - [X] 회원탈퇴시 회원 "삭제"가 아니라 "재가입" 방지로 변경.
 
-### 0.6
+## 0.6
   - [Material Design](http://materializecss.com)으로 Layout 전체 재작성.

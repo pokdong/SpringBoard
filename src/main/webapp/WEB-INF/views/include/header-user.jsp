@@ -69,6 +69,12 @@
 		.btn {
 			margin-top: 15px;
 		}
+		
+		.text-border {
+			text-shadow: 0 0 10px #ffffff;
+			-moz-text-shadow: 0 0 10px #ffffff;
+			-webkit-text-shadow: 0 0 10px #ffffff;
+		}
 	</style>
   	
   	<!-- Polyfill -->

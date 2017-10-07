@@ -24,18 +24,18 @@
 			<input type="hidden" name="returl" value="${returl}">
 			
 			<div class="input-field">
-		      	<input type="text" id="userid" class="validate">
+		      	<input type="text" id="userid" name="userid" class="validate">
 		      	<label for="userid">ID</label>
 		    </div>
 		    
 		    <div class="input-field">
-		      	<input type="password" id="userpw" class="validate">
+		      	<input type="password" id="userpw" name="userpw" class="validate">
 		      	<label for="userpw">Password</label>
 		      
 		      	<div class="formError"></div>
 		    </div>
 		    
-		    <a id="btn_check" class="waves-effect waves-light btn blue white-text full-width">Login</a>
+		    <button type="button" id="btn_check" class="waves-effect waves-light btn blue white-text full-width">Login</button>
 		    
 		    <div class="margin-top-15px">
 				<input type="checkbox" class="filled-in" id="remember_me" name="_spring_security_remember_me" />
@@ -53,14 +53,14 @@
 <script>
 	$( document ).ready(function(){
 		var formObj = $('#form_login');
-		var userpwObj = formObj.find('input[id=userpw]');
+		var userpwObj = formObj.find('input[name=userpw]');
 		
 		// 사용자 유무, 비밀번호를 AJAX로 검증 후 전송
 		// 뒤로 가기 페이지 없애기 위함.
 		$('#btn_check').on('click', function() {
 			var formErrorObj = $('.formError');
 			
-			var userid = formObj.find('input[id=userid]').val();
+			var userid = formObj.find('input[name=userid]').val();
 			var userpw = userpwObj.val();
 		
 			$.ajax({

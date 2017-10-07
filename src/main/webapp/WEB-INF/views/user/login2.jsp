@@ -131,23 +131,14 @@
 					}),
 					dataType : "text",
 					success : function(response) {
+						var responseArray = JSON.parse(response);
+						formErrorObj.text(responseArray[1]);
 						
-						switch (response) {
-							case 'SUCCESS':
-								formErrorObj.text('');
-								formObj.submit();
-								break;
-								
-							case 'FAIL':
-								formErrorObj.text('비밀번호가 일치하지 않습니다.');
-								break;
-						}
+						if(responseArray[0] === 'SUCCESS')
+							formObj.submit();
 					},
 					error : function(request, status, error) {
-						if(request.responseText == 'EMPTY')
-							formErrorObj.text('공백은 허용되지 않습니다.');
-						else
-							formErrorObj.text('존재하지 않는 ID입니다.');
+						formErrorObj.text(JSON.parse(request.responseText)[1]);
 					}
 				});
 			});

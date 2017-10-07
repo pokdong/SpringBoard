@@ -13,7 +13,7 @@
 			<input type="hidden" name="adminExists" value="true">
 	
 			<div class="input-field">
-				<input type="text" id="userid" class="validate">
+				<input type="text" id="userid" name="userid" class="validate">
 				<label for="userid">ID</label>
 				
 				<div class="formError">
@@ -22,7 +22,7 @@
 			</div>
 	
 			<div class="input-field">
-				<input type="password" id="userpw" class="validate">
+				<input type="password" id="userpw" name="userpw" class="validate">
 				<label for="userpw">Password</label>
 	
 				<div class="formError">
@@ -31,7 +31,7 @@
 			</div>
 	
 			<div class="input-field">
-				<input type="password" id="confirm" class="validate">
+				<input type="password" id="confirm" name="confirm" class="validate">
 				<label for="confirm">Confirm Password</label>
 	
 				<div class="formError">
@@ -61,9 +61,9 @@
 
 			var formObj = $('#from-user');
 
-			var userid = formObj.find('input[id=userid]').val();
-			var userpw = formObj.find('input[id=userpw]').val();
-			var confirm = formObj.find('input[id=confirm]').val();
+			var userid = formObj.find('input[name=userid]').val();
+			var userpw = formObj.find('input[name=userpw]').val();
+			var confirm = formObj.find('input[name=confirm]').val();
 
 			$.ajax({
 				type : "POST",

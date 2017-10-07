@@ -70,14 +70,16 @@
 <div id="div_main" class="card-content">
 	<div>
 		<div class="profileArea2">
-			<img id="img_profile_current" src="/resources/dist/img/user_160x160.jpg" class="img-circle" />
+			<img id="img_profile_current" src="/resources/dist/img/user_160x160.jpg" class="circle" />
 		</div>
 
 
 		<div class="textArea bold">
-			${authUser.userid}
 			<div>
-				(<span id="span_username">${authUser.username}</span>)
+				<span class="text-border">${authUser.userid}</span>
+			</div>
+			<div>
+				<span id="span_username" class="text-border">(${authUser.username})</span>
 			</div>
 		</div>
 
@@ -95,12 +97,12 @@
 		</div>
 	</c:if>
 
-	<div class="form-group">
+	<div>
 		<a id="btn_modify" class="waves-effect waves-light btn blue white-text full-width">회원정보 수정</a>
 	</div>
 
 	<c:if test="${!isAdmin}">
-		<div class="form-group" style="margin-bottom: 30px;">
+		<div style="margin-bottom: 30px;">
 			<button type="button" id="btn_withdrawal" class="waves-effect waves-light btn red white-text full-width">회원 탈퇴</button>
 
 			<div id="div_withdrawal" style="margin-top: 10px;" hidden="true">
@@ -127,19 +129,17 @@
 
 
 <div id="div_modify" class="card-content" hidden="true">
-	<form id="fileSubmitForm" enctype="multipart/form-data" method="post"
-		hidden="true">
+	<form id="fileSubmitForm" enctype="multipart/form-data" method="post" hidden="true">
 		<input name="attachFile" type="file" accept="image/*">
 	</form>
 
-	<div class="form-group">
+	<div>
 		<div class="fileDrop_profile">
 			<div class="profileArea">
-				<img id="img_profile" src="/resources/dist/img/user_160x160.jpg"
-					class="img-circle" data-changed="false" />
+				<img id="img_profile" src="/resources/dist/img/user_160x160.jpg" class="circle" data-changed="false" />
 			</div>
 
-			사진을 변경하려면<br> 클릭하거나<br> Drag & Drop 하세요.
+			<span class="text-border">사진을 변경하려면<br> 클릭하거나<br> Drag & Drop 하세요.</span>
 		</div>
 	</div>
 

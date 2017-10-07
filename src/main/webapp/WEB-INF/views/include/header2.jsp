@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <c:set value="/resources/dist/img/user_160x160.jpg" var="defaultImgURI" />
 <c:set value="/displayProfile?fileName=${authUser.profilepath}" var="authUserImgURL" />
    
@@ -78,7 +79,7 @@
 	      
 	      	<sec:authorize access="!isAuthenticated()">
 		        <li><a href="/user/signup">Sign-up</a></li>
-		        <li><a href="/user/login">Log-in</a></li>
+		        <li><a href="/user/login">Login</a></li>
         	</sec:authorize>
 	        <sec:authorize access="isAuthenticated()">
 	        	<li>

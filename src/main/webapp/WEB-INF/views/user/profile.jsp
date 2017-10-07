@@ -117,7 +117,7 @@
 
 				<div id="passwordError" class="formError" hidden="true"></div>
 
-				<a id="btn_withdrawal_pwConfirm" class="waves-effect waves-light btn blue white-text full-width">확인</a>
+				<a id="btn_withdrawal_pwConfirm" class="waves-effect waves-light btn red white-text full-width">확인</a>
 			</div>
 
 		</div>

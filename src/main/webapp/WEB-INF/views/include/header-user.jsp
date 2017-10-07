@@ -56,8 +56,6 @@
 		.signup-result-message {
 			text-align: center;
 			font-size: smaller;
-			font-weight: bold;
-			color: red;
 		}
 		
 		.full-width {

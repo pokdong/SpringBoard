@@ -87,4 +87,5 @@
 	  <div class="outer">
 	  	<div class="middle">
 	  		<div class="inner">
+	  			<div class="form-user card">
   

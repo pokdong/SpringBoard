@@ -3,48 +3,45 @@
 
 <%@include file="../include/header-user.jsp"%>
 
-<div class="form-user card">
-	<div class="card-content blue white-text">
-		<span class="card-title">Sign-up</span>
-	</div>
-
-	<div class="card-content">
-		<form id="from-user" action="/user/signup" method="post">
-			<input type="hidden" name="adminExists" value="true">
-	
-			<div class="input-field">
-				<input type="text" id="userid" name="userid" class="validate">
-				<label for="userid">ID</label>
-				
-				<div class="formError">
-					<span id="userid_error"></span>
-				</div>
-			</div>
-	
-			<div class="input-field">
-				<input type="password" id="userpw" name="userpw" class="validate">
-				<label for="userpw">Password</label>
-	
-				<div class="formError">
-					<span id="userpw_error"></span>
-				</div>
-			</div>
-	
-			<div class="input-field">
-				<input type="password" id="confirm" name="confirm" class="validate">
-				<label for="confirm">Confirm Password</label>
-	
-				<div class="formError">
-					<span id="confirm_error"></span>
-				</div>
-			</div>
-	
-		</form>
-		
-		<a id="btn-signup" class="waves-effect waves-light btn blue white-text full-width">Sign-up</a>
-	</div>
-	
+<div class="card-content blue white-text">
+	<span class="card-title">Sign-up</span>
 </div>
+
+<div class="card-content">
+	<form id="from-user" action="/user/signup" method="post">
+		<input type="hidden" name="adminExists" value="true">
+
+		<div class="input-field">
+			<input type="text" id="userid" name="userid" class="validate">
+			<label for="userid">ID</label>
+			
+			<div class="formError">
+				<span id="userid_error"></span>
+			</div>
+		</div>
+
+		<div class="input-field">
+			<input type="password" id="userpw" name="userpw" class="validate">
+			<label for="userpw">Password</label>
+
+			<div class="formError">
+				<span id="userpw_error"></span>
+			</div>
+		</div>
+
+		<div class="input-field">
+			<input type="password" id="confirm" name="confirm" class="validate">
+			<label for="confirm">Confirm Password</label>
+
+			<div class="formError">
+				<span id="confirm_error"></span>
+			</div>
+		</div>
+	</form>
+		
+	<a id="btn-signup" class="waves-effect waves-light btn blue white-text full-width">Sign-up</a>
+</div>
+	
 
 
 <script>

@@ -1,37 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- <%@ page session="false" %> --%>
 
-<%@include file="include/header.jsp" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>Spring Board</title>
 
-    <!-- Main content -->
-	<section class="content">
-    	<div class="row">
-    	
-	    	<!-- left column -->
-	    	<div class="col-md-12">
-	    		<!-- general form elements -->
-	  			<div class="box">
-		            <div class="box-header with-border">
-		            	<h3 class="box-title">${exception.getMessage()}</h3>
-		            </div>
-		            
-		            <div class="box-body"> <!-- box-body : 전체 margin -->
-<h4>${exception.getClass().getName()}</h4>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+  
+  <style>
+  	body {
+  		background-color: #eeeeee;
+	}
+  
+  	.fa {
+  		font-size: 100px;
+  		margin-bottom: 30px;
+  	}
+  </style>
+</head>
+<body>
+	<div>
+		<i class="fa fa-frown-o center-align"></i>
+	</div>
 
-<ul>
-<c:forEach	items="${exception.getStackTrace()}" var="e">
-	<li>${e.toString()}</li>
-</c:forEach>
-</ul>
-		            </div>
-		            
-		        </div>
-	        </div>
-        
-      	</div>
-   	</section>
-    
-    </div>
-    
-<%@include file="include/footer.jsp" %>
+	<h4>${exception.getClass().getName()}</h4>
+
+	<ul>
+	<c:forEach	items="${exception.getStackTrace()}" var="e">
+		<li>${e.toString()}</li>
+	</c:forEach>
+	</ul>
+</body>
+</html>

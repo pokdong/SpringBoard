@@ -134,25 +134,24 @@ public class UserController {
 	// 회원 탈퇴 이전 비밀번호 확인
 	@ResponseBody
 	@RequestMapping(value = "/confirmPassword", method = RequestMethod.POST)
-	public ResponseEntity<String> confirmPassword(@RequestBody UserVO vo) {
+	public ResponseEntity<String[]> confirmPassword(@RequestBody UserVO vo) {
 
 		logger.info(vo.getUserid() + " / " + vo.getUserpw());
 		
-		ResponseEntity<String> entity = null;
+		ResponseEntity<String[]> entity = null;
 
 		try {
 			String id = vo.getUserid();
 			String pw = vo.getUserpw();
 			
 			if((id == null || id.trim().isEmpty()) || (pw == null || pw.trim().isEmpty()))
-				throw new Exception("EMPTY");
-			
-			if(!isMatchesPassword(vo))
-				entity = new ResponseEntity<>("FAIL", HttpStatus.OK);
+				entity = new ResponseEntity<>(new String[] {"EMPTY", "공백은 허용하지 않습니다."}, HttpStatus.OK);
+			else if(!isMatchesPassword(vo))
+				entity = new ResponseEntity<>(new String[] {"FAIL", "비밀번호가 일치하지 않습니다."}, HttpStatus.OK);
 			else
-				entity = new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+				entity = new ResponseEntity<>(new String[] {"SUCCESS", ""}, HttpStatus.OK);
 		} catch (Exception e) {
-			entity = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<>(new String[] {"NonExistsUser", "존재하지 않는 ID입니다."}, HttpStatus.BAD_REQUEST);
 		}
 		
 		return entity;

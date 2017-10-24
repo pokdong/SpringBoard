@@ -25,37 +25,12 @@ public class HomeController {
 	@Inject
 	private CustomUserDetailsService userService;
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public void test(Locale locale, Model model) throws Exception {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		model.addAttribute("recipient", "World");
-	}
-	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
-		/*
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		*/
-		
 		return "redirect:/board/list";
 	}
-	
-	/*
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public void ajaxTest() {
-		
-	}
-	*/
 	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public void admin(Model model) throws Exception {

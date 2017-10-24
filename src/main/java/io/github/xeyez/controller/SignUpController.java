@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -35,7 +36,8 @@ public class SignUpController {
 	private MessageSource messageSource;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public void signup() {
+	public void signup(Model model) throws Exception {
+		model.addAttribute("adminExists", userService.userIdExists("admin"));
 	}
 	
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)

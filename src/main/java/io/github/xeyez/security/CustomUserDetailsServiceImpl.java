@@ -89,7 +89,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 		else if(pw == null || pw.isEmpty())
 			throw new NullPointerException("Password is null or empty.");
 		
-		if(vo.isAdminExists() && id.toLowerCase().contains("admin"))
+		if(dao.userIdExists("admin") && id.toLowerCase().contains("admin"))
 			throw new UnavailableIDException(id);
 		
 		if(dao.userIdExists(id))
